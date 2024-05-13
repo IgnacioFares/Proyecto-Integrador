@@ -15,7 +15,7 @@ const Preguntas = () => {
                 </button>
             </div>
 
-            <div className="md:w-3/5 md:pl-4 mr-8">
+            <div className="md:w-2/5 md:pl-4 mr-8">
                 <div className="mb-8">
                     <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-2xl md:text-3xl">
                         ¿Cómo reservo una cancha?
