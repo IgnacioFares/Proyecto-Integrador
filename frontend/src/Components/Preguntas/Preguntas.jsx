@@ -1,8 +1,8 @@
-import React from 'react';
+
 
 const Preguntas = () => {
     return (
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mx-4 my-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mx-4 my-8 mt-40">
             <div className="md:w-2/5 mt-4 md:mt-0 md:pl-8 md:self-start">
                 <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-4xl md:text-5xl text-left mb-1 py-8">
                     Preguntas frecuentes

@@ -29,9 +29,9 @@ const Tarjeta = ({ estrellas, comentario, fotoUsuario, nombreUsuario, bordeColor
 
 const TresTarjetas = () => {
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-36 mb-44">
             <TituloDegradado />
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-16">
                 <Tarjeta estrellas="⭐️⭐️⭐️⭐️" comentario="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare." fotoUsuario="/images/user1.jpg" nombreUsuario="Usuario1" bordeColor="green" />
                 <Tarjeta estrellas="⭐️⭐️⭐️" comentario="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare." fotoUsuario="/images/user2.jpg" nombreUsuario="Usuario2" bordeColor="blue" />
                 <Tarjeta estrellas="⭐️⭐️⭐️" comentario="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare." fotoUsuario="/images/user3.jpg" nombreUsuario="Usuario3" bordeColor="green" />
