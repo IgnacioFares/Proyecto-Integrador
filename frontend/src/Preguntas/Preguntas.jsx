@@ -4,20 +4,26 @@ const Preguntas = () => {
     return (
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mx-4 my-8">
             <div className="md:w-2/5 mt-4 md:mt-0 md:pl-8 md:self-start">
-                <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-4xl md:text-5xl text-left mb-1 py-8">
+                <div className="text-black font-michroma text-4xl md:text-5xl text-left mb-1 py-8 md:bg-gradient-to-r md:from-blue-500 md:to-green-400 md:text-transparent md:bg-clip-text">
                     Preguntas frecuentes
                 </div>
                 <p className="text-gray-700 mb-2">
                     Encuentra respuestas a las preguntas más frecuentes sobre reservas de canchas, tipos disponibles y proceso de pago.
                 </p>
-                <button className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-2 px-4 rounded-md shadow-lg hover:shadow-xl">
+                <button className="hidden md:block bg-gradient-to-r from-blue-500 to-green-400 text-white py-2 px-4 rounded-md shadow-lg hover:shadow-xl">
                     Contacto
                 </button>
             </div>
 
             <div className="md:w-2/5 md:pl-4 mr-8">
+                <button className="md:hidden bg-white text-black border border-black py-2 px-4 rounded-md shadow-lg hover:shadow-xl mx-auto mb-4">
+                    Contacto
+                </button>
                 <div className="mb-8">
-                    <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-2xl md:text-3xl">
+                    <div className="hidden md:block text-black font-michroma text-2xl md:text-3xl bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text">
+                        ¿Cómo reservo una cancha?
+                    </div>
+                    <div className="md:hidden font-bold text-2xl text-black mb-2">
                         ¿Cómo reservo una cancha?
                     </div>
                     <p className="text-gray-700">
@@ -25,7 +31,10 @@ const Preguntas = () => {
                     </p>
                 </div>
                 <div className="mb-8">
-                    <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-2xl md:text-3xl">
+                    <div className="hidden md:block text-black font-michroma text-2xl md:text-3xl bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text">
+                        ¿Qué tipos de canchas están disponibles?
+                    </div>
+                    <div className="md:hidden font-bold text-2xl text-black mb-2">
                         ¿Qué tipos de canchas están disponibles?
                     </div>
                     <p className="text-gray-700">
@@ -33,7 +42,10 @@ const Preguntas = () => {
                     </p>
                 </div>
                 <div className="mb-8">
-                    <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-2xl md:text-3xl">
+                    <div className="hidden md:block text-black font-michroma text-2xl md:text-3xl bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text">
+                        ¿Cuál es el proceso de pago?
+                    </div>
+                    <div className="md:hidden font-bold text-2xl text-black mb-2">
                         ¿Cuál es el proceso de pago?
                     </div>
                     <p className="text-gray-700">
@@ -41,7 +53,10 @@ const Preguntas = () => {
                     </p>
                 </div>
                 <div className="mb-8">
-                    <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-2xl md:text-3xl">
+                    <div className="hidden md:block text-black font-michroma text-2xl md:text-3xl bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text">
+                        ¿Cómo puedo cancelar una reserva?
+                    </div>
+                    <div className="md:hidden font-bold text-2xl text-black mb-2">
                         ¿Cómo puedo cancelar una reserva?
                     </div>
                     <p className="text-gray-700">
@@ -49,7 +64,10 @@ const Preguntas = () => {
                     </p>
                 </div>
                 <div>
-                    <div className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-2xl md:text-3xl">
+                    <div className="hidden md:block text-black font-michroma text-2xl md:text-3xl bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text">
+                        ¿Puedo modificar una reserva existente?
+                    </div>
+                    <div className="md:hidden font-bold text-2xl text-black mb-2">
                         ¿Puedo modificar una reserva existente?
                     </div>
                     <p className="text-gray-700">
