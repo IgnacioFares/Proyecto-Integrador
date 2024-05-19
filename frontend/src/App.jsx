@@ -1,4 +1,4 @@
-import Header from "./Components/Header";
+import Administracion from "./pages/Administracion";
 
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <Header/>
+      <Administracion/>
     </>
   )
 }
