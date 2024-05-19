@@ -1,11 +1,14 @@
-import AdminHeader from "../Components/AdminHeader"
-import ProductsTable from "../Components/ProductsTable"
-import Sidebar from "../Components/Sidebar"
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react';
+import Sidebar from '../Components/Sidebar';
+import AdminHeader from '../Components/AdminHeader';
+import ProductsTable from '../Components/ProductsTable';
+import AddProductModal from '../Components/AddProductModal';
 
 
 const Administracion = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [products, setProducts] = useState([]); // Inicializar como arreglo vacío
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,17 +19,21 @@ const Administracion = () => {
       }
     };
 
-    // Check initial size
     handleResize();
-
-    // Add event listener
     window.addEventListener('resize', handleResize);
 
-    // Remove event listener on cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const handleAddProduct = (product) => {
+    setProducts([...products, product]);
+  };
+
+  const handleDeleteProduct = (index) => {
+    setProducts(products.filter((_, i) => i !== index));
+  };
 
   if (isMobile) {
     return (
@@ -39,18 +46,24 @@ const Administracion = () => {
     );
   }
 
-
   return (
     <div className="flex">
-      <Sidebar/>
+      <Sidebar />
       <div className="flex-1">
-        <AdminHeader/>
+        <AdminHeader onOpenAddProductModal={() => setIsModalOpen(true)} />
         <div className="p-4">
-          <ProductsTable/>
+          <ProductsTable products={products} onDeleteProduct={handleDeleteProduct} />
+          <AddProductModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddProduct={handleAddProduct}
+          />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Administracion
+export default Administracion;
+
+

@@ -1,4 +1,5 @@
-import Administracion from "./pages/Administracion";
+import Administracion from "./pages/Administracion"
+
 
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
 
   return (
     <>
-      <Administracion/>
+    <Administracion />
     </>
   )
 }
