@@ -4,11 +4,11 @@ import AdminHeader from '../Components/AdminHeader';
 import ProductsTable from '../Components/ProductsTable';
 import AddProductModal from '../Components/AddProductModal';
 
-
 const Administracion = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [products, setProducts] = useState([]); // Inicializar como arreglo vacío
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,7 +28,13 @@ const Administracion = () => {
   }, []);
 
   const handleAddProduct = (product) => {
+    const duplicate = products.find(p => p.name === product.name);
+    if (duplicate) {
+      setError('El producto ya existe.');
+      return;
+    }
     setProducts([...products, product]);
+    setError('');
   };
 
   const handleDeleteProduct = (index) => {
@@ -52,6 +58,7 @@ const Administracion = () => {
       <div className="flex-1">
         <AdminHeader onOpenAddProductModal={() => setIsModalOpen(true)} />
         <div className="p-4">
+          {error && <div className="text-red-500 mb-4">{error}</div>}
           <ProductsTable products={products} onDeleteProduct={handleDeleteProduct} />
           <AddProductModal
             isOpen={isModalOpen}
@@ -65,5 +72,6 @@ const Administracion = () => {
 };
 
 export default Administracion;
+
 
 

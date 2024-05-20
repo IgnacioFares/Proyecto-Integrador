@@ -6,7 +6,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     description: '',
     price: '',
     stock: '',
-    image: ''
+    images: [] // Cambiado a un array de imágenes
   });
 
   const handleChange = (e) => {
@@ -14,6 +14,14 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     setProduct({
       ...product,
       [name]: value
+    });
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setProduct({
+      ...product,
+      images: files.map(file => file.name) // Solo guardando los nombres de las imágenes
     });
   };
 
@@ -25,7 +33,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       description: '',
       price: '',
       stock: '',
-      image: ''
+      images: [] // Limpiar el array de imágenes
     });
     onClose();
   };
@@ -83,16 +91,12 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             </div>
           </div>
           <div className="mb-4">
-            <label className="block mb-1">Imagen</label>
+            <label className="block mb-1">Imágenes</label>
             <input
               type="file"
-              name="image"
-              onChange={(e) =>
-                setProduct({
-                  ...product,
-                  image: e.target.files[0]?.name || ''
-                })
-              }
+              name="images"
+              multiple
+              onChange={handleImageChange}
               className="w-full border p-2 rounded"
             />
           </div>
@@ -111,4 +115,5 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 };
 
 export default AddProductModal;
+
 
