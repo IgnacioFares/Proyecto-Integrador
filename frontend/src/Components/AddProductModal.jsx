@@ -6,7 +6,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     description: '',
     price: '',
     stock: '',
-    images: [] // Cambiado a un array de imágenes
+    images: []
   });
 
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     const files = Array.from(e.target.files);
     setProduct({
       ...product,
-      images: files.map(file => file.name) // Solo guardando los nombres de las imágenes
+      images: files.map(file => file.name)
     });
   };
 
@@ -33,7 +33,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       description: '',
       price: '',
       stock: '',
-      images: [] // Limpiar el array de imágenes
+      images: []
     });
     onClose();
   };
