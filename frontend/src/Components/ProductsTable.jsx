@@ -36,7 +36,7 @@ const ProductsTable = ({ products, onDeleteProduct }) => {
               <td className="py-2">{`$${product.price}`}</td>
               <td className="py-2">{product.stock}</td>
               <td className="py-2 text-center">
-                <button className="text-blue-500 hover:underline">View</button>
+                <button className="text-green-500 hover:underline">View</button>
                 <button
                   className="text-red-500 hover:underline ml-4"
                   onClick={() => handleDeleteClick(index)}
