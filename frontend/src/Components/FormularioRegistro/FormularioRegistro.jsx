@@ -7,6 +7,7 @@ const FormularioRegistro = () => {
         nombreCompleto: '',
         correo: '',
         confirmarCorreo: '',
+        telefono: '',
         contraseña: '',
         confirmarContraseña: ''
     });
@@ -25,6 +26,11 @@ const FormularioRegistro = () => {
             nuevosErrores.correo = 'El correo no es válido.';
         } else if (datosFormulario.correo !== datosFormulario.confirmarCorreo) {
             nuevosErrores.confirmarCorreo = 'Los correos no coinciden.';
+        }
+
+        const patronTelefono = /^[0-9]+$/;
+        if (!patronTelefono.test(datosFormulario.telefono)) {
+            nuevosErrores.telefono = 'El número de teléfono solo debe contener dígitos.';
         }
 
         if (datosFormulario.contraseña !== datosFormulario.confirmarContraseña) {
@@ -72,7 +78,7 @@ const FormularioRegistro = () => {
                         type="email" 
                         id="correo" 
                         name="correo" 
-                        placeholder="Email" 
+                        placeholder="Correo" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
                         value={datosFormulario.correo} 
                         onChange={manejarCambio} 
@@ -85,12 +91,25 @@ const FormularioRegistro = () => {
                         type="email" 
                         id="confirmarCorreo" 
                         name="confirmarCorreo" 
-                        placeholder="Confirmar Email" 
+                        placeholder="Confirmar correo" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
                         value={datosFormulario.confirmarCorreo} 
                         onChange={manejarCambio} 
                     />
                     {errores.confirmarCorreo && <p className="text-red-500 text-sm mt-1">{errores.confirmarCorreo}</p>}
+                </div>
+
+                <div className="mb-4">
+                    <input 
+                        type="text" 
+                        id="telefono" 
+                        name="telefono" 
+                        placeholder="Número de teléfono" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded" 
+                        value={datosFormulario.telefono} 
+                        onChange={manejarCambio} 
+                    />
+                    {errores.telefono && <p className="text-red-500 text-sm mt-1">{errores.telefono}</p>}
                 </div>
 
                 <div className="mb-4">
