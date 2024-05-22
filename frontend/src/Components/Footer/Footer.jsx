@@ -34,7 +34,7 @@ const Footer = () => {
         margin: '10px auto'
       }} />
       <div className="hidden md:flex justify-between items-center text-sm px-8 py-4">
-            <p>© 2024 Relume. Todos los derechos reservados.</p>
+            <p>© 2024 DH. Todos los derechos reservados.</p>
             <div className="flex">
                 <a href="#" className="px-4">Privacy Policy</a>
                 <a href="#" className="px-4">Terms of Service</a>
@@ -45,7 +45,7 @@ const Footer = () => {
             <a href="#" className="px-4">Privacy Policy</a>
             <a href="#" className="px-4">Terms of Service</a>
             <a href="#" className="px-4">Cookies Settings</a>
-            <p>© 2024 Relume. Todos los derechos reservados.</p>
+            <p>© 2024 DH. Todos los derechos reservados.</p>
             </div>
 
     </div>
