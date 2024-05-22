@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: org.awaitility:awaitility:4.2.1" type="java-imported" external-system-id="Maven">
+    <properties groupId="org.awaitility" artifactId="awaitility" version="4.2.1" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/awaitility/awaitility/4.2.1/awaitility-4.2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/awaitility/awaitility/4.2.1/awaitility-4.2.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/awaitility/awaitility/4.2.1/awaitility-4.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
