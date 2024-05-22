@@ -1,2 +1,2 @@
-frontend/eslintrc.cjs
-node_modules
+frontend/.eslintrc.cjs
+frontend/node_modules
