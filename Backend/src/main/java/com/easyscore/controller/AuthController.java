@@ -6,6 +6,7 @@ import com.easyscore.jwt.service.JwtUserDetailsService;
 import com.easyscore.jwt.util.JwtUtil;
 import com.easyscore.jwt.model.JwtRequest;
 import com.easyscore.jwt.model.JwtResponse;
+import com.easyscore.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,10 +36,15 @@ public class AuthController {
     @Autowired
     private BlacklistTokenService blacklistTokenService;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-        user.setRol("USER"); // Default role for a new user
-        return ResponseEntity.ok(userDetailsService.save(user));
+        user.setRol("USER"); // Rol USER por default
+        ResponseEntity<?> response = ResponseEntity.ok(userDetailsService.save(user));
+        emailService.sendWelcomeEmail(user.getEmail(), user.getUsername());
+        return response;
     }
 
     @PostMapping("/login")
