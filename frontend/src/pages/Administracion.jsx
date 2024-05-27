@@ -30,7 +30,7 @@ const Administracion = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products');
+        const response = await fetch('/productos');
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -43,7 +43,7 @@ const Administracion = () => {
 
   const handleAddProduct = async (product) => {
     try {
-      const response = await fetch('/api/products', {
+      const response = await fetch('/productos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const Administracion = () => {
 
   const handleDeleteProduct = async (id) => {
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`/productos/${id}`, {
         method: 'DELETE',
       });
 
@@ -81,7 +81,7 @@ const Administracion = () => {
 
   const handleUpdateProduct = async (id, updates) => {
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`/productos/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
