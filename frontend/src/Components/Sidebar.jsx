@@ -12,10 +12,10 @@ const Sidebar = () => {
         </Link>
       </div>
       <nav>
-        <a href="#" className="block py-2 px-4 hover:bg-gray-700">Inicio</a>
-        <a href="#" className="block py-2 px-4 hover:bg-gray-700">Clientes</a>
-        <a href="#" className="block py-2 px-4 hover:bg-gray-700">Reservas</a>
         <a href="#" className="block py-2 px-4 hover:bg-gray-700">Productos</a>
+        <a href="#" className="block py-2 px-4 hover:bg-gray-700">Reservas</a>
+        <a href="#" className="block py-2 px-4 hover:bg-gray-700">Clientes</a>
+        <a href="#" className="block py-2 px-4 hover:bg-gray-700">Permisos</a>
 
       </nav>
     </div>

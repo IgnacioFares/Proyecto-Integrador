@@ -27,18 +27,77 @@ const Administracion = () => {
     };
   }, []);
 
-  const handleAddProduct = (product) => {
-    const duplicate = products.find(p => p.name === product.name);
-    if (duplicate) {
-      setError('El producto ya existe.');
-      return;
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        setError('Error al cargar los productos.');
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleAddProduct = async (product) => {
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(product),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al agregar el producto.');
+      }
+
+      const newProduct = await response.json();
+      setProducts([...products, newProduct]);
+      setError('');
+    } catch (error) {
+      setError(error.message);
     }
-    setProducts([...products, product]);
-    setError('');
   };
 
-  const handleDeleteProduct = (index) => {
-    setProducts(products.filter((_, i) => i !== index));
+  const handleDeleteProduct = async (id) => {
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al eliminar el producto.');
+      }
+
+      setProducts(products.filter(product => product.id !== id));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleUpdateProduct = async (id, updates) => {
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al actualizar el producto.');
+      }
+
+      const updatedProduct = await response.json();
+      setProducts(products.map(product => (product.id === id ? updatedProduct : product)));
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   if (isMobile) {
@@ -59,7 +118,11 @@ const Administracion = () => {
         <AdminHeader onOpenAddProductModal={() => setIsModalOpen(true)} />
         <div className="p-4">
           {error && <div className="text-red-500 mb-4">{error}</div>}
-          <ProductsTable products={products} onDeleteProduct={handleDeleteProduct} />
+          <ProductsTable
+            products={products}
+            onDeleteProduct={handleDeleteProduct}
+            onUpdateProduct={handleUpdateProduct}
+          />
           <AddProductModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
@@ -72,6 +135,10 @@ const Administracion = () => {
 };
 
 export default Administracion;
+
+
+
+
 
 
 

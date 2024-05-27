@@ -6,6 +6,8 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     description: '',
     price: '',
     stock: '',
+    category: '',
+    features: '',
     images: []
   });
 
@@ -27,14 +29,26 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddProduct(product);
+    // Convertir categorías y características en arrays separadas por comas
+    const categoriesArray = product.category.split(',').map(item => item.trim());
+    const featuresArray = product.features.split(',').map(item => item.trim());
+
+    onAddProduct({
+      ...product,
+      category: categoriesArray,
+      features: featuresArray,
+    });
+
     setProduct({
       name: '',
       description: '',
       price: '',
       stock: '',
+      category: '',
+      features: '',
       images: []
     });
+
     onClose();
   };
 
@@ -91,6 +105,28 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             </div>
           </div>
           <div className="mb-4">
+            <label className="block mb-1">Categorías (separadas por comas)</label>
+            <input
+              type="text"
+              name="category"
+              value={product.category}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Características (separadas por comas)</label>
+            <input
+              type="text"
+              name="features"
+              value={product.features}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
             <label className="block mb-1">Imágenes</label>
             <input
               type="file"
@@ -115,5 +151,8 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 };
 
 export default AddProductModal;
+
+
+
 
 
