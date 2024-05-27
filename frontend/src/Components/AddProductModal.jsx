@@ -7,14 +7,14 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     precio: '',
     horarioApertura: '',
     horarioCierre: '',
-    caracteristicas: '',
+    caracteristicas: [],
     imagenes: [],
     ubicacion: {
       provincia: '',
       ciudad: '',
       direccion: ''
     },
-    categoria: ''
+    categoria: []
   });
 
   const handleChange = (e) => {
@@ -61,14 +61,14 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       precio: '',
       horarioApertura: '',
       horarioCierre: '',
-      caracteristicas: '',
+      caracteristicas: [],
       imagenes: [],
       ubicacion: {
         provincia: '',
         ciudad: '',
         direccion: ''
       },
-      categoria: ''
+      categoria: []
     });
 
     onClose();
