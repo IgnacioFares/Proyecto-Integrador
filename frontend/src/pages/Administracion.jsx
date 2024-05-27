@@ -123,18 +123,19 @@ const Administracion = () => {
             onDeleteProduct={handleDeleteProduct}
             onUpdateProduct={handleUpdateProduct}
           />
-          <AddProductModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onAddProduct={handleAddProduct}
-          />
         </div>
       </div>
+      <AddProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddProduct={handleAddProduct}
+      />
     </div>
   );
 };
 
 export default Administracion;
+
 
 
 
