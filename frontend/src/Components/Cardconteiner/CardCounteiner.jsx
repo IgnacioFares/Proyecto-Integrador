@@ -1,4 +1,8 @@
+// import Api from "../Api/Api" 
+// como ejemplo le pega a la api de productos
 export const CardContainer = () => {
+  // console.log(Api("productos"));
+  // descomentar si se quiere ver si se conecta bien
     return (
       <>
         <div className="">
