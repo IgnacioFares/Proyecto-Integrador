@@ -1,18 +1,34 @@
-import { createContext,useContext, useReducer,  } from "react"
-import Api from "/Api/Api"
+/*import React, { createContext, useState } from 'react';
+import axios from 'axios';
 
+export const GlobalContext = createContext();
 
-export const ProductContext = ({children}) => {
+export const GlobalProvider = ( {children} ) => {
+    const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const localHost = "http://localhost:8080/";
 
-    let data = {state, dispatch}
+    const getApi = ( endpoint ) => {
+        useEffect(() => {
+          const fetchProductos = async () => {
+            try {
+              const response = await axios.get(localHost + endpoint);
+              setProductos(response.data);
+            } catch (error) {
+              setError(error.message);
+            } finally {
+              setLoading(false);
+            }
+          };
+      
+          fetchProductos();
+          }, [])
+    }
+  
     return (
-        <ProductStates.Provider value={data}>
+        <GlobalContext.Provider value={{ getApi }}>
             {children}
-        </ProductStates.Provider>
+        </GlobalContext.Provider>
     )
-}
-
-
-export default ProductContext
-
-export const useProductStates = () => useContext(ProductStates)
+  }*/
