@@ -8,7 +8,7 @@ export const CardContainer = () => {
         </div>
   
         <div className="flex justify-center mt-28 mx-4">
-          {Api("productos").map(item => (
+          {Api("GET","productos").map(item => (
             <Card
             producto = {item}
             key = {item.id}

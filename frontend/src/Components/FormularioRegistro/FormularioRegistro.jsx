@@ -1,40 +1,40 @@
+import Api from "../Api/Api" 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebook, faApple } from '@fortawesome/free-brands-svg-icons';
 import { useState } from 'react';
 
 const FormularioRegistro = () => {
     const [datosFormulario, setDatosFormulario] = useState({
-        nombreCompleto: '',
-        correo: '',
-        confirmarCorreo: '',
-        telefono: '',
-        contraseña: '',
-        confirmarContraseña: ''
+        username: '',
+        email: '',
+        confirmaremail: '',
+        numeroTelefono: '',
+        password: '',
+        confirmarpassword: ''
     });
 
     const [errores, setErrores] = useState({});
-
     const validarFormulario = () => {
         const nuevosErrores = {};
 
-        if (!/^[a-zA-Z\s]+$/.test(datosFormulario.nombreCompleto)) {
-            nuevosErrores.nombreCompleto = 'El nombre completo no debe contener números.';
+        if (!/^[a-zA-Z\s]+$/.test(datosFormulario.username)) {
+            nuevosErrores.username = 'El nombre completo no debe contener números.';
         }
 
-        const patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!patronCorreo.test(datosFormulario.correo)) {
-            nuevosErrores.correo = 'El correo no es válido.';
-        } else if (datosFormulario.correo !== datosFormulario.confirmarCorreo) {
-            nuevosErrores.confirmarCorreo = 'Los correos no coinciden.';
+        const patronemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!patronemail.test(datosFormulario.email)) {
+            nuevosErrores.email = 'El email no es válido.';
+        } else if (datosFormulario.email !== datosFormulario.confirmaremail) {
+            nuevosErrores.confirmaremail = 'Los emails no coinciden.';
         }
 
-        const patronTelefono = /^[0-9]+$/;
-        if (!patronTelefono.test(datosFormulario.telefono)) {
-            nuevosErrores.telefono = 'El número de teléfono solo debe contener dígitos.';
+        const patronnumeroTelefono = /^[0-9]+$/;
+        if (!patronnumeroTelefono.test(datosFormulario.numeroTelefono)) {
+            nuevosErrores.numeroTelefono = 'El número de teléfono solo debe contener dígitos.';
         }
 
-        if (datosFormulario.contraseña !== datosFormulario.confirmarContraseña) {
-            nuevosErrores.confirmarContraseña = 'Las contraseñas no coinciden.';
+        if (datosFormulario.password !== datosFormulario.confirmarpassword) {
+            nuevosErrores.confirmarpassword = 'Las passwords no coinciden.';
         }
 
         setErrores(nuevosErrores);
@@ -51,7 +51,8 @@ const FormularioRegistro = () => {
     const manejarEnvio = (e) => {
         e.preventDefault();
         if (validarFormulario()) {
-            console.log('Formulario enviado', datosFormulario);
+            // console.log('Formulario enviado', datosFormulario);
+            console.log(Api("POST","register",datosFormulario));
         }
     };
 
@@ -63,63 +64,63 @@ const FormularioRegistro = () => {
                 <div className="mb-4">
                     <input 
                         type="text" 
-                        id="nombreCompleto" 
-                        name="nombreCompleto" 
+                        id="username" 
+                        name="username" 
                         placeholder="Nombre completo" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.nombreCompleto} 
+                        value={datosFormulario.username} 
                         onChange={manejarCambio} 
                     />
-                    {errores.nombreCompleto && <p className="text-red-500 text-sm mt-1">{errores.nombreCompleto}</p>}
+                    {errores.username && <p className="text-red-500 text-sm mt-1">{errores.username}</p>}
                 </div>
 
                 <div className="mb-4">
                     <input 
                         type="email" 
-                        id="correo" 
-                        name="correo" 
-                        placeholder="Correo" 
+                        id="email" 
+                        name="email" 
+                        placeholder="email" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.correo} 
+                        value={datosFormulario.email} 
                         onChange={manejarCambio} 
                     />
-                    {errores.correo && <p className="text-red-500 text-sm mt-1">{errores.correo}</p>}
+                    {errores.email && <p className="text-red-500 text-sm mt-1">{errores.email}</p>}
                 </div>
 
                 <div className="mb-4">
                     <input 
                         type="email" 
-                        id="confirmarCorreo" 
-                        name="confirmarCorreo" 
-                        placeholder="Confirmar correo" 
+                        id="confirmaremail" 
+                        name="confirmaremail" 
+                        placeholder="Confirmar email" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.confirmarCorreo} 
+                        value={datosFormulario.confirmaremail} 
                         onChange={manejarCambio} 
                     />
-                    {errores.confirmarCorreo && <p className="text-red-500 text-sm mt-1">{errores.confirmarCorreo}</p>}
+                    {errores.confirmaremail && <p className="text-red-500 text-sm mt-1">{errores.confirmaremail}</p>}
                 </div>
 
                 <div className="mb-4">
                     <input 
                         type="text" 
-                        id="telefono" 
-                        name="telefono" 
+                        id="numeroTelefono" 
+                        name="numeroTelefono" 
                         placeholder="Número de teléfono" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.telefono} 
+                        value={datosFormulario.numeroTelefono} 
                         onChange={manejarCambio} 
                     />
-                    {errores.telefono && <p className="text-red-500 text-sm mt-1">{errores.telefono}</p>}
+                    {errores.numeroTelefono && <p className="text-red-500 text-sm mt-1">{errores.numeroTelefono}</p>}
                 </div>
 
                 <div className="mb-4">
                     <input 
                         type="password" 
-                        id="contraseña" 
-                        name="contraseña" 
-                        placeholder="Contraseña" 
+                        id="password" 
+                        name="password" 
+                        placeholder="password" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.contraseña} 
+                        value={datosFormulario.password} 
                         onChange={manejarCambio} 
                     />
                 </div>
@@ -127,14 +128,14 @@ const FormularioRegistro = () => {
                 <div className="mb-4">
                     <input 
                         type="password" 
-                        id="confirmarContraseña" 
-                        name="confirmarContraseña" 
-                        placeholder="Confirmar contraseña" 
+                        id="confirmarpassword" 
+                        name="confirmarpassword" 
+                        placeholder="Confirmar password" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.confirmarContraseña} 
+                        value={datosFormulario.confirmarpassword} 
                         onChange={manejarCambio} 
                     />
-                    {errores.confirmarContraseña && <p className="text-red-500 text-sm mt-1">{errores.confirmarContraseña}</p>}
+                    {errores.confirmarpassword && <p className="text-red-500 text-sm mt-1">{errores.confirmarpassword}</p>}
                 </div>
 
                 <button 
