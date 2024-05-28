@@ -10,11 +10,8 @@ export const CardContainer = () => {
         <div className="flex justify-center mt-28 mx-4">
           {Api("productos").map(item => (
             <Card
-            imageUrl="/images/HUHUIHAS.png"
-            name={item.nombre}
-            description={item.descripcion}
-            key={item.id}
-            id={item.id}
+            producto = {item}
+            key = {item.id}
           />
           ))}
         </div>
@@ -22,13 +19,13 @@ export const CardContainer = () => {
     );
   };
   
-  const Card = ({ imageUrl, name, description, id }) => {
+  const Card = ({ producto }) => {
     return (
-      <div id={id} className="max-w-sm rounded overflow-hidden shadow-lg mx-4">
-        <img className="w-full" src={imageUrl} alt={name} />
+      <div id={producto.id} className="max-w-sm rounded overflow-hidden shadow-lg mx-4">
+        <img className="w-full" src="/images/HUHUIHAS.png" alt={producto.nombre} />
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">{name}</div>
-          <p className="text-gray-700 text-base">{description}</p>
+          <div className="font-bold text-xl mb-2">{producto.nombre}</div>
+          <p className="text-gray-700 text-base">{producto.descripcion}</p>
         </div>
         <div className="px-6 pt-4 pb-2">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
