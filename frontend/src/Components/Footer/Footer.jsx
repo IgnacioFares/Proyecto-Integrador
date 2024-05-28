@@ -8,13 +8,7 @@ const Footer = () => {
         <div className="bg-white">
     <div className="flex flex-col md:flex-row justify-between items-center py-4 px-8">
         <img src="/images/logosolo1.png" alt="Logo" className="mb-4 md:mb-0" />
-        <div className="flex flex-col md:flex-row">
-            <a href="#" className="text-green-500 px-4">Enlace uno</a>
-            <a href="#" className="text-green-500 px-4">Enlace dos</a>
-            <a href="#" className="text-green-500 px-4">Enlace tres</a>
-            <a href="#" className="text-green-500 px-4">Enlace cuatro</a>
-            <a href="#" className="text-green-500 px-4">Enlace cinco</a>
-        </div>
+       
         <div className="flex md:flex-row">
             <a href="#" className="px-4"><FontAwesomeIcon icon={faFacebookF} /></a>
             <a href="#" className="px-4"><FontAwesomeIcon icon={faInstagram} /></a>

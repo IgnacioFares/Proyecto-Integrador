@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
 import { routes } from "./routes/routes";
 import { Layout } from "./Layout/Layout";
-import FormularioRegistro from "./Components/FormularioRegistro/FormularioRegistro";
+import FormularioRegistro from "./pages/FormularioRegistro/FormularioRegistro";
 import Reservas from "./pages/Reservas/Reservas";
 import Administracion from "./pages/Administracion/Administracion";
 

@@ -4,5 +4,5 @@ export const routes = {
     about: '/about',
     Login: '/login',
     Administracion:'/Administracion',
-    Reservas:"Reservas",
+    Reservas:"/Reservas",
   };
