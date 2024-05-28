@@ -77,8 +77,8 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center max-h-80vh overflow-y-auto">
-      <div className="bg-white p-6 rounded shadow-md w-1/2">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded shadow-md w-1/2 max-h-full overflow-y-auto">
         <h2 className="text-2xl mb-4">Agregar nuevo producto</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../Components/Sidebar';
-import AdminHeader from '../Components/AdminHeader';
-import ProductsTable from '../Components/ProductsTable';
-import AddProductModal from '../Components/AddProductModal';
 
 const Administracion = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,79 +22,6 @@ const Administracion = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('/productos');
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        setError('Error al cargar los productos.');
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const handleAddProduct = async (product) => {
-    try {
-      const response = await fetch('/productos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(product),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Error al agregar el producto.');
-      }
-
-      const newProduct = await response.json();
-      setProducts([...products, newProduct]);
-      setError('');
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleDeleteProduct = async (id) => {
-    try {
-      const response = await fetch(`/productos/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar el producto.');
-      }
-
-      setProducts(products.filter(product => product.id !== id));
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleUpdateProduct = async (id, updates) => {
-    try {
-      const response = await fetch(`/productos/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updates),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al actualizar el producto.');
-      }
-
-      const updatedProduct = await response.json();
-      setProducts(products.map(product => (product.id === id ? updatedProduct : product)));
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
   if (isMobile) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -115,26 +37,16 @@ const Administracion = () => {
     <div className="flex">
       <Sidebar />
       <div className="flex-1">
-        <AdminHeader onOpenAddProductModal={() => setIsModalOpen(true)} />
         <div className="p-4">
-          {error && <div className="text-red-500 mb-4">{error}</div>}
-          <ProductsTable
-            products={products}
-            onDeleteProduct={handleDeleteProduct}
-            onUpdateProduct={handleUpdateProduct}
-          />
+          <Outlet />
         </div>
       </div>
-      <AddProductModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddProduct={handleAddProduct}
-      />
     </div>
   );
 };
 
 export default Administracion;
+
 
 
 
