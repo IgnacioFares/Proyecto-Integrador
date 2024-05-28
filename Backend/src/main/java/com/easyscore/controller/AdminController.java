@@ -73,9 +73,9 @@ public class AdminController {
 
     // Endpoints para gestión de usuarios
 
-    @PostMapping("/users/{username}/roles")
-    public ResponseEntity<?> addRoleToUser(@PathVariable String username, @RequestBody String roleName) {
-        userService.addRoleToUser(username, roleName);
+    @PostMapping("/users/{id}/roles")
+    public ResponseEntity<?> addRoleToUser(@PathVariable Long id, @RequestBody String roleName) {
+        userService.addRoleToUser(id, roleName);
         return ResponseEntity.ok().build();
     }
 

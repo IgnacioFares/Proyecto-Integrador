@@ -24,9 +24,10 @@ public class AdminConfig {
 
     @PostConstruct
     public void init() {
-        if (!userRepository.existsByUsername("admin")) {
+        if (!userRepository.existsByEmail("admin@example.com")) {
             User admin = new User();
-            admin.setUsername("admin");
+            admin.setNombre("admin");
+            admin.setApellido("admin");
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setEmail("admin@example.com");
             admin.setNumeroTelefono("1234567890");

@@ -4,19 +4,27 @@ import lombok.Data;
 
 @Data
 public class UserDto {
-    private String username;
+    private String nombre;
+    private String apellido;
     private String password;
     private String email;
     private String numeroTelefono;
     private String rol;
 
-    // Getters y setters manuales para 'username' y 'password'
-    public String getUsername() {
-        return username;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public String getPassword() {

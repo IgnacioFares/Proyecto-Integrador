@@ -13,13 +13,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String username;
+    @Column
+    private String nombre;
+
+    @Column
+    private String apellido;
 
     @Column
     private String password;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
@@ -33,12 +36,20 @@ public class User {
     )
     private List<Rol> roles;
 
-    public String getUsername() {
-        return username;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public List<Rol> getRoles() {
@@ -72,6 +83,4 @@ public class User {
     public void setNumeroTelefono(String numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
     }
-
 }
-

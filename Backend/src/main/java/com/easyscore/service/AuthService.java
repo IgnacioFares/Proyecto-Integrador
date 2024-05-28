@@ -1,7 +1,5 @@
 package com.easyscore.service;
 
-
-
 import com.easyscore.jwt.model.JwtRequest;
 import com.easyscore.jwt.model.JwtResponse;
 import com.easyscore.jwt.service.JwtUserDetailsService;
@@ -34,9 +32,9 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public JwtResponse authenticate(JwtRequest jwtRequest) throws Exception {
-        authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
+        authenticate(jwtRequest.getEmail(), jwtRequest.getPassword());
 
-        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
         final String token = jwtUtil.generateToken(userDetails);
 
         return new JwtResponse(token);
@@ -47,12 +45,11 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String email, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (Exception e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
 }
-
