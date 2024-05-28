@@ -6,7 +6,7 @@ const Sidebar = () => {
   return (
     <div className="bg-gray-800 text-white h-screen w-64 flex flex-col">
       <div className="p-4">
-        <img src={logo} alt="Logo" className="h-9 w-auto" />
+        <img src={logo} alt="Logo" className="h-8 w-auto" />
       </div>
       <nav className="mt-4 flex-1">
         <ul>
