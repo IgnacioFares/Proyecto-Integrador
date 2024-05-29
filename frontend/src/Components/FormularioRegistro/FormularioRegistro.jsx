@@ -5,9 +5,9 @@ import { useState } from 'react';
 
 const FormularioRegistro = () => {
     const [datosFormulario, setDatosFormulario] = useState({
-        username: '',
+        nombre: '',
+        apellido: '',
         email: '',
-        confirmaremail: '',
         numeroTelefono: '',
         password: '',
         confirmarpassword: ''
@@ -17,15 +17,13 @@ const FormularioRegistro = () => {
     const validarFormulario = () => {
         const nuevosErrores = {};
 
-        if (!/^[a-zA-Z\s]+$/.test(datosFormulario.username)) {
-            nuevosErrores.username = 'El nombre completo no debe contener números.';
+        if (!/^[a-zA-Z\s]+$/.test(datosFormulario.nombre || !/^[a-zA-Z\s]+$/.test(datosFormulario.apellido))) {
+            nuevosErrores.nombre = 'El nombre completo no debe contener números.';
         }
 
         const patronemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!patronemail.test(datosFormulario.email)) {
             nuevosErrores.email = 'El email no es válido.';
-        } else if (datosFormulario.email !== datosFormulario.confirmaremail) {
-            nuevosErrores.confirmaremail = 'Los emails no coinciden.';
         }
 
         const patronnumeroTelefono = /^[0-9]+$/;
@@ -64,14 +62,27 @@ const FormularioRegistro = () => {
                 <div className="mb-4">
                     <input 
                         type="text" 
-                        id="username" 
-                        name="username" 
-                        placeholder="Nombre completo" 
+                        id="nombre" 
+                        name="nombre" 
+                        placeholder="Nombre" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.username} 
+                        value={datosFormulario.nombre} 
                         onChange={manejarCambio} 
                     />
-                    {errores.username && <p className="text-red-500 text-sm mt-1">{errores.username}</p>}
+                    {errores.nombre && <p className="text-red-500 text-sm mt-1">{errores.nombre}</p>}
+                </div>
+
+                <div className="mb-4">
+                    <input 
+                        type="text" 
+                        id="apellido" 
+                        name="apellido" 
+                        placeholder="Apellido" 
+                        className="w-full px-3 py-2 border border-gray-300 rounded" 
+                        value={datosFormulario.apellido} 
+                        onChange={manejarCambio} 
+                    />
+                    {errores.apellido && <p className="text-red-500 text-sm mt-1">{errores.apellido}</p>}
                 </div>
 
                 <div className="mb-4">
@@ -79,25 +90,12 @@ const FormularioRegistro = () => {
                         type="email" 
                         id="email" 
                         name="email" 
-                        placeholder="email" 
+                        placeholder="Email" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
                         value={datosFormulario.email} 
                         onChange={manejarCambio} 
                     />
                     {errores.email && <p className="text-red-500 text-sm mt-1">{errores.email}</p>}
-                </div>
-
-                <div className="mb-4">
-                    <input 
-                        type="email" 
-                        id="confirmaremail" 
-                        name="confirmaremail" 
-                        placeholder="Confirmar email" 
-                        className="w-full px-3 py-2 border border-gray-300 rounded" 
-                        value={datosFormulario.confirmaremail} 
-                        onChange={manejarCambio} 
-                    />
-                    {errores.confirmaremail && <p className="text-red-500 text-sm mt-1">{errores.confirmaremail}</p>}
                 </div>
 
                 <div className="mb-4">
@@ -118,7 +116,7 @@ const FormularioRegistro = () => {
                         type="password" 
                         id="password" 
                         name="password" 
-                        placeholder="password" 
+                        placeholder="Contraseña" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
                         value={datosFormulario.password} 
                         onChange={manejarCambio} 
@@ -130,7 +128,7 @@ const FormularioRegistro = () => {
                         type="password" 
                         id="confirmarpassword" 
                         name="confirmarpassword" 
-                        placeholder="Confirmar password" 
+                        placeholder="Confirmar contraseña" 
                         className="w-full px-3 py-2 border border-gray-300 rounded" 
                         value={datosFormulario.confirmarpassword} 
                         onChange={manejarCambio} 
