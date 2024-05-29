@@ -5,4 +5,6 @@ export const routes = {
   administracion: '/administracion',
   productos: '/administracion/productos',
   permisos: '/administracion/permisos',
+  productList: '/product-list',
 };
+
