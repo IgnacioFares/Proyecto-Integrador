@@ -5,28 +5,30 @@ import { Layout } from "./Layout/Layout";
 import FormularioRegistro from "./Components/FormularioRegistro/FormularioRegistro";
 import Reservas from "./pages/Reservas/Reservas";
 import Administracion from "./pages/Administracion/Administracion";
-
+import { UserProvider } from './Context/UserContext';
 
 
 
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout/>}>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout/>}>
 
-          <Route path={routes.home} element={<Home />} />
-          <Route path={routes.Reservas} element={<Reservas/>}/>
-          
-        </Route>
+            <Route path={routes.home} element={<Home />} />
+            <Route path={routes.Reservas} element={<Reservas/>}/>
+            
+          </Route>
 
-        <Route path="*" element={<h1>404 not found</h1>} />
-        <Route path={routes.Login} element={<FormularioRegistro/>}/>
-        <Route path={routes.Administracion} element={<Administracion/>}/>
+          <Route path="*" element={<h1>404 not found</h1>} />
+          <Route path={routes.Login} element={<FormularioRegistro/>}/>
+          <Route path={routes.Administracion} element={<Administracion/>}/>
 
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
