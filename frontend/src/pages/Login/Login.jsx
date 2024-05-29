@@ -3,9 +3,13 @@ import { faGoogle, faFacebook, faApple } from "@fortawesome/free-brands-svg-icon
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../routes/routes";
-import Api from "../../Components/Api/Api"
+import Api from "../../Components/Api/Api";
 import React, { useContext } from 'react';
 import { UserContext } from '../../Context/UserContext'; 
+import { useJwt } from "react-jwt";
+
+const token = 'tu.token.jwt';
+const secret = 'tu_llave_secreta';  // La llave secreta usada para firmar el token
 
 const Login = () => {
   const [datosFormulario, setDatosFormulario] = useState({
@@ -14,6 +18,7 @@ const Login = () => {
   });
 
   const [errores, setErrores] = useState({});
+  const [mensajeError, setMensajeError] = useState('');
 
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -41,8 +46,14 @@ const Login = () => {
   const manejarEnvio = (e) => {
     e.preventDefault();
     if (validarFormulario()) {
-      // console.log("Formulario enviado", datosFormulario);
-      console.log(Api("GET","productos",datosFormulario));
+      Api("POST", "login", datosFormulario)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          setMensajeError("Error al iniciar sesión, por favor intente nuevamente.");
+          console.error(error);
+        });
     }
   };
 
@@ -52,6 +63,7 @@ const Login = () => {
       <h1 className="bg-gradient-to-r from-green-500 to-green-700 text-transparent bg-clip-text text-2xl font-bold my-4">
         Iniciar sesión
       </h1>
+      {mensajeError && <p className="text-red-500">{mensajeError}</p>}
       <form className="w-full max-w-sm" onSubmit={manejarEnvio}>
         <div className="mb-4">
           <input
