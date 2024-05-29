@@ -7,7 +7,7 @@ import Reservas from "./pages/Reservas/Reservas";
 import Administracion from "./pages/Administracion/Administracion";
 import Login from "./pages/Login/Login";
 import ProductList from "./pages/ProductList/ProductList";
-import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+
 import ProductManagement from "./Components/ProductManagement.jsx/ProductManagement";
 import PermissionsManagement from "./Components/PermissiosnsManagement.jsx/PermissionsManagement";
 import Detail from "./Components/Detail/Detail";
@@ -33,7 +33,7 @@ function App() {
         <Route path="*" element={<h1>404 not found</h1>} />
         <Route path={routes.Register} element={<FormularioRegistro/>}/>
 
-        <Route path={routes.administracion} element={<ProtectedRoute><Administracion /></ProtectedRoute>}>
+        <Route path={routes.dministracion} element={<Administracion />}>
           <Route path={routes.productos} element={<ProductManagement />} />
           <Route path={routes.permisos} element={<PermissionsManagement />} />
         </Route>

@@ -1,6 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Caracteristicas from '../Caracteristicas/Caracteristicas';
+
 
 const getProductById = (id) => {
     const products = [
@@ -116,6 +118,7 @@ const Detail = () => {
                     </button>
                 </div>
             </div>
+            <Caracteristicas/>
         </div>
     );
 }
