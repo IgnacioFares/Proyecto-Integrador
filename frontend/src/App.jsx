@@ -6,10 +6,7 @@ import FormularioRegistro from "./pages/FormularioRegistro/FormularioRegistro";
 import Reservas from "./pages/Reservas/Reservas";
 import Administracion from "./pages/Administracion/Administracion";
 import Login from "./pages/Login/Login";
-
-
-
-
+import UserProvider from "./Context/UserContext";
 
 function App() {
   return (

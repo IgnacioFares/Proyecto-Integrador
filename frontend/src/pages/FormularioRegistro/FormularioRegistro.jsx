@@ -1,3 +1,4 @@
+import Api from "../../Components/Api/Api" 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGoogle,
@@ -10,12 +11,12 @@ import { routes } from "../../routes/routes";
 
 const FormularioRegistro = () => {
   const [datosFormulario, setDatosFormulario] = useState({
-    nombreCompleto: "",
-    correo: "",
-    confirmarCorreo: "",
-    telefono: "",
-    contraseña: "",
-    confirmarContraseña: "",
+    nombre: "",
+    apellido:"",
+    email: "",
+    numeroTelefono: "",
+    password: "",
+    confirmarpassword: "",
   });
 
   const [errores, setErrores] = useState({});
@@ -23,26 +24,29 @@ const FormularioRegistro = () => {
   const validarFormulario = () => {
     const nuevosErrores = {};
 
-    if (!/^[a-zA-Z\s]+$/.test(datosFormulario.nombreCompleto)) {
-      nuevosErrores.nombreCompleto =
-        "El nombre completo no debe contener números.";
+    if (!/^[a-zA-Z\s]+$/.test(datosFormulario.nombre)) {
+      nuevosErrores.nombre =
+        "El nombre no debe contener números.";
     }
 
-    const patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!patronCorreo.test(datosFormulario.correo)) {
-      nuevosErrores.correo = "El correo no es válido.";
-    } else if (datosFormulario.correo !== datosFormulario.confirmarCorreo) {
-      nuevosErrores.confirmarCorreo = "Los correos no coinciden.";
+    if (!/^[a-zA-Z\s]+$/.test(datosFormulario.apellido)) {
+      nuevosErrores.apellido =
+        "El apellido no debe contener números.";
     }
 
-    const patronTelefono = /^[0-9]+$/;
-    if (!patronTelefono.test(datosFormulario.telefono)) {
-      nuevosErrores.telefono =
+    const patronemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!patronemail.test(datosFormulario.email)) {
+      nuevosErrores.email = "El email no es válido.";
+    }
+
+    const patronnumeroTelefono = /^[0-9]+$/;
+    if (!patronnumeroTelefono.test(datosFormulario.numeroTelefono)) {
+      nuevosErrores.numeroTelefono =
         "El número de teléfono solo debe contener dígitos.";
     }
 
-    if (datosFormulario.contraseña !== datosFormulario.confirmarContraseña) {
-      nuevosErrores.confirmarContraseña = "Las contraseñas no coinciden.";
+    if (datosFormulario.password !== datosFormulario.confirmarpassword) {
+      nuevosErrores.confirmarpassword = "Las passwords no coinciden.";
     }
 
     setErrores(nuevosErrores);
@@ -59,7 +63,8 @@ const FormularioRegistro = () => {
   const manejarEnvio = (e) => {
     e.preventDefault();
     if (validarFormulario()) {
-      console.log("Formulario enviado", datosFormulario);
+      // console.log("Formulario enviado", datosFormulario);
+      console.log(Api("POST","register",datosFormulario));
     }
   };
 
@@ -73,48 +78,16 @@ const FormularioRegistro = () => {
         <div className="mb-4">
           <input
             type="text"
-            id="nombreCompleto"
-            name="nombreCompleto"
-            placeholder="Nombre completo"
+            id="nombre"
+            name="nombre"
+            placeholder="Nombre"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.nombreCompleto}
+            value={datosFormulario.nombre}
             onChange={manejarCambio}
           />
-          {errores.nombreCompleto && (
+          {errores.nombre && (
             <p className="text-red-500 text-sm mt-1">
-              {errores.nombreCompleto}
-            </p>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <input
-            type="email"
-            id="correo"
-            name="correo"
-            placeholder="Correo"
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.correo}
-            onChange={manejarCambio}
-          />
-          {errores.correo && (
-            <p className="text-red-500 text-sm mt-1">{errores.correo}</p>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <input
-            type="email"
-            id="confirmarCorreo"
-            name="confirmarCorreo"
-            placeholder="Confirmar correo"
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.confirmarCorreo}
-            onChange={manejarCambio}
-          />
-          {errores.confirmarCorreo && (
-            <p className="text-red-500 text-sm mt-1">
-              {errores.confirmarCorreo}
+              {errores.nombre}
             </p>
           )}
         </div>
@@ -122,26 +95,58 @@ const FormularioRegistro = () => {
         <div className="mb-4">
           <input
             type="text"
-            id="telefono"
-            name="telefono"
-            placeholder="Número de teléfono"
+            id="apellido"
+            name="apellido"
+            placeholder="Apellido"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.telefono}
+            value={datosFormulario.apellido}
             onChange={manejarCambio}
           />
-          {errores.telefono && (
-            <p className="text-red-500 text-sm mt-1">{errores.telefono}</p>
+          {errores.apellido && (
+            <p className="text-red-500 text-sm mt-1">
+              {errores.apellido}
+            </p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            className="w-full px-3 py-2 border border-gray-300 rounded"
+            value={datosFormulario.email}
+            onChange={manejarCambio}
+          />
+          {errores.email && (
+            <p className="text-red-500 text-sm mt-1">{errores.email}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <input
+            type="text"
+            id="numeroTelefono"
+            name="numeroTelefono"
+            placeholder="Número de teléfono"
+            className="w-full px-3 py-2 border border-gray-300 rounded"
+            value={datosFormulario.numeroTelefono}
+            onChange={manejarCambio}
+          />
+          {errores.numeroTelefono && (
+            <p className="text-red-500 text-sm mt-1">{errores.numeroTelefono}</p>
           )}
         </div>
 
         <div className="mb-4">
           <input
             type="password"
-            id="contraseña"
-            name="contraseña"
+            id="password"
+            name="password"
             placeholder="Contraseña"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.contraseña}
+            value={datosFormulario.password}
             onChange={manejarCambio}
           />
         </div>
@@ -149,16 +154,16 @@ const FormularioRegistro = () => {
         <div className="mb-4">
           <input
             type="password"
-            id="confirmarContraseña"
-            name="confirmarContraseña"
+            id="confirmarpassword"
+            name="confirmarpassword"
             placeholder="Confirmar contraseña"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.confirmarContraseña}
+            value={datosFormulario.confirmarpassword}
             onChange={manejarCambio}
           />
-          {errores.confirmarContraseña && (
+          {errores.confirmarpassword && (
             <p className="text-red-500 text-sm mt-1">
-              {errores.confirmarContraseña}
+              {errores.confirmarpassword}
             </p>
           )}
         </div>

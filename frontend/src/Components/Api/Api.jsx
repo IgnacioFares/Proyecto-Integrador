@@ -1,11 +1,29 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-// para pegarle a la api necesita 3 parametros
-// el tipo de  peticion (GET,POST,PUT,DELETE...)
-// el endpoint a cual pegarle y el array que recibe en el caso que sea un post 
-export const Api = ( tipo, endpoint, data ) => {
+const Api = ( tipo,endpoint,data ) => {
   const localHost = "http://localhost:8080/";
-  const response = tipo == 'GET' ? axios.get(localHost + endpoint) : axios.post(localHost + endpoint, data);
-  return response.data;
+  
+  if(tipo === 'GET'){
+    const [productos, setProductos] = useState([]);
+    useEffect(() => {
+      const fetchProductos = async () => {
+          const response = tipo === 'GET' ? await axios.get(localHost + endpoint) : await axios.post(localHost + endpoint, data);
+          setProductos(response.data);
+      };
+      fetchProductos();
+      }, []);
+    return productos;
+  }else{
+    const response = axios.post(localHost + endpoint, data);
+    return response.status;
+  }
+
+   
+}
+
+const ApiPost = ( tipo,endpoint,data ) => {
+  const localHost = "http://localhost:8080/";
+  axios.post(localHost + endpoint, data);
 }
 export default Api;

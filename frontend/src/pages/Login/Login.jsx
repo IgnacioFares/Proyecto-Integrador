@@ -3,11 +3,14 @@ import { faGoogle, faFacebook, faApple } from "@fortawesome/free-brands-svg-icon
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { routes } from "../../routes/routes";
+import Api from "../../Components/Api/Api"
+import React, { useContext } from 'react';
+import { UserContext } from '../../Context/UserContext'; 
 
 const Login = () => {
   const [datosFormulario, setDatosFormulario] = useState({
-    correo: "",
-    contraseña: "",
+    email: "",
+    password: "",
   });
 
   const [errores, setErrores] = useState({});
@@ -15,13 +18,13 @@ const Login = () => {
   const validarFormulario = () => {
     const nuevosErrores = {};
 
-    const patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!patronCorreo.test(datosFormulario.correo)) {
-      nuevosErrores.correo = "El correo no es válido.";
+    const patronemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!patronemail.test(datosFormulario.email)) {
+      nuevosErrores.email = "El email no es válido.";
     }
 
-    if (!datosFormulario.contraseña) {
-      nuevosErrores.contraseña = "La contraseña es requerida.";
+    if (!datosFormulario.password) {
+      nuevosErrores.password = "La contraseña es requerida.";
     }
 
     setErrores(nuevosErrores);
@@ -38,7 +41,8 @@ const Login = () => {
   const manejarEnvio = (e) => {
     e.preventDefault();
     if (validarFormulario()) {
-      console.log("Formulario enviado", datosFormulario);
+      // console.log("Formulario enviado", datosFormulario);
+      console.log(Api("GET","productos",datosFormulario));
     }
   };
 
@@ -52,30 +56,30 @@ const Login = () => {
         <div className="mb-4">
           <input
             type="email"
-            id="correo"
-            name="correo"
-            placeholder="Correo"
+            id="email"
+            name="email"
+            placeholder="Email"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.correo}
+            value={datosFormulario.email}
             onChange={manejarCambio}
           />
-          {errores.correo && (
-            <p className="text-red-500 text-sm mt-1">{errores.correo}</p>
+          {errores.email && (
+            <p className="text-red-500 text-sm mt-1">{errores.email}</p>
           )}
         </div>
 
         <div className="mb-4">
           <input
             type="password"
-            id="contraseña"
-            name="contraseña"
+            id="password"
+            name="password"
             placeholder="Contraseña"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.contraseña}
+            value={datosFormulario.password}
             onChange={manejarCambio}
           />
-          {errores.contraseña && (
-            <p className="text-red-500 text-sm mt-1">{errores.contraseña}</p>
+          {errores.password && (
+            <p className="text-red-500 text-sm mt-1">{errores.password}</p>
           )}
         </div>
 
