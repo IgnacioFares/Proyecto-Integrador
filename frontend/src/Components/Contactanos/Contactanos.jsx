@@ -14,7 +14,7 @@ const Contactanos = () => {
       <div className="flex justify-center">Estamos aqui para ayudarte</div>
 
       <article className="flex justify-center justify-around mt-20">
-        <div>
+        <div className="flex justify-center flex-col items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
@@ -27,12 +27,14 @@ const Contactanos = () => {
             />
           </svg>
 
-          <h3 className="text-2xl text-[#1EB962]">Correo electrónico</h3>
+          <h3 className="text-2xl text-[#1EB962] ">Correo</h3>
+          <h3 className="text-2xl text-[#1EB962] ">electrónico</h3>
 
-          <p>hello@relume.io</p>
+
+          <p>santicai@gmail.com</p>
         </div>
 
-        <div>
+        <div className="flex justify-center flex-col items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
@@ -47,10 +49,10 @@ const Contactanos = () => {
 
           <h3 className="text-2xl text-[#5E6FAB] ">Teléfono</h3>
 
-          <p>hello@relume.io</p>
+          <p>+35164859837</p>
         </div>
 
-        <div>
+        <div className="flex justify-center flex-col items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
@@ -65,7 +67,7 @@ const Contactanos = () => {
           </svg>
           <h3 className="text-[#1EB962]">Oficina</h3>
 
-          <p>hello@relume.io</p>
+          <p>Cba, Cordoba Arg.</p>
         </div>
       </article>
     </section>
