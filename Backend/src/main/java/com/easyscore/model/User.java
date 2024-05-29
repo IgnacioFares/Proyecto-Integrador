@@ -20,13 +20,15 @@ public class User {
     private String apellido;
 
     @Column
-    private String password;
+    private String numeroTelefono;
 
     @Column(unique = true)
     private String email;
 
     @Column
-    private String numeroTelefono;
+    private String password;
+
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

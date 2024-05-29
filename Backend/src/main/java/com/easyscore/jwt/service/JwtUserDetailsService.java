@@ -48,9 +48,11 @@ public class JwtUserDetailsService implements org.springframework.security.core.
         User newUser = new User();
         newUser.setNombre(userDto.getNombre());
         newUser.setApellido(userDto.getApellido());
-        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setEmail(userDto.getEmail());
         newUser.setNumeroTelefono(userDto.getNumeroTelefono());
+        newUser.setEmail(userDto.getEmail());
+        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+
 
         Rol userRole = rolRepository.findByNombre("USER");
         if (userRole == null) {

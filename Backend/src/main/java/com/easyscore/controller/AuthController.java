@@ -48,7 +48,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-        user.setRol("USER"); // USER sera rol default para el registro
+        user.setRol("USER");
         emailService.sendWelcomeEmail(user.getEmail(), user.getNombre());
         return ResponseEntity.ok(userDetailsService.save(user));
     }

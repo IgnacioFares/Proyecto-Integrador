@@ -6,9 +6,9 @@ import lombok.Data;
 public class UserDto {
     private String nombre;
     private String apellido;
-    private String password;
-    private String email;
     private String numeroTelefono;
+    private String email;
+    private String password;
     private String rol;
 
     public String getNombre() {
