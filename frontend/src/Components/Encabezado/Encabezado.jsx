@@ -17,7 +17,7 @@ export const Encabezado = () => {
           </p>
         </div>
 
-        <Link to={routes.Reservas} className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-3 px-6 text-lg rounded-md shadow-lg hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-80">Reservar Cancha</Link>
+        <Link to={routes.productList} className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-3 px-6 text-lg rounded-md shadow-lg hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-80">Reservar Cancha</Link>
       </div>
     </section>
   );

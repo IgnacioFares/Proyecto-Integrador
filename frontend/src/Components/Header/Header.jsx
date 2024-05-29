@@ -13,7 +13,7 @@ const Header = () => {
       <nav>
         <div className="flex items-center gap-6 ">
           <Link
-            to={routes.reserva}
+            to={routes.productList}
             className="hover:text-green-700 transition duration-300 ease-in-out"
           >
             Reservar

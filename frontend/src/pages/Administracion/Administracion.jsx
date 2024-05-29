@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../../Components/Sidebar/Sideabr';
-import AdminHeader from '../../Components/AdminHeader/AdminHeader';
-import ProductsTable from '../../Components/ProductsTable/ProductsTable';
-import AddProductModal from '../../Components/AddProductModal/AddProductModal';
+
 
 const Administracion = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,20 +22,6 @@ const Administracion = () => {
     };
   }, []);
 
-  const handleAddProduct = (product) => {
-    const duplicate = products.find(p => p.name === product.name);
-    if (duplicate) {
-      setError('El producto ya existe.');
-      return;
-    }
-    setProducts([...products, product]);
-    setError('');
-  };
-
-  const handleDeleteProduct = (index) => {
-    setProducts(products.filter((_, i) => i !== index));
-  };
-
   if (isMobile) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -56,15 +37,8 @@ const Administracion = () => {
     <div className="flex">
       <Sidebar />
       <div className="flex-1">
-        <AdminHeader onOpenAddProductModal={() => setIsModalOpen(true)} />
         <div className="p-4">
-          {error && <div className="text-red-500 mb-4">{error}</div>}
-          <ProductsTable products={products} onDeleteProduct={handleDeleteProduct} />
-          <AddProductModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onAddProduct={handleAddProduct}
-          />
+          <Outlet />
         </div>
       </div>
     </div>
