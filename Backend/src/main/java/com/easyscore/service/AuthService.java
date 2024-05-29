@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AuthService {
 
@@ -35,7 +38,13 @@ public class AuthService {
         authenticate(jwtRequest.getEmail(), jwtRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
-        final String token = jwtUtil.generateToken(userDetails);
+
+        // Obtener roles del usuario
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+
+        final String token = jwtUtil.generateToken(userDetails, roles);
 
         return new JwtResponse(token);
     }

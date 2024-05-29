@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
@@ -41,7 +44,11 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
 
-        final String token = jwtUtil.generateToken(userDetails);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+
+        final String token = jwtUtil.generateToken(userDetails, roles);
 
         return ResponseEntity.ok(new JwtResponse(token));
     }
