@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
 import { routes } from "./routes/routes";
@@ -8,11 +9,19 @@ import Administracion from "./pages/Administracion/Administracion";
 import Login from "./pages/Login/Login";
 
 
+=======
+import Footer from './Components/Footer/Footer';
+import Calificacion from './Components/Calificacion/Calificacion'
+import Preguntas from './Preguntas/Preguntas';
+import Reservas from './Components/Reservas/Reservas';
+import FormularioRegistroAdmin from './Components/FormularioRegistroAdmin/FormularioRegistroAdmin';
+>>>>>>> 5d7204a33b15d3a728db1cd0757f4161257be8fa
 
 
 
 function App() {
   return (
+<<<<<<< HEAD
     <BrowserRouter>
       <Routes>
         <Route element={<Layout/>}>
@@ -29,6 +38,13 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
+=======
+    <div>
+        <FormularioRegistroAdmin/>
+        <Footer/>
+    </div>
+  )
+>>>>>>> 5d7204a33b15d3a728db1cd0757f4161257be8fa
 }
 
 export default App;
