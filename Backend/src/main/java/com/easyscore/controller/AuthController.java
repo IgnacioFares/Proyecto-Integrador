@@ -5,6 +5,7 @@ import com.easyscore.jwt.service.JwtUserDetailsService;
 import com.easyscore.jwt.util.JwtUtil;
 import com.easyscore.jwt.model.JwtRequest;
 import com.easyscore.jwt.model.JwtResponse;
+import com.easyscore.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
@@ -44,7 +48,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-        user.setRol("USER"); // Default role for a new user
+        user.setRol("USER"); // USER sera rol default para el registro
+        emailService.sendWelcomeEmail(user.getEmail(), user.getNombre());
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 
