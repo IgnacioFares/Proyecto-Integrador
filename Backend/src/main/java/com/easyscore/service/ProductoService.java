@@ -50,6 +50,6 @@ public class ProductoService {
 
 
     public Producto update(Producto producto) {
-        return productoRepository.save(producto);  // save acts as both save and update in JpaRepository
+        return productoRepository.save(producto);
     }
 }

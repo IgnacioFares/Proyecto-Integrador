@@ -6,6 +6,7 @@ import com.easyscore.jwt.util.JwtUtil;
 import com.easyscore.jwt.model.JwtRequest;
 import com.easyscore.jwt.model.JwtResponse;
 import com.easyscore.service.EmailService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,6 +39,8 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+
+    @Operation(summary = "Se encarga del LOGIN de usuarios/admin")
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
@@ -53,6 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    @Operation(summary = "Se encarga del REGISTRO de nuevos usuarios terminando con envío de email a la cuenta del mismo.")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
         user.setRol("USER");

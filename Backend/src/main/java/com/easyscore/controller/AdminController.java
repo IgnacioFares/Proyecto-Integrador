@@ -1,10 +1,14 @@
 package com.easyscore.controller;
 
+import com.easyscore.model.Caracteristica;
 import com.easyscore.model.Categoria;
 import com.easyscore.model.Producto;
+import com.easyscore.service.CaracteristicaService;
 import com.easyscore.service.CategoriaService;
 import com.easyscore.service.ProductoService;
 import com.easyscore.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +28,20 @@ public class AdminController {
     private CategoriaService categoriaService;
 
     @Autowired
+    private CaracteristicaService caracteristicaService;
+
+    @Autowired
     private UserService userService;
 
     // Endpoints para productos
 
+    @Operation(summary = "Lista los productos en el panel de admin")
     @GetMapping("/productos")
     public List<Producto> getAllProductos() {
         return productoService.findAll();
     }
 
+    @Operation(summary = "Trae un producto seleccionado por id")
     @GetMapping("/productos/{id}")
     public ResponseEntity<Producto> getProductoById(@PathVariable Long id) {
         return productoService.findById(id)
@@ -40,11 +49,13 @@ public class AdminController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Se encarga de la creacion de un nuevo producto", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PostMapping("/productos")
     public Producto createProducto(@RequestBody Producto producto) {
         return productoService.save(producto);
     }
 
+    @Operation(summary = "Se encarga de editar un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PutMapping("/productos/{id}")
     public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
         return productoService.findById(id)
@@ -61,6 +72,7 @@ public class AdminController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Se encarga de eliminar un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @DeleteMapping("/productos/{id}")
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
         return productoService.findById(id)
@@ -73,6 +85,7 @@ public class AdminController {
 
     // Endpoints para gestión de usuarios
 
+    @Operation(summary = "Se encarga de añadir un nuevo rol a un usuario traido por id", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PostMapping("/users/{id}/roles")
     public ResponseEntity<?> addRoleToUser(@PathVariable Long id, @RequestBody String roleName) {
         userService.addRoleToUser(id, roleName);
@@ -81,11 +94,13 @@ public class AdminController {
 
     // Endpoints para categorías
 
+    @Operation(summary = "Lista todas las categorias", security = @SecurityRequirement(name = "Bearer Authentication"))
     @GetMapping("/categorias")
     public List<Categoria> getAllCategorias() {
         return categoriaService.getAllCategorias();
     }
 
+    @Operation(summary = "Traer una categoria por su id", security = @SecurityRequirement(name = "Bearer Authentication"))
     @GetMapping("/categorias/{id}")
     public ResponseEntity<Categoria> getCategoriaById(@PathVariable Long id) {
         Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
@@ -96,11 +111,13 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "Se encarga de crear una nueva categoria", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PostMapping("/categorias")
     public Categoria createCategoria(@RequestBody Categoria categoria) {
         return categoriaService.saveCategoria(categoria);
     }
 
+    @Operation(summary = "Se encarga de editar una categoria existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PutMapping("/categorias/{id}")
     public ResponseEntity<Categoria> updateCategoria(@PathVariable Long id, @RequestBody Categoria categoriaDetails) {
         Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
@@ -114,6 +131,7 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "Se encarga de asignar una categoria a un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PutMapping("/productos/{productoId}/categoria/{categoriaId}")
     public ResponseEntity<Producto> asignarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
         Optional<Producto> productoOpt = productoService.findById(productoId);
@@ -130,6 +148,7 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "Se encarga de eliminar una categoria existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @DeleteMapping("/categorias/{id}")
     public ResponseEntity<Void> deleteCategoria(@PathVariable Long id) {
         if (categoriaService.getCategoriaById(id).isPresent()) {
@@ -138,5 +157,51 @@ public class AdminController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Endpoints de Caracteristicas
+
+    @Operation(summary = "Se encarga de listar las caracteristicas en el panel", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @GetMapping("/caracteristicas")
+    public List<Caracteristica> getAllCaracteristicas() {
+        return caracteristicaService.findAll();
+    }
+
+    @Operation(summary = "Se encarga de traer una caracteristica por su id", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @GetMapping("/caracteristicas/{id}")
+    public ResponseEntity<Caracteristica> getCaracteristicaById(@PathVariable Long id) {
+        return caracteristicaService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Se encarga de crear una nueva caracteristica", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @PostMapping("/caracteristicas")
+    public Caracteristica createCaracteristica(@RequestBody Caracteristica caracteristica) {
+        return caracteristicaService.save(caracteristica);
+    }
+
+    @Operation(summary = "Se encarga de editar una caracteristica existente", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @PutMapping("/caracteristicas/{id}")
+    public ResponseEntity<Caracteristica> updateCaracteristica(@PathVariable Long id, @RequestBody Caracteristica caracteristicaDetails) {
+        return caracteristicaService.findById(id)
+                .map(caracteristica -> {
+                    caracteristica.setNombre(caracteristicaDetails.getNombre());
+                    caracteristica.setLogoUrl(caracteristicaDetails.getLogoUrl());
+                    Caracteristica updatedCaracteristica = caracteristicaService.save(caracteristica);
+                    return ResponseEntity.ok(updatedCaracteristica);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Se encarga de eliminar una caracteristica existente", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @DeleteMapping("/caracteristicas/{id}")
+    public ResponseEntity<Void> deleteCaracteristica(@PathVariable Long id) {
+        return caracteristicaService.findById(id)
+                .map(caracteristica -> {
+                    caracteristicaService.deleteById(id);
+                    return ResponseEntity.ok().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }
