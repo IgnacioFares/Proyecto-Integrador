@@ -4,7 +4,7 @@ export const routes = {
   about: "/about",
   Register: "/register",
   Login: "/login",
-  Administracion: "/Administracion",
+  administracion: "/administracion",
   Reservas: "/Reservas",
   productList: "/product-list",
   productos: "/administracion/productos",

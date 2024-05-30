@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../../Components/Sidebar/Sideabr';
+import { Outlet } from 'react-router-dom';
 
 
 const Administracion = () => {

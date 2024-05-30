@@ -8,8 +8,8 @@ import Administracion from "./pages/Administracion/Administracion";
 import Login from "./pages/Login/Login";
 import ProductList from "./pages/ProductList/ProductList";
 
-import ProductManagement from "./Components/ProductManagement.jsx/ProductManagement";
-import PermissionsManagement from "./Components/PermissiosnsManagement.jsx/PermissionsManagement";
+import ProductManagement from "./Components/ProductManagement/ProductManagement";
+import PermissionsManagement from "./Components/PermissiosnsManagement/PermissionsManagement";
 import Detail from "./Components/Detail/Detail";
 
 
@@ -33,7 +33,7 @@ function App() {
         <Route path="*" element={<h1>404 not found</h1>} />
         <Route path={routes.Register} element={<FormularioRegistro/>}/>
 
-        <Route path={routes.dministracion} element={<Administracion />}>
+        <Route path={routes.administracion} element={<Administracion />}>
           <Route path={routes.productos} element={<ProductManagement />} />
           <Route path={routes.permisos} element={<PermissionsManagement />} />
         </Route>
