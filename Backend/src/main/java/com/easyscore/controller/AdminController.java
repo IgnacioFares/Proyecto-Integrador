@@ -148,6 +148,12 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "Se encarga de quitar la asignacion de una categoria a un producto", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @DeleteMapping("/productos/{productoId}/categoria")
+    public ResponseEntity<Producto> quitarAsignacionCategoria(@PathVariable Long productoId) {
+        return ResponseEntity.ok(productoService.quitarAsignacionCategoria(productoId));
+    }
+
     @Operation(summary = "Se encarga de eliminar una categoria existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @DeleteMapping("/categorias/{id}")
     public ResponseEntity<Void> deleteCategoria(@PathVariable Long id) {
@@ -192,6 +198,18 @@ public class AdminController {
                     return ResponseEntity.ok(updatedCaracteristica);
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Se encarga de asignar una o mas caracteristicas a un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @PutMapping("/productos/{productoId}/caracteristicas")
+    public ResponseEntity<Producto> asignarCaracteristicas(@PathVariable Long productoId, @RequestBody List<Long> caracteristicaIds) {
+        return ResponseEntity.ok(productoService.asignarCaracteristicas(productoId, caracteristicaIds));
+    }
+
+    @Operation(summary = "Se encarga de quitar la asignacion de una o mas caracteristicas a un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @DeleteMapping("/productos/{productoId}/caracteristicas")
+    public ResponseEntity<Producto> quitarAsignacionCaracteristicas(@PathVariable Long productoId, @RequestBody List<Long> caracteristicaIds) {
+        return ResponseEntity.ok(productoService.quitarAsignacionCaracteristicas(productoId, caracteristicaIds));
     }
 
     @Operation(summary = "Se encarga de eliminar una caracteristica existente", security = @SecurityRequirement(name = "Bearer Authentication"))
