@@ -29,4 +29,6 @@ public class UbicacionService {
     public void deleteById(Long id) {
         ubicacionRepository.deleteById(id);
     }
+
+
 }

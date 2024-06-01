@@ -1,7 +1,5 @@
 package com.easyscore.controller;
 
-
-
 import com.easyscore.dto.UserDto;
 import com.easyscore.model.User;
 import com.easyscore.service.UserService;
@@ -28,9 +26,9 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username)
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -40,25 +38,26 @@ public class UserController {
         return userDetailsService.save(userDto);
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
-        return userService.findByUsername(username)
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return userService.findById(id)
                 .map(user -> {
-                    user.setUsername(userDto.getUsername());
+                    user.setNombre(userDto.getNombre());
+                    user.setApellido(userDto.getApellido());
                     user.setPassword(userDto.getPassword());
                     user.setEmail(userDto.getEmail());
                     user.setNumeroTelefono(userDto.getNumeroTelefono());
-                    User updatedUser = userService.save(user); // Cambié a userService.save(user)
+                    User updatedUser = userService.save(user);
                     return ResponseEntity.ok(updatedUser);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
-        return userService.findByUsername(username)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        return userService.findById(id)
                 .map(user -> {
-                    userService.deleteByUsername(username);
+                    userService.deleteById(id);
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());

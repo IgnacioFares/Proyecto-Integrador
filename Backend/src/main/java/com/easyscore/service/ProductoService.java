@@ -1,7 +1,9 @@
 package com.easyscore.service;
 
+import com.easyscore.model.Caracteristica;
 import com.easyscore.model.Categoria;
 import com.easyscore.model.Producto;
+import com.easyscore.repository.CaracteristicaRepository;
 import com.easyscore.repository.CategoriaRepository;
 import com.easyscore.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class ProductoService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private CaracteristicaRepository caracteristicaRepository;
 
     public List<Producto> findAllRandom() {
         List<Producto> productos = productoRepository.findAll();
@@ -41,6 +46,7 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
+    //Asignar Categoria a un producto
     public Producto asignarCategoria(Long productoId, Long categoriaId) {
         Producto producto = productoRepository.findById(productoId).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         Categoria categoria = categoriaRepository.findById(categoriaId).orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
@@ -48,8 +54,37 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    //Quitar Categoria a un producto
+    public Producto quitarAsignacionCategoria(Long productoId) {
+        Producto producto = productoRepository.findById(productoId).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        producto.setCategoria(null);
+        return productoRepository.save(producto);
+    }
+
+
+    //Asignar Caracteristicas a un producto
+    public Producto asignarCaracteristicas(Long productoId, List<Long> caracteristicaIds) {
+        Producto producto = productoRepository.findById(productoId).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        List<Caracteristica> caracteristicas = caracteristicaRepository.findAllById(caracteristicaIds);
+        producto.getCaracteristicas().addAll(caracteristicas);
+        return productoRepository.save(producto);
+    }
+
+    //Quitar Caracteristicas a un producto
+    public Producto quitarAsignacionCaracteristicas(Long productoId, List<Long> caracteristicaIds) {
+        Producto producto = productoRepository.findById(productoId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        producto.getCaracteristicas().removeIf(caracteristica -> caracteristicaIds.contains(caracteristica.getId()));
+
+        return productoRepository.save(producto);
+    }
+
+
 
     public Producto update(Producto producto) {
-        return productoRepository.save(producto);  // save acts as both save and update in JpaRepository
+        return productoRepository.save(producto);
     }
+
+
 }
