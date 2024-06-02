@@ -8,19 +8,12 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
     setEditingProductId(product.id);
     setEditableProduct({
       ...product,
-      categoria: product.categoria.join(', '),
-      caracteristicas: product.caracteristicas.join(', '),
     });
   };
 
   const handleSaveClick = () => {
-    const categoriasArray = editableProduct.categoria.split(',').map(item => item.trim());
-    const caracteristicasArray = editableProduct.caracteristicas.split(',').map(item => item.trim());
-
     onUpdateProduct(editingProductId, {
-      ...editableProduct,
-      categoria: categoriasArray,
-      caracteristicas: caracteristicasArray
+      ...editableProduct
     });
     setEditingProductId(null);
   };
@@ -144,30 +137,10 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                 )}
               </td>
               <td className="py-2">
-                {editingProductId === product.id ? (
-                  <input
-                    type="text"
-                    name="caracteristicas"
-                    value={editableProduct.caracteristicas}
-                    onChange={handleChange}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  product.caracteristicas.join(', ')
-                )}
+                {product.caracteristicas.join(', ')}
               </td>
               <td className="py-2">
-                {editingProductId === product.id ? (
-                  <input
-                    type="text"
-                    name="categoria"
-                    value={editableProduct.categoria}
-                    onChange={handleChange}
-                    className="border p-1 rounded"
-                  />
-                ) : (
-                  product.categoria.join(', ')
-                )}
+                {product.categoria.join(', ')}
               </td>
               <td className="py-2">
                 {editingProductId === product.id ? (
@@ -233,6 +206,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
 };
 
 export default ProductsTable;
+
 
 
 
