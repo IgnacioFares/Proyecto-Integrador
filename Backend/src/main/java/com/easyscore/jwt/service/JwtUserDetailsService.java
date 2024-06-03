@@ -31,25 +31,28 @@ public class JwtUserDetailsService implements org.springframework.security.core.
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> userOpt = userRepository.findByEmail(email);
         if (!userOpt.isPresent()) {
-            throw new UsernameNotFoundException("Usuario no encontrado con el nombre de usuario: " + username);
+            throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
         }
         User user = userOpt.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Rol rol : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + rol.getNombre()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
     public User save(UserDto userDto) {
         User newUser = new User();
-        newUser.setUsername(userDto.getUsername());
-        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setEmail(userDto.getEmail());
+        newUser.setNombre(userDto.getNombre());
+        newUser.setApellido(userDto.getApellido());
         newUser.setNumeroTelefono(userDto.getNumeroTelefono());
+        newUser.setEmail(userDto.getEmail());
+        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+
 
         Rol userRole = rolRepository.findByNombre("USER");
         if (userRole == null) {
@@ -64,7 +67,8 @@ public class JwtUserDetailsService implements org.springframework.security.core.
 
     public User saveAdmin(UserDto userDto) {
         User newUser = new User();
-        newUser.setUsername(userDto.getUsername());
+        newUser.setNombre(userDto.getNombre());
+        newUser.setApellido(userDto.getApellido());
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         newUser.setEmail(userDto.getEmail());
         newUser.setNumeroTelefono(userDto.getNumeroTelefono());

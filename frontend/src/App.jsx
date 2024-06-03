@@ -9,41 +9,39 @@ import Login from "./pages/Login/Login";
 import ProductList from "./pages/ProductList/ProductList";
 
 import ProductManagement from "./Components/ProductManagement/ProductManagement";
-import PermissionsManagement from "./Components/PermissiosnsManagement/PermissionsManagement";
+import PermissionsManagement from "./Components/PermissionsManagement/PermissionsManagement";
 import Detail from "./Components/Detail/Detail";
 import CategoryManagement from "./Components/CategoryManagement/CategoryManagement";
-import FeatureManagement from "./Components/FeaturesManagement.jsx/FeaturesManagement";
+import FeaturesManagement from "./Components/FeaturesManagement/FeaturesManagement";
 
-
-
-
-
+import { AuthProvider } from './context/AuthContext'; // Importación correcta
+import useAxiosInterceptor from './AuthInterceptor'; // Importa el interceptor
 
 function App() {
+  useAxiosInterceptor(); // Usa el interceptor
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout/>}>
-
-          <Route path={routes.home} element={<Home />} />
-          <Route path={routes.Reservas} element={<Reservas/>}/>
-          <Route path={routes.ProductList} element={<ProductList />}/>
-          <Route path="/detalle/:id" element={<Detail/>}/>
-
-        </Route>
-        <Route path={routes.Login} element={<Login/>}/>
-        <Route path="*" element={<h1>404 not found</h1>} />
-        <Route path={routes.Register} element={<FormularioRegistro/>}/>
-
-        <Route path={routes.administracion} element={<Administracion />}>
-          <Route path={routes.productos} element={<ProductManagement />} />
-          <Route path={routes.permisos} element={<PermissionsManagement />} />
-          <Route path={routes.categorias} element={<CategoryManagement />} />
-          <Route path={routes.caracteristicas} element={<FeatureManagement />} />
-        </Route>
-
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path={routes.home} element={<Home />} />
+            <Route path={routes.Reservas} element={<Reservas />} />
+            <Route path={routes.ProductList} element={<ProductList />} />
+            <Route path="/detalle/:id" element={<Detail />} />
+          </Route>
+          <Route path={routes.Login} element={<Login />} />
+          <Route path="*" element={<h1>404 not found</h1>} />
+          <Route path={routes.Register} element={<FormularioRegistro />} />
+          <Route path={routes.administracion} element={<Administracion />}>
+            <Route path={routes.productos} element={<ProductManagement />} />
+            <Route path={routes.permisos} element={<PermissionsManagement />} />
+            <Route path={routes.categorias} element={<CategoryManagement />} />
+            <Route path={routes.caracteristicas} element={<FeaturesManagement />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

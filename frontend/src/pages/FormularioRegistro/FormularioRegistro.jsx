@@ -1,48 +1,37 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faGoogle,
-  faFacebook,
-  faApple,
-} from "@fortawesome/free-brands-svg-icons";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { routes } from "../../routes/routes";
+import { useState } from 'react';
+import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../routes/routes';
 
 const FormularioRegistro = () => {
   const [datosFormulario, setDatosFormulario] = useState({
-    nombreCompleto: "",
-    correo: "",
-    confirmarCorreo: "",
-    telefono: "",
-    contraseña: "",
-    confirmarContraseña: "",
+    nombre: "",
+    apellido: "",
+    email: "",
+    password: "",
+    numeroTelefono: ""
   });
 
   const [errores, setErrores] = useState({});
+  const navigate = useNavigate();
 
   const validarFormulario = () => {
     const nuevosErrores = {};
 
-    if (!/^[a-zA-Z\s]+$/.test(datosFormulario.nombreCompleto)) {
-      nuevosErrores.nombreCompleto =
-        "El nombre completo no debe contener números.";
+    if (!datosFormulario.nombre) {
+      nuevosErrores.nombre = "El nombre es requerido.";
     }
-
-    const patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!patronCorreo.test(datosFormulario.correo)) {
-      nuevosErrores.correo = "El correo no es válido.";
-    } else if (datosFormulario.correo !== datosFormulario.confirmarCorreo) {
-      nuevosErrores.confirmarCorreo = "Los correos no coinciden.";
+    if (!datosFormulario.apellido) {
+      nuevosErrores.apellido = "El apellido es requerido.";
     }
-
-    const patronTelefono = /^[0-9]+$/;
-    if (!patronTelefono.test(datosFormulario.telefono)) {
-      nuevosErrores.telefono =
-        "El número de teléfono solo debe contener dígitos.";
+    if (!datosFormulario.email) {
+      nuevosErrores.email = "El email es requerido.";
     }
-
-    if (datosFormulario.contraseña !== datosFormulario.confirmarContraseña) {
-      nuevosErrores.confirmarContraseña = "Las contraseñas no coinciden.";
+    if (!datosFormulario.password) {
+      nuevosErrores.password = "La contraseña es requerida.";
+    }
+    if (!datosFormulario.numeroTelefono) {
+      nuevosErrores.numeroTelefono = "El número de teléfono es requerido.";
     }
 
     setErrores(nuevosErrores);
@@ -56,135 +45,111 @@ const FormularioRegistro = () => {
     });
   };
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault();
     if (validarFormulario()) {
-      console.log("Formulario enviado", datosFormulario);
+      try {
+        await axios.post('/register', datosFormulario);
+        navigate(routes.Login); // Redirigir a la página de login después del registro
+      } catch (error) {
+        console.error('Error durante el registro:', error);
+        setErrores({ formulario: 'Error durante el registro. Por favor, intente nuevamente.' });
+      }
     }
   };
 
   return (
     <div className="flex flex-col items-center p-4">
-      <img src="/images/logosolo1.png" alt="Logo" />
       <h1 className="bg-gradient-to-r from-green-500 to-green-700 text-transparent bg-clip-text text-2xl font-bold my-4">
-        Crear cuenta
+        Registro
       </h1>
       <form className="w-full max-w-sm" onSubmit={manejarEnvio}>
         <div className="mb-4">
           <input
             type="text"
-            id="nombreCompleto"
-            name="nombreCompleto"
-            placeholder="Nombre completo"
+            id="nombre"
+            name="nombre"
+            placeholder="Nombre"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.nombreCompleto}
+            value={datosFormulario.nombre}
             onChange={manejarCambio}
           />
-          {errores.nombreCompleto && (
-            <p className="text-red-500 text-sm mt-1">
-              {errores.nombreCompleto}
-            </p>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <input
-            type="email"
-            id="correo"
-            name="correo"
-            placeholder="Correo"
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.correo}
-            onChange={manejarCambio}
-          />
-          {errores.correo && (
-            <p className="text-red-500 text-sm mt-1">{errores.correo}</p>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <input
-            type="email"
-            id="confirmarCorreo"
-            name="confirmarCorreo"
-            placeholder="Confirmar correo"
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.confirmarCorreo}
-            onChange={manejarCambio}
-          />
-          {errores.confirmarCorreo && (
-            <p className="text-red-500 text-sm mt-1">
-              {errores.confirmarCorreo}
-            </p>
+          {errores.nombre && (
+            <p className="text-red-500 text-sm mt-1">{errores.nombre}</p>
           )}
         </div>
 
         <div className="mb-4">
           <input
             type="text"
-            id="telefono"
-            name="telefono"
-            placeholder="Número de teléfono"
+            id="apellido"
+            name="apellido"
+            placeholder="Apellido"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.telefono}
+            value={datosFormulario.apellido}
             onChange={manejarCambio}
           />
-          {errores.telefono && (
-            <p className="text-red-500 text-sm mt-1">{errores.telefono}</p>
+          {errores.apellido && (
+            <p className="text-red-500 text-sm mt-1">{errores.apellido}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            className="w-full px-3 py-2 border border-gray-300 rounded"
+            value={datosFormulario.email}
+            onChange={manejarCambio}
+          />
+          {errores.email && (
+            <p className="text-red-500 text-sm mt-1">{errores.email}</p>
           )}
         </div>
 
         <div className="mb-4">
           <input
             type="password"
-            id="contraseña"
-            name="contraseña"
+            id="password"
+            name="password"
             placeholder="Contraseña"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.contraseña}
+            value={datosFormulario.password}
             onChange={manejarCambio}
           />
+          {errores.password && (
+            <p className="text-red-500 text-sm mt-1">{errores.password}</p>
+          )}
         </div>
 
         <div className="mb-4">
           <input
-            type="password"
-            id="confirmarContraseña"
-            name="confirmarContraseña"
-            placeholder="Confirmar contraseña"
+            type="text"
+            id="numeroTelefono"
+            name="numeroTelefono"
+            placeholder="Número de Teléfono"
             className="w-full px-3 py-2 border border-gray-300 rounded"
-            value={datosFormulario.confirmarContraseña}
+            value={datosFormulario.numeroTelefono}
             onChange={manejarCambio}
           />
-          {errores.confirmarContraseña && (
-            <p className="text-red-500 text-sm mt-1">
-              {errores.confirmarContraseña}
-            </p>
+          {errores.numeroTelefono && (
+            <p className="text-red-500 text-sm mt-1">{errores.numeroTelefono}</p>
           )}
         </div>
+
+        {errores.formulario && (
+          <p className="text-red-500 text-sm mb-4">{errores.formulario}</p>
+        )}
 
         <button
           type="submit"
           className="w-full bg-gradient-to-r from-green-500 via-green-500 to-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Crear cuenta
+          Registrarse
         </button>
       </form>
-      <hr className="w-full my-4" />
-      <div className="flex flex-col items-center">
-        <button className="flex items-center bg-white border border-black text-black font-bold py-2 px-6 rounded mb-2 w-full max-w-xl">
-          <FontAwesomeIcon icon={faGoogle} className="mr-2" /> Ingresar con
-          Google
-        </button>
-        <button className="flex items-center bg-white border border-black text-black font-bold py-2 px-6 rounded mb-2 w-full max-w-xl">
-          <FontAwesomeIcon icon={faFacebook} className="mr-2" /> Ingresar con
-          Facebook
-        </button>
-        <button className="flex items-center bg-white border border-black text-black font-bold py-2 px-6 rounded mb-2 w-full max-w-xl">
-          <FontAwesomeIcon icon={faApple} className="mr-2" /> Ingresar con Apple
-        </button>
-      </div>
-      <p className="mt-4"> ¿Ya tienes una cuenta?<Link to={routes.Login} className="text-blue-500 hover:text-blue-700 hover:underline transition duration-300"> Iniciar sesión</Link></p>
     </div>
   );
 };
