@@ -23,9 +23,9 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/administracion/categorias');
-        const data = await response.json();
-        setCategories(data);
+        const response = await fetch('/administracion/categorias').then(response => {return response});
+        // const data = await response.json();
+        setCategories(response);
       } catch (error) {
         console.error('Error al cargar las categorías', error);
       }
@@ -33,9 +33,9 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
     const fetchFeatures = async () => {
       try {
-        const response = await fetch('/administracion/caracteristicas');
-        const data = await response.json();
-        setFeatures(data);
+        const response = await fetch('/administracion/caracteristicas').then(response => {return response});
+        // const data = await response.json();
+        setFeatures(response);
       } catch (error) {
         console.error('Error al cargar las características', error);
       }

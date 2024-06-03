@@ -137,10 +137,10 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                 )}
               </td>
               <td className="py-2">
-                {product.caracteristicas.join(', ')}
+                {product.caracteristicas != [] || product.caracteristicas}
               </td>
               <td className="py-2">
-                {product.categoria.join(', ')}
+                {product.categoria != [] || product.categoria}
               </td>
               <td className="py-2">
                 {editingProductId === product.id ? (

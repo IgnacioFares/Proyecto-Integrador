@@ -8,7 +8,7 @@ const PermissionsManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/users');
+        const response = await axios.get('/users').then(response => {return response});
         setUsers(response.data);
       } catch (error) {
         setError('Error al cargar los usuarios.');
@@ -20,8 +20,8 @@ const PermissionsManagement = () => {
 
   const handlePermissionChange = async (id, newPermissions) => {
     try {
-      await axios.put(`/api/users/${id}/permissions`, { permissions: newPermissions });
-      setUsers(users.map(user => user.id === id ? { ...user, permissions: newPermissions } : user));
+      await axios.post(`administracion/users/${id}/roles`, { roleName: newPermissions, id: id });
+      setUsers(users.map(user => user.id === id ? { ...user, roleName: newPermissions } : user));
     } catch (error) {
       setError('Error al actualizar los permisos.');
     }
@@ -52,12 +52,12 @@ const PermissionsManagement = () => {
                 <td className="py-2 text-center">{user.id}</td>
                 <td className="py-2">{user.name}</td>
                 <td className="py-2">{user.email}</td>
-                <td className="py-2">{user.permissions.join(', ')}</td>
+                <td className="py-2">{user.permissions}</td>
                 <td className="py-2 text-center">
-                  <button className="text-green-700 hover:underline" onClick={() => handlePermissionChange(user.id, ['admin'])}>
+                  <button className="text-green-700 hover:underline" onClick={() => handlePermissionChange(user.id, 'ADMIN')}>
                     Asignar Admin
                   </button>
-                  <button className="text-red-500 hover:underline ml-4" onClick={() => handlePermissionChange(user.id, ['user'])}>
+                  <button className="text-red-500 hover:underline ml-4" onClick={() => handlePermissionChange(user.id, 'USER')}>
                     Revocar Admin
                   </button>
                 </td>

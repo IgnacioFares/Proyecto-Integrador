@@ -10,7 +10,7 @@ const FeatureManagement = () => {
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const response = await axios.get('/administracion/caracteristicas');
+        const response = await axios.get('/administracion/caracteristicas').then(response => {return response});
         setFeatures(response.data);
       } catch (error) {
         setError('Error al cargar las características.');
@@ -22,7 +22,7 @@ const FeatureManagement = () => {
 
   const handleAddFeature = async () => {
     try {
-      const response = await axios.post('/administracion/caracteristicas', newFeature);
+      const response = await axios.post('/administracion/caracteristicas', newFeature).then(response => {return response});
       setFeatures([...features, response.data]);
       setNewFeature({ nombre: '', logoUrl: '' });
     } catch (error) {

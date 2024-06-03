@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
+import instance from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
 import ProductsTable from '../ProductsTable/ProductsTable';
 import AddProductModal from '../AddProductModal/AddProductModal';
 
@@ -11,7 +11,7 @@ const ProductManagement = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/productos').then(respuesta => { return respuesta});
+        const response = await instance.get('/productos').then(respuesta => { return respuesta});
         setProducts(response.data);
       } catch (error) {
         setError('Error al cargar los productos.');
@@ -23,7 +23,7 @@ const ProductManagement = () => {
 
   const handleAddProduct = async (product) => {
     try {
-      const response = await axios.post('/productos', product);
+      const response = await axios.post('/productos', product).then(respuesta => { return respuesta});
       setProducts([...products, response.data]);
       setError('');
     } catch (error) {
