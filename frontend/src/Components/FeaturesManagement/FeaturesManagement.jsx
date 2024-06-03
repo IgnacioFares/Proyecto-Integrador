@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
 
 const FeatureManagement = () => {
   const [features, setFeatures] = useState([]);
@@ -9,9 +10,8 @@ const FeatureManagement = () => {
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const response = await fetch('/administracion/caracteristicas');
-        const data = await response.json();
-        setFeatures(data);
+        const response = await axios.get('/administracion/caracteristicas');
+        setFeatures(response.data);
       } catch (error) {
         setError('Error al cargar las características.');
       }
@@ -22,61 +22,30 @@ const FeatureManagement = () => {
 
   const handleAddFeature = async () => {
     try {
-      const response = await fetch('/administracion/caracteristicas', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newFeature),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al agregar la característica.');
-      }
-
-      const newFeatureData = await response.json();
-      setFeatures([...features, newFeatureData]);
+      const response = await axios.post('/administracion/caracteristicas', newFeature);
+      setFeatures([...features, response.data]);
       setNewFeature({ nombre: '', logoUrl: '' });
     } catch (error) {
-      setError(error.message);
+      setError('Error al agregar la característica.');
     }
   };
 
   const handleDeleteFeature = async (id) => {
     try {
-      const response = await fetch(`/administracion/caracteristicas/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar la característica.');
-      }
-
+      await axios.delete(`/administracion/caracteristicas/${id}`);
       setFeatures(features.filter(feature => feature.id !== id));
     } catch (error) {
-      setError(error.message);
+      setError('Error al eliminar la característica.');
     }
   };
 
   const handleUpdateFeature = async () => {
     try {
-      const response = await fetch(`/administracion/caracteristicas/${editingFeature.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editingFeature),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al actualizar la característica.');
-      }
-
-      const updatedFeature = await response.json();
-      setFeatures(features.map(feature => (feature.id === editingFeature.id ? updatedFeature : feature)));
+      const response = await axios.put(`/administracion/caracteristicas/${editingFeature.id}`, editingFeature);
+      setFeatures(features.map(feature => feature.id === editingFeature.id ? response.data : feature));
       setEditingFeature(null);
     } catch (error) {
-      setError(error.message);
+      setError('Error al actualizar la característica.');
     }
   };
 
@@ -122,18 +91,18 @@ const FeatureManagement = () => {
                 />
               </div>
             ) : (
-              <div>
+              <>
                 <span>{feature.nombre}</span>
-                <img src={feature.logoUrl} alt={feature.nombre} className="h-8 ml-2" />
-              </div>
+                <img src={feature.logoUrl} alt={feature.nombre} className="w-8 h-8 ml-2" />
+              </>
             )}
             <div>
               {editingFeature && editingFeature.id === feature.id ? (
-                <button onClick={handleUpdateFeature} className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
+                <button onClick={handleUpdateFeature} className="px-4 py-2 bg-blue-500 text-white rounded">
                   Guardar
                 </button>
               ) : (
-                <button onClick={() => setEditingFeature(feature)} className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
+                <button onClick={() => setEditingFeature(feature)} className="px-4 py-2 bg-blue-500 text-white rounded">
                   Editar
                 </button>
               )}
