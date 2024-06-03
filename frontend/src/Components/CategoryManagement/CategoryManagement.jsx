@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from '../../axiosConfig'; // Ajusta la ruta si es necesario
 
 const CategoryManagement = () => {
   const [categories, setCategories] = useState([]);
@@ -9,9 +10,8 @@ const CategoryManagement = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/administracion/categorias');
-        const data = await response.json();
-        setCategories(data);
+        const response = await axios.get('/administracion/categorias').then(response => {return response});
+        setCategories(response.data);
       } catch (error) {
         setError('Error al cargar las categorías.');
       }
@@ -22,13 +22,7 @@ const CategoryManagement = () => {
 
   const handleAddCategory = async () => {
     try {
-      const response = await fetch('/administracion/categorias', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nombre: newCategory }),
-      });
+      const response = await axios.post('/administracion/categorias', {nombre: newCategory});
 
       if (!response.ok) {
         throw new Error('Error al agregar la categoría.');
