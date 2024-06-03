@@ -6,7 +6,8 @@ export const routes = {
   Login: "/login",
   administracion: "/administracion",
   Reservas: "/Reservas",
-  productList: "/product-list",
-  productos: "/administracion/productos",
-  permisos: "/administracion/permisos",
+  productos: '/administracion/productos',
+  permisos: '/administracion/permisos',
+  categorias: '/administracion/categorias',
+  caracteristicas: '/administracion/caracteristicas',
 };

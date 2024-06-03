@@ -11,6 +11,8 @@ import ProductList from "./pages/ProductList/ProductList";
 import ProductManagement from "./Components/ProductManagement/ProductManagement";
 import PermissionsManagement from "./Components/PermissiosnsManagement/PermissionsManagement";
 import Detail from "./Components/Detail/Detail";
+import CategoryManagement from "./Components/CategoryManagement/CategoryManagement";
+import FeatureManagement from "./Components/FeaturesManagement.jsx/FeaturesManagement";
 
 
 
@@ -36,6 +38,8 @@ function App() {
         <Route path={routes.administracion} element={<Administracion />}>
           <Route path={routes.productos} element={<ProductManagement />} />
           <Route path={routes.permisos} element={<PermissionsManagement />} />
+          <Route path={routes.categorias} element={<CategoryManagement />} />
+          <Route path={routes.caracteristicas} element={<FeatureManagement />} />
         </Route>
 
       </Routes>
