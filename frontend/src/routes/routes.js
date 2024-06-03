@@ -10,4 +10,5 @@ export const routes = {
   permisos: '/administracion/permisos',
   categorias: '/administracion/categorias',
   caracteristicas: '/administracion/caracteristicas',
+  ProductList: '/product-list'
 };
