@@ -49,8 +49,7 @@ const FormularioRegistro = () => {
     e.preventDefault();
     if (validarFormulario()) {
       try {
-        await axios.post('/register', datosFormulario);
-        navigate(routes.Login); // Redirigir a la página de login después del registro
+        await axios.post('/register', datosFormulario).then(navigate(routes.Login));// Redirigir a la página de login después del registro
       } catch (error) {
         console.error('Error durante el registro:', error);
         setErrores({ formulario: 'Error durante el registro. Por favor, intente nuevamente.' });

@@ -70,7 +70,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
           products.map((product) => (
             <tr key={product.id} className="border-t">
               <td className="py-2 text-center">
-                <div className="bg-gray-300 w-12 h-12 inline-block">{product.imagenes[0]}</div>
+                <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" className="bg-gray-300 w-12 h-12 inline-block"></img>
               </td>
               <td className="py-2">
                 {editingProductId === product.id ? (

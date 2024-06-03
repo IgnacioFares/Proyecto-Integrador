@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
 
 const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   const [product, setProduct] = useState({
@@ -23,8 +24,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/administracion/categorias').then(response => {return response});
-        // const data = await response.json();
+        const response = await axios.get('/administracion/categorias').then(response => {return response.data});
         setCategories(response);
       } catch (error) {
         console.error('Error al cargar las categorías', error);
@@ -33,8 +33,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
     const fetchFeatures = async () => {
       try {
-        const response = await fetch('/administracion/caracteristicas').then(response => {return response});
-        // const data = await response.json();
+        const response = await axios.get('/administracion/caracteristicas').then(response => {return response.data});
         setFeatures(response);
       } catch (error) {
         console.error('Error al cargar las características', error);
@@ -91,9 +90,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       const categoriaSeleccionada = categories.find(category => category.nombre === product.categoria);
 
       if (categoriaSeleccionada) {
-        await fetch(`/administracion/productos/${addedProduct.id}/categoria/${categoriaSeleccionada.id}`, {
-          method: 'PUT',
-        });
+        await axios.post(`/administracion/productos/${addedProduct.id}/categoria/${categoriaSeleccionada.id}`, product);
       }
 
       setProduct({

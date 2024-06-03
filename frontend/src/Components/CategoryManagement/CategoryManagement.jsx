@@ -54,13 +54,7 @@ const CategoryManagement = () => {
 
   const handleUpdateCategory = async () => {
     try {
-      const response = await fetch(`/administracion/categorias/${editingCategory.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editingCategory),
-      });
+      const response = await axios.post(`/administracion/categorias/${editingCategory.id}`, {editingCategory});
 
       if (!response.ok) {
         throw new Error('Error al actualizar la categoría.');
