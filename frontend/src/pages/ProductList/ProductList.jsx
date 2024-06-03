@@ -3,7 +3,7 @@ import axios from '../../axiosConfig'; // Ajusta la ruta si es necesario
 import useAuth from '../../context/useAuth'; // Importación correcta
 
 const ProductList = () => {
-  const { token } = useAuth(); // Obtener el token del contexto
+    const { token } = useAuth(); // Obtener el token del contexto
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -11,12 +11,12 @@ const ProductList = () => {
     useEffect(() => {
     const fetchProductos = async () => {
         try {
-        const response = await axios.get('/productos');
-        setProductos(response.data);
+            const response = await axios.get('/productos').then(respuesta => { return respuesta});
+            setProductos(response.data);
         } catch (error) {
-        setError(error.message);
+            setError(error.message);
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 

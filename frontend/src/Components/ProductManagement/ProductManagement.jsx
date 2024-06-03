@@ -11,7 +11,7 @@ const ProductManagement = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/productos');
+        const response = await axios.get('/productos').then(respuesta => { return respuesta});
         setProducts(response.data);
       } catch (error) {
         setError('Error al cargar los productos.');

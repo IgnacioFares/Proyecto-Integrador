@@ -15,10 +15,8 @@ import CategoryManagement from "./Components/CategoryManagement/CategoryManageme
 import FeaturesManagement from "./Components/FeaturesManagement/FeaturesManagement";
 
 import { AuthProvider } from './context/AuthContext'; // Importación correcta
-import useAxiosInterceptor from './AuthInterceptor'; // Importa el interceptor
 
 function App() {
-  useAxiosInterceptor(); // Usa el interceptor
 
   return (
     <AuthProvider>
