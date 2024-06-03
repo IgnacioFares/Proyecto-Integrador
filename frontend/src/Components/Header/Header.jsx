@@ -9,7 +9,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 w-full shadow-md h-16 bg-white text-green-500 flex items-center justify-between z-10">
       <div className="flex items-center">
         <Link to={routes.home}>
-          <img src={"../../public/images/logosolo1.png"} alt="Logo" className="h-8 w-150 m-4" />
+          <img src={"/logosolo1.png"} alt="Logo" className="h-8 w-150 m-4" />
         </Link>
       </div>
 
