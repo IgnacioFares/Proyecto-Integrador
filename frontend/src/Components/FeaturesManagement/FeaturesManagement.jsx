@@ -98,11 +98,11 @@ const FeatureManagement = () => {
             )}
             <div>
               {editingFeature && editingFeature.id === feature.id ? (
-                <button onClick={handleUpdateFeature} className="px-4 py-2 bg-blue-500 text-white rounded">
+                <button onClick={handleUpdateFeature} className="px-4 py-2 bg-green-500 text-white rounded">
                   Guardar
                 </button>
               ) : (
-                <button onClick={() => setEditingFeature(feature)} className="px-4 py-2 bg-blue-500 text-white rounded">
+                <button onClick={() => setEditingFeature(feature)} className="px-4 py-2 bg-green-500 text-white rounded">
                   Editar
                 </button>
               )}

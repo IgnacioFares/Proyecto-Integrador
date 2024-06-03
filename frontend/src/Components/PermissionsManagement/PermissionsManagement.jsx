@@ -54,7 +54,7 @@ const PermissionsManagement = () => {
                 <td className="py-2">{user.email}</td>
                 <td className="py-2">{user.permissions}</td>
                 <td className="py-2 text-center">
-                  <button className="text-green-700 hover:underline" onClick={() => handlePermissionChange(user.id, 'ADMIN')}>
+                  <button className="text-green-500 hover:underline" onClick={() => handlePermissionChange(user.id, 'ADMIN')}>
                     Asignar Admin
                   </button>
                   <button className="text-red-500 hover:underline ml-4" onClick={() => handlePermissionChange(user.id, 'USER')}>

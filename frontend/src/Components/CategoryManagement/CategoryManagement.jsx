@@ -105,11 +105,11 @@ const CategoryManagement = () => {
             )}
             <div>
               {editingCategory && editingCategory.id === category.id ? (
-                <button onClick={handleUpdateCategory} className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
+                <button onClick={handleUpdateCategory} className="ml-2 px-4 py-2 bg-green-500 text-white rounded">
                   Guardar
                 </button>
               ) : (
-                <button onClick={() => setEditingCategory(category)} className="ml-2 px-4 py-2 bg-blue-500 text-white rounded">
+                <button onClick={() => setEditingCategory(category)} className="ml-2 px-4 py-2 bg-green-500 text-white rounded">
                   Editar
                 </button>
               )}
