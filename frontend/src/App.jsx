@@ -27,7 +27,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path={routes.home} element={<Home />} />
             <Route path={routes.Reservas} element={<Reservas />} />
-            <Route path={routes.ProductList} element={<ProductList />} />
+            <Route path={routes.productList} element={<ProductList />} />
             <Route path="/detalle/:id" element={<Detail />} />
           </Route>
           <Route path={routes.Login} element={<Login />} />
