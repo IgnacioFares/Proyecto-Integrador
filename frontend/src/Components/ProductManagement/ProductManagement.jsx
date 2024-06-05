@@ -3,6 +3,7 @@ import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
 import ProductsTable from '../ProductsTable/ProductsTable';
 import AddProductModal from '../AddProductModal/AddProductModal';
 
+
 const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState([]);

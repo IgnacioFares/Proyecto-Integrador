@@ -1,12 +1,14 @@
 package com.easyscore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+
 @Entity
 public class User {
     @Id
@@ -28,15 +30,9 @@ public class User {
     @Column
     private String password;
 
-
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private List<Rol> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Rol rol;
 
     public String getNombre() {
         return nombre;
@@ -54,12 +50,20 @@ public class User {
         this.apellido = apellido;
     }
 
-    public List<Rol> getRoles() {
-        return roles;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoles(List<Rol> roles) {
-        this.roles = roles;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     public String getPassword() {
