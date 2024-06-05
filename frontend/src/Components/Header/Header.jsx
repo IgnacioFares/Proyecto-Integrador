@@ -36,7 +36,7 @@ const Header = () => {
             <Link to={routes.Login} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white">
               Iniciar Sesion
             </Link>
-            <Link to={routes.Register} className="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded-2xl border border-text-green-500">
+            <Link to={routes.Register} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-2xl border border-text-green-500">
               Crear Cuenta
             </Link>
           </>
