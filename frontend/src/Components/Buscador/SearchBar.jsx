@@ -58,22 +58,21 @@ const SearchBar = () => {
   const getSuggestionValue = (suggestion) => suggestion;
 
   const renderSuggestion = (suggestion) => (
-    <div>
-      {suggestion}
+    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+      <div className="py-1 px-3">{suggestion}</div>
     </div>
   );
 
   const handleSearch = () => {
-
     //Aqui tenemos que diseñar la logica de como se va a realizar la busqueda. 
     console.log('Buscando:', searchTerm, selectedCategory, startDate, endDate);
   };
 
   return (
-    <div className="mt-5 flex justify-center items-center ">
-      <div className="p-6 bg-white rounded-full shadow-md flex items-center space-x-4">
-        <div className="flex items-center space-x-2 bg-green-500 text-white rounded-full border-1 py-0.5 pl-3 pr-0.5">
-          <FaSearch />
+    <div className="mt-5 flex justify-center items-center">
+      <div className="p-6 bg-white rounded-full shadow-md flex items-center space-x-4 relative">
+        <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 relative">
+          <FaSearch className="text-white"/>
           <Autosuggest
             suggestions={suggestions}
             onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -84,7 +83,7 @@ const SearchBar = () => {
               placeholder: 'Ciudad...',
               value: searchTerm,
               onChange: handleSearchChange,
-              className: 'p-2 bg-white text-gray-700 border-none rounded-full'
+              className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
             }}
             theme={{
               input: 'p-2 border-none rounded-full outline-none'
@@ -148,6 +147,7 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+
 
 
 
