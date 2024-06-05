@@ -72,8 +72,8 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="mt-5 flex justify-center items-center">
-      <div className="p-6 bg-white rounded-full shadow-md flex items-center space-x-4 relative">
+    <div className="mt-6 flex justify-center items-center">
+      <div className="p-6 bg-white rounded-full shadow-2xl flex items-center space-x-4 relative">
         <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 relative">
           <FaSearch className="text-white"/>
           <Autosuggest
