@@ -3,12 +3,15 @@ package com.easyscore.service;
 import com.easyscore.model.Caracteristica;
 import com.easyscore.model.Categoria;
 import com.easyscore.model.Producto;
+import com.easyscore.model.Ubicacion;
 import com.easyscore.repository.CaracteristicaRepository;
 import com.easyscore.repository.CategoriaRepository;
 import com.easyscore.repository.ProductoRepository;
+import com.easyscore.repository.UbicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,9 @@ public class ProductoService {
     @Autowired
     private CaracteristicaRepository caracteristicaRepository;
 
+    @Autowired
+    UbicacionRepository ubicacionRepository;
+
     public List<Producto> findAllRandom() {
         List<Producto> productos = productoRepository.findAll();
         Collections.shuffle(productos);
@@ -38,7 +44,51 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
+    //Este sirve para el metodo put
     public Producto save(Producto producto) {
+        return productoRepository.save(producto);
+    }
+
+    //Este sirve para el metodo post
+    public Producto saveWithRelations(Producto producto) {
+        // Verificar y crear Ubicación
+        if (producto.getUbicacion() != null) {
+            Ubicacion ubicacion = producto.getUbicacion();
+            Optional<Ubicacion> existingUbicacion = ubicacionRepository.findByDireccionAndCiudadAndProvincia(
+                    ubicacion.getDireccion(), ubicacion.getCiudad(), ubicacion.getProvincia());
+            if (existingUbicacion.isPresent()) {
+                producto.setUbicacion(existingUbicacion.get());
+            } else {
+                ubicacionRepository.save(ubicacion);
+            }
+        }
+
+        // Verificar y crear Categoría
+        if (producto.getCategoria() != null) {
+            Categoria categoria = producto.getCategoria();
+            Optional<Categoria> existingCategoria = categoriaRepository.findByNombre(categoria.getNombre());
+            if (existingCategoria.isPresent()) {
+                producto.setCategoria(existingCategoria.get());
+            } else {
+                categoriaRepository.save(categoria);
+            }
+        }
+
+        // Verificar y crear Características
+        if (producto.getCaracteristicas() != null) {
+            List<Caracteristica> existingCaracteristicas = new ArrayList<>();
+            for (Caracteristica caracteristica : producto.getCaracteristicas()) {
+                Optional<Caracteristica> existingCaracteristica = caracteristicaRepository.findByNombre(caracteristica.getNombre());
+                if (existingCaracteristica.isPresent()) {
+                    existingCaracteristicas.add(existingCaracteristica.get());
+                } else {
+                    caracteristicaRepository.save(caracteristica);
+                    existingCaracteristicas.add(caracteristica);
+                }
+            }
+            producto.setCaracteristicas(existingCaracteristicas);
+        }
+
         return productoRepository.save(producto);
     }
 
@@ -82,9 +132,43 @@ public class ProductoService {
 
 
 
-    public Producto update(Producto producto) {
+    public Producto updateProducto(Long id, Producto productoDetails) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        producto.setNombre(productoDetails.getNombre());
+        producto.setDescripcion(productoDetails.getDescripcion());
+        producto.setPrecio(productoDetails.getPrecio());
+        producto.setHorarioApertura(productoDetails.getHorarioApertura());
+        producto.setHorarioCierre(productoDetails.getHorarioCierre());
+
+        if (productoDetails.getCategoria() != null) {
+            Categoria categoria = categoriaRepository.findById(productoDetails.getCategoria().getId())
+                    .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+            producto.setCategoria(categoria);
+        }
+
+        if (productoDetails.getUbicacion() != null) {
+            Ubicacion ubicacion = ubicacionRepository.findById(productoDetails.getUbicacion().getId())
+                    .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
+            producto.setUbicacion(ubicacion);
+        }
+
+        if (productoDetails.getCaracteristicas() != null) {
+            List<Caracteristica> caracteristicas = new ArrayList<>();
+            for (Caracteristica carac : productoDetails.getCaracteristicas()) {
+                Caracteristica caracteristica = caracteristicaRepository.findById(carac.getId())
+                        .orElseThrow(() -> new RuntimeException("Característica no encontrada"));
+                caracteristicas.add(caracteristica);
+            }
+            producto.setCaracteristicas(caracteristicas);
+        }
+
+        producto.setImagenes(productoDetails.getImagenes());
+
         return productoRepository.save(producto);
     }
+
 
 
 }
