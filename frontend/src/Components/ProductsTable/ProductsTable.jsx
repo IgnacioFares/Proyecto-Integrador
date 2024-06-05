@@ -43,16 +43,29 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
     }
   };
 
+  const formatTime = (timeString) => {
+    const [hours, minutes] = timeString.split(':');
+    return `${hours}:${minutes}`;
+  };
+
+  const resolveArray = (array) => {
+    return array[0] == undefined || 
+      (array.length > 1 
+        ? array.map((caracteristica) => (
+        <img className="max-w-6" src={caracteristica.logoUrl}></img>
+      )) 
+        : <img className="max-w-6" src={array[0].logoUrl}></img>);
+  }
+
   return (
     <table className="min-w-full bg-white">
       <thead>
         <tr>
-          <th className="py-2">Imagen</th>
           <th className="py-2">Nombre</th>
           <th className="py-2">Descripción</th>
           <th className="py-2">Precio</th>
-          <th className="py-2">Horario Apertura</th>
-          <th className="py-2">Horario Cierre</th>
+          <th className="py-2">Apertura</th>
+          <th className="py-2">Cierre</th>
           <th className="py-2">Características</th>
           <th className="py-2">Categorías</th>
           <th className="py-2">Ubicación</th>
@@ -70,9 +83,6 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
           products.map((product) => (
             <tr key={product.id} className="border-t">
               <td className="py-2 text-center">
-                <img src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" className="bg-gray-300 w-12 h-12 inline-block"></img>
-              </td>
-              <td className="py-2">
                 {editingProductId === product.id ? (
                   <input
                     type="text"
@@ -85,7 +95,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                   product.nombre
                 )}
               </td>
-              <td className="py-2">
+              <td className="py-2 text-center">
                 {editingProductId === product.id ? (
                   <textarea
                     name="descripcion"
@@ -97,7 +107,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                   product.descripcion
                 )}
               </td>
-              <td className="py-2">
+              <td className="py-2 text-center">
                 {editingProductId === product.id ? (
                   <input
                     type="number"
@@ -110,39 +120,39 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                   `$${product.precio}`
                 )}
               </td>
-              <td className="py-2">
+              <td className="py-2 text-center">
                 {editingProductId === product.id ? (
                   <input
                     type="time"
                     name="horarioApertura"
-                    value={editableProduct.horarioApertura}
+                    value={formatTime(editableProduct.horarioApertura)}
                     onChange={handleChange}
                     className="border p-1 rounded"
                   />
                 ) : (
-                  product.horarioApertura
+                  formatTime(product.horarioApertura)
                 )}
               </td>
-              <td className="py-2">
+              <td className="py-2 text-center">
                 {editingProductId === product.id ? (
                   <input
                     type="time"
                     name="horarioCierre"
-                    value={editableProduct.horarioCierre}
+                    value={formatTime(editableProduct.horarioCierre)}
                     onChange={handleChange}
                     className="border p-1 rounded"
                   />
                 ) : (
-                  product.horarioCierre
+                  formatTime(product.horarioCierre)
                 )}
               </td>
-              <td className="py-2">
-                {product.caracteristicas != [] || product.caracteristicas}
+              <td className="py-2 flex justify-center">
+                {resolveArray(product.caracteristicas)}
               </td>
-              <td className="py-2">
-                {product.categoria != [] || product.categoria}
+              <td className="py-2 text-center">
+                {product.categoria == null || product.categoria.nombre}
               </td>
-              <td className="py-2">
+              <td className="py-2 text-center">
                 {editingProductId === product.id ? (
                   <div>
                     <input
@@ -174,7 +184,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                   `${product.ubicacion.provincia}, ${product.ubicacion.ciudad}, ${product.ubicacion.direccion}`
                 )}
               </td>
-              <td className="py-2 text-center">
+              <td className="py-2 text-center text-center">
                 {editingProductId === product.id ? (
                   <button
                     className="text-green-500 hover:underline"
