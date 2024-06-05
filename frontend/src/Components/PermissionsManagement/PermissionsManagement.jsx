@@ -6,22 +6,24 @@ const PermissionsManagement = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('/users').then(response => {return response});
-        setUsers(response.data);
-      } catch (error) {
-        setError('Error al cargar los usuarios.');
-      }
-    };
-
-    fetchUsers();
+    fetchUsers(users);
   }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('/users').then(response => {return response});
+      setUsers(response.data);
+    } catch (error) {
+      setError('Error al cargar los usuarios.');
+    }
+  };
 
   const handlePermissionChange = async (id, newPermissions) => {
     try {
-      await axios.post(`administracion/users/${id}/roles`, { roleName: newPermissions, id: id })
-      .then(setUsers(users.map(user => user.id === id ? { ...user, roleName: newPermissions } : user)));
+      await axios.put(`administracion/users/${id}/roles`, newPermissions, {
+        headers: { 'Content-Type': 'text/plain' }
+      });
+      await fetchUsers();
     } catch (error) {
       setError('Error al actualizar los permisos.');
     }
@@ -50,20 +52,18 @@ const PermissionsManagement = () => {
             users.map((user) => (
               <tr key={user.id} className="border-t">
                 <td className="py-2 text-center">{user.id}</td>
-                <td className="py-2">{user.nombre}</td>
-                <td className="py-2">{user.email}</td>
-
-                {/* y eliminar la linea de abajo */}
-                <td className="py-2"></td> 
-                {/* <td className="py-2">{user.roles.nombre}</td> descomentar cuando se halla solucionado en el back tema roles */}
+                <td className="py-2 text-center">{user.nombre}</td>
+                <td className="py-2 text-center">{user.email}</td>
+                <td className="py-2 text-center">{user.rol.nombre}</td>
 
                 <td className="py-2 text-center">
-                  <button className="text-green-500 hover:underline" onClick={() => handlePermissionChange(user.id, 'ADMIN')}>
-                    Asignar Admin
-                  </button>
+                  {user.rol.nombre === 'ADMIN' ? 
                   <button className="text-red-500 hover:underline ml-4" onClick={() => handlePermissionChange(user.id, 'USER')}>
                     Revocar Admin
-                  </button>
+                  </button> : 
+                  <button className="text-green-500 hover:underline" onClick={() => handlePermissionChange(user.id, 'ADMIN')}>
+                    Asignar Admin
+                  </button> }
                 </td>
               </tr>
             ))

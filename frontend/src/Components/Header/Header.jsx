@@ -43,7 +43,7 @@ const Header = () => {
         ) : (
           <>
             {roles.includes('ROLE_ADMIN') && (
-              <Link to={routes.administracion} className="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded-2xl border border-text-green-500">
+              <Link to={routes.productos} className="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded-2xl border border-text-green-500">
                 Panel de Administración
               </Link>
             )}
