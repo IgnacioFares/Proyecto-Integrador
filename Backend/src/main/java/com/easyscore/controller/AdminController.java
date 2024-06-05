@@ -53,24 +53,14 @@ public class AdminController {
     @Operation(summary = "Se encarga de la creacion de un nuevo producto", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PostMapping("/productos/create")
     public Producto createProducto(@RequestBody Producto producto) {
-        return productoService.save(producto);
+        return productoService.saveWithRelations(producto);
     }
 
     @Operation(summary = "Se encarga de editar un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
     @PutMapping("/productos/{id}")
     public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
-        return productoService.findById(id)
-                .map(producto -> {
-                    producto.setNombre(productoDetails.getNombre());
-                    producto.setDescripcion(productoDetails.getDescripcion());
-                    producto.setCaracteristicas(productoDetails.getCaracteristicas());
-                    producto.setImagenes(productoDetails.getImagenes());
-                    producto.setUbicacion(productoDetails.getUbicacion());
-                    producto.setCategoria(productoDetails.getCategoria());
-                    Producto updatedProducto = productoService.save(producto);
-                    return ResponseEntity.ok(updatedProducto);
-                })
-                .orElse(ResponseEntity.notFound().build());
+        Producto updatedProducto = productoService.updateProducto(id, productoDetails);
+        return ResponseEntity.ok(updatedProducto);
     }
 
     @Operation(summary = "Se encarga de eliminar un producto existente", security = @SecurityRequirement(name = "Bearer Authentication"))
