@@ -1,12 +1,13 @@
 package com.easyscore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.persistence.*;
 
-@Getter
-@Setter
+import java.util.List;
+
 @Entity
 public class Rol {
     @Id
@@ -15,6 +16,10 @@ public class Rol {
 
     @Column(unique = true)
     private String nombre;
+
+    @OneToMany(mappedBy = "rol")
+    @JsonIgnore
+    private List<User> usuarios;
 
     public String getNombre() {
         return nombre;

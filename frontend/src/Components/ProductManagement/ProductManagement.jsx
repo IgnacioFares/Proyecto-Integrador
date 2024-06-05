@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductsTable from '../ProductsTable/ProductsTable';
 import AddProductModal from '../AddProductModal/AddProductModal';
 
+
 const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
