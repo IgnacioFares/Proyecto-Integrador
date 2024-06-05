@@ -6,7 +6,7 @@ import axios from '../../axiosConfig';
 import { FaSearch, FaCalendarAlt, FaArrowRight } from 'react-icons/fa';
 
 const searchSuggestions = [
-  'Buenos Aires', 'Córdoba', 'Mar del Plata', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Salta', 'Santa Fe', 'San Juan', 'Resistencia', 'Corrientes', 'Bahía Blanca', 'Posadas', 'Neuquén', 'Formosa', 'Santiago del Estero', 'Paraná', 'Río Cuarto', 'Comodoro Rivadavia'
+  'Buenos Aires', 'Cordoba', 'Mar del Plata', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Salta', 'Santa Fe', 'San Juan', 'Resistencia', 'Corrientes', 'Bahia Blanca', 'Posadas', 'Neuquen', 'Formosa', 'Santiago del Estero', 'Parana', 'Rio Cuarto', 'Comodoro Rivadavia'
 ];
 
 
@@ -59,8 +59,10 @@ const SearchBar = () => {
   const getSuggestionValue = (suggestion) => suggestion;
 
   const renderSuggestion = (suggestion) => (
-    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
-      <div className="py-1 px-3">{suggestion}</div>
+    <div className="relative">
+      <div className="py-1 px-3 bg-white border border-gray-300 rounded-md shadow-lg">
+        {suggestion}
+      </div>
     </div>
   );
 
@@ -75,21 +77,25 @@ const SearchBar = () => {
         <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 relative">
           <FaSearch className="text-white"/>
           <Autosuggest
-            suggestions={suggestions}
-            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={onSuggestionsClearRequested}
-            getSuggestionValue={getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            inputProps={{
-              placeholder: 'Ciudad...',
-              value: searchTerm,
-              onChange: handleSearchChange,
-              className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
-            }}
-            theme={{
-              input: 'p-2 border-none rounded-full outline-none'
-            }}
-          />
+  suggestions={suggestions}
+  onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+  onSuggestionsClearRequested={onSuggestionsClearRequested}
+  getSuggestionValue={getSuggestionValue}
+  renderSuggestion={renderSuggestion}
+  inputProps={{
+    placeholder: 'Ciudad...',
+    value: searchTerm,
+    onChange: handleSearchChange,
+    className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
+  }}
+  theme={{
+    container: 'relative',
+    suggestionsContainer: 'absolute z-10 w-full mt-1',
+    suggestionsList: 'bg-white border border-gray-300 rounded-md shadow-lg',
+    suggestion: 'py-1 px-3',
+    suggestionHighlighted: 'bg-gray-200',
+  }}
+/>
         </div>
         <select
           value={selectedCategory}
