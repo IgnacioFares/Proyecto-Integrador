@@ -6,8 +6,9 @@ import axios from '../../axiosConfig';
 import { FaSearch, FaCalendarAlt, FaArrowRight } from 'react-icons/fa';
 
 const searchSuggestions = [
-  'Buenos Aires', 'Cordoba', 'Mar del Plata', 'Rosario'
+  'Buenos Aires', 'Córdoba', 'Mar del Plata', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Salta', 'Santa Fe', 'San Juan', 'Resistencia', 'Corrientes', 'Bahía Blanca', 'Posadas', 'Neuquén', 'Formosa', 'Santiago del Estero', 'Paraná', 'Río Cuarto', 'Comodoro Rivadavia'
 ];
+
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
