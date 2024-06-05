@@ -24,7 +24,7 @@ const SearchBar = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/categorias');
+        const response = await axios.get('/categorias').then(response => {return response});
         setCategories(response.data);
       } catch (error) {
         console.error('Error al cargar las categorías.');
