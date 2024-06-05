@@ -90,7 +90,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       const categoriaSeleccionada = categories.find(category => category.nombre === product.categoria);
 
       if (categoriaSeleccionada) {
-        await axios.post(`/administracion/productos/${addedProduct.id}/categoria/${categoriaSeleccionada.id}`, product);
+        await axios.put(`/administracion/productos/${addedProduct.id}/categoria/${categoriaSeleccionada.id}`, product);
       }
 
       setProduct({

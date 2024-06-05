@@ -22,7 +22,7 @@ const FeatureManagement = () => {
 
   const handleAddFeature = async () => {
     try {
-      const response = await axios.post('/administracion/caracteristicas', newFeature).then(response => {return response});
+      const response = await axios.post('/administracion/caracteristicas/create', newFeature).then(response => {return response});
       setFeatures([...features, response.data]);
       setNewFeature({ nombre: '', logoUrl: '' });
     } catch (error) {
@@ -32,7 +32,7 @@ const FeatureManagement = () => {
 
   const handleDeleteFeature = async (id) => {
     try {
-      await axios.delete(`/administracion/caracteristicas/${id}`);
+      await axios.delete(`/administracion/caracteristicas/delete/${id}`);
       setFeatures(features.filter(feature => feature.id !== id));
     } catch (error) {
       setError('Error al eliminar la característica.');
@@ -41,7 +41,7 @@ const FeatureManagement = () => {
 
   const handleUpdateFeature = async () => {
     try {
-      const response = await axios.put(`/administracion/caracteristicas/${editingFeature.id}`, editingFeature);
+      const response = await axios.put(`/administracion/caracteristicas/update/${editingFeature.id}`, editingFeature);
       setFeatures(features.map(feature => feature.id === editingFeature.id ? response.data : feature));
       setEditingFeature(null);
     } catch (error) {

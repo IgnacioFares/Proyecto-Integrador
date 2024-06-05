@@ -7,30 +7,23 @@ const CategoryManagement = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('/administracion/categorias').then(response => {return response});
-        setCategories(response.data);
-      } catch (error) {
-        setError('Error al cargar las categorías.');
-      }
-    };
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('/administracion/categorias');
+      setCategories(response.data);
+    } catch (error) {
+      setError('Error al cargar las categorías.');
+    }
+  };
 
+  useEffect(() => {
     fetchCategories();
   }, []);
 
   const handleAddCategory = async () => {
     try {
-      const response = await axios.post('/administracion/categorias', {nombre: newCategory});
-
-      if (!response.ok) {
-        throw new Error('Error al agregar la categoría.');
-      }
-
-      const newCategoryData = await response.json();
-      setCategories([...categories, newCategoryData]);
-      setNewCategory('');
+      await axios.post('/administracion/categorias/create', { nombre: newCategory });
+      fetchCategories(); // Actualiza las categorías después de agregar una nueva
     } catch (error) {
       setError(error.message);
     }
@@ -38,13 +31,8 @@ const CategoryManagement = () => {
 
   const handleDeleteCategory = async (id) => {
     try {
-      const response = await axios.delete(`/administracion/categorias/${id}`).then(/* agregar cartel de se elimino correctamente */);
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar la categoría.');
-      }
-
-      setCategories(categories.filter(category => category.id !== id));
+      await axios.delete(`/administracion/categorias/delete/${id}`);
+      fetchCategories(); // Actualiza las categorías después de eliminar una
     } catch (error) {
       setError(error.message);
     }
@@ -52,14 +40,8 @@ const CategoryManagement = () => {
 
   const handleUpdateCategory = async () => {
     try {
-      const response = await axios.post(`/administracion/categorias/${editingCategory.id}`, {editingCategory});
-
-      if (!response.ok) {
-        throw new Error('Error al actualizar la categoría.');
-      }
-
-      const updatedCategory = await response.json();
-      setCategories(categories.map(category => (category.id === editingCategory.id ? updatedCategory : category)));
+      await axios.put(`/administracion/categorias/update/${editingCategory.id}`, editingCategory);
+      fetchCategories(); // Actualiza las categorías después de actualizar una
       setEditingCategory(null);
     } catch (error) {
       setError(error.message);
