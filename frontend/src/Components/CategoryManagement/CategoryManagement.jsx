@@ -38,9 +38,7 @@ const CategoryManagement = () => {
 
   const handleDeleteCategory = async (id) => {
     try {
-      const response = await fetch(`/administracion/categorias/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await axios.delete(`/administracion/categorias/${id}`).then(/* agregar cartel de se elimino correctamente */);
 
       if (!response.ok) {
         throw new Error('Error al eliminar la categoría.');
