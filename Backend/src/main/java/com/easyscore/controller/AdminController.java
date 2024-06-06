@@ -51,7 +51,7 @@ public class AdminController {
     }
 
     @Operation(summary = "Se encarga de la creacion de un nuevo producto", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @PostMapping("/productos/create")
+    @PostMapping("/productos")
     public Producto createProducto(@RequestBody Producto producto) {
         return productoService.saveWithRelations(producto);
     }

@@ -58,7 +58,7 @@ const PermissionsManagement = () => {
 
                 <td className="py-2 text-center">
                   {user.rol.nombre === 'ADMIN' ? 
-                  <button className="text-red-500 hover:underline ml-4" onClick={() => handlePermissionChange(user.id, 'USER')}>
+                  <button className="text-red-500 hover:underline ml-4" disabled={user.id === 1} onClick={() => handlePermissionChange(user.id, 'USER')}>
                     Revocar Admin
                   </button> : 
                   <button className="text-green-500 hover:underline" onClick={() => handlePermissionChange(user.id, 'ADMIN')}>

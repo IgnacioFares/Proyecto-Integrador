@@ -178,33 +178,17 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
           </div>
           <div className="mb-4">
             <label className="block mb-1">Ubicación</label>
-            <input
-              type="text"
-              name="provincia"
-              value={product.ubicacion.provincia}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder="Provincia"
-              required
-            />
-            <input
-              type="text"
-              name="ciudad"
-              value={product.ubicacion.ciudad}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder="Ciudad"
-              required
-            />
-            <input
-              type="text"
-              name="direccion"
-              value={product.ubicacion.direccion}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder="Dirección"
-              required
-            />
+            <select
+            name="ubicacion"
+            value={product.categoria}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+            required>
+              <option value="">Seleccione una ubicacion</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.nombre}>{category.nombre}</option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label className="block mb-1">Categoría</label>

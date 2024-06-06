@@ -24,7 +24,7 @@ const ProductManagement = () => {
 
   const handleAddProduct = async (product) => {
     try {
-      const response = await axios.post('administracion/productos/create', product).then(respuesta => { return respuesta});
+      const response = await axios.post('administracion/productos', product).then(respuesta => { return respuesta});
       setProducts([...products, response.data]);
       setError('');
     } catch (error) {
@@ -52,7 +52,8 @@ const ProductManagement = () => {
 
   return (
     <div className="p-4">
-      <div className="flex justify-end mb-4 shadow-sm py-2">
+      <div className="flex justify-between mb-4 shadow-sm py-2" >
+        <h1 className="text-2xl font-bold mb-4">Administración de Productos</h1>
         <button
           onClick={() => setIsModalOpen(true)}
           className="px-4 py-2 bg-green-500 text-white rounded"

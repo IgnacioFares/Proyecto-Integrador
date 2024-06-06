@@ -51,7 +51,7 @@ const FeatureManagement = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl mb-4">Administración de Características</h1>
+      <h1 className="text-2xl font-bold mb-4">Administración de Características</h1>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="mb-4">
         <input
@@ -72,49 +72,63 @@ const FeatureManagement = () => {
           Agregar
         </button>
       </div>
-      <ul>
-        {features.map((feature) => (
-          <li key={feature.id} className="mb-2 flex justify-between items-center">
-            {editingFeature && editingFeature.id === feature.id ? (
-              <div>
-                <input
-                  type="text"
-                  value={editingFeature.nombre}
-                  onChange={(e) => setEditingFeature({ ...editingFeature, nombre: e.target.value })}
-                  className="border p-2 rounded"
-                />
-                <input
-                  type="text"
-                  value={editingFeature.logoUrl}
-                  onChange={(e) => setEditingFeature({ ...editingFeature, logoUrl: e.target.value })}
-                  className="border p-2 rounded"
-                />
-              </div>
-            ) : (
-              <>
-                <span>{feature.nombre}</span>
-                <img src={feature.logoUrl} alt={feature.nombre} className="w-8 h-8 ml-2" />
-              </>
-            )}
-            <div>
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="border-t">
+            <th className="p-2">Nombre</th>
+            <th className="p-2">Logo</th>
+            <th className="p-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {features.map((feature) => (
+            <tr className="border-t" key={feature.id}>
               {editingFeature && editingFeature.id === feature.id ? (
-                <button onClick={handleUpdateFeature} className="px-4 py-2 bg-green-500 text-white rounded">
-                  Guardar
-                </button>
+                <td className="text-center">
+                  <input
+                    type="text"
+                    value={editingFeature.nombre}
+                    onChange={(e) => setEditingFeature({ ...editingFeature, nombre: e.target.value })}
+                    className="p-2 rounded"
+                  />
+                </td>
               ) : (
-                <button onClick={() => setEditingFeature(feature)} className="px-4 py-2 bg-green-500 text-white rounded">
-                  Editar
-                </button>
+                <td className="text-center text-center">{feature.nombre}</td>
               )}
-              <button onClick={() => handleDeleteFeature(feature.id)} className="ml-2 px-4 py-2 bg-red-500 text-white rounded">
-                Eliminar
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+              {editingFeature && editingFeature.id === feature.id ? (
+                <td className="p-2 text-center">
+                  <input
+                    type="text"
+                    value={editingFeature.logoUrl}
+                    onChange={(e) => setEditingFeature({ ...editingFeature, logoUrl: e.target.value })}
+                    className="p-2 rounded"
+                  />
+                </td>
+              ) : (
+                <td className="p-2 flex justify-center">
+                  <img src={feature.logoUrl} alt={feature.nombre} className="w-8 h-8" />
+                </td>
+              )}
+              <td className="text-center">
+                {editingFeature && editingFeature.id === feature.id ? (
+                  <button onClick={handleUpdateFeature} className="px-4 py-2 bg-green-500 text-white rounded">
+                    Guardar
+                  </button>
+                ) : (
+                  <button onClick={() => setEditingFeature(feature)} className="px-4 py-2 bg-green-500 text-white rounded">
+                    Editar
+                  </button>
+                )}
+                <button onClick={() => handleDeleteFeature(feature.id)} className="ml-2 px-4 py-2 bg-red-500 text-white rounded">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  );
+  );  
 };
 
 export default FeatureManagement;
