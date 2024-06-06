@@ -24,7 +24,7 @@ const ProductManagement = () => {
 
   const handleAddProduct = async (product) => {
     try {
-      const response = await axios.put('/productos', product).then(respuesta => { return respuesta});
+      const response = await axios.post('administracion/productos/create', product).then(respuesta => { return respuesta});
       setProducts([...products, response.data]);
       setError('');
     } catch (error) {
