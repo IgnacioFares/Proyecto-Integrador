@@ -10,8 +10,8 @@ const ProductCard = ({ product }) => {
                     {product.descripcion}
                 </p>
             </div>
-            <div className="px-4 pt-2 pb-2">
-                <span className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{product.categoria}</span>
+            <div className="px-4 pt-2 pb-2 flex items-center">
+                <div className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm mr-2 mb-2 inline-flex">{resolveArray(product.caracteristicas)}</div>
                 <span className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">${product.precio}</span>
             </div>
             <div className="px-4 py-5">
@@ -21,4 +21,12 @@ const ProductCard = ({ product }) => {
     );
 }
 
+const resolveArray = (array) => {
+    return array[0] == undefined || 
+      (array.length > 1 
+        ? array.map((caracteristica) => (
+        <img className="max-w-6" src={caracteristica.logoUrl}></img>
+      )) 
+        : <img className="max-w-6" src={array[0].logoUrl}></img>);
+  }
 export default ProductCard;
