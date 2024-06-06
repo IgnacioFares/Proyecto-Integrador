@@ -46,9 +46,11 @@ public class JwtUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails, List<String> roles) {
+    public String generateToken(UserDetails userDetails, List<String> roles, String nombre, String apellido) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roles);
+        claims.put("nombre", nombre);
+        claims.put("apellido", apellido);
         return createToken(claims, userDetails.getUsername());
     }
 
