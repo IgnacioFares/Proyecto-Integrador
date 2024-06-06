@@ -169,6 +169,19 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    //Barra de busqueda
 
+
+    public List<Producto> searchProducts(String searchTerm, String category, String startDate, String endDate) {
+        // Implementar la lógica de búsqueda aquí
+        // Este es un ejemplo simple de búsqueda por nombre de producto y categoría
+        if (searchTerm == null) {
+            searchTerm = "";
+        }
+        searchTerm = "%" + searchTerm.toLowerCase() + "%";
+
+        // Agregar lógica adicional para filtrar por categoría, fecha, etc.
+        return productoRepository.findByNombreLikeAndCategoria(searchTerm, category, startDate, endDate);
+    }
 
 }
