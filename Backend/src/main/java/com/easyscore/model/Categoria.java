@@ -1,6 +1,5 @@
 package com.easyscore.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.util.List;
@@ -17,7 +16,6 @@ public class Categoria {
     private String nombre;
 
     @OneToMany(mappedBy = "categoria")
-    @JsonIgnore
     private List<Producto> productos;
 
     public Long getId() {

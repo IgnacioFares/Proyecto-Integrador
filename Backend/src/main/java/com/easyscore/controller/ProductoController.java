@@ -30,4 +30,15 @@ public class ProductoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @Operation(summary = "Buscar productos a traves de la barra de busqueda")
+    @GetMapping("/search")
+    public ResponseEntity<List<Producto>> searchProducts(
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        List<Producto> productos = productoService.searchProducts(searchTerm, category, startDate, endDate);
+        return ResponseEntity.ok(productos);
+    }
 }

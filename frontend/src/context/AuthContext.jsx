@@ -2,45 +2,49 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-const decodeToken = (token) => {
-  try {
-    const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload));
-    return decoded;
-  } catch (e) {
-    console.error('Error decoding token:', e);
-    return null;
-  }
-};
-
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [roles, setRoles] = useState([]);
+  const [user, setUser] = useState({ nombre: '', apellido: '' });
 
   useEffect(() => {
     if (token) {
-      const decodedToken = decodeToken(token);
-      setRoles(decodedToken?.roles || []);
+      try {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        console.log('Decoded Token:', decodedToken);
+        setRoles(decodedToken.roles || []);
+        setUser({ nombre: decodedToken.nombre, apellido: decodedToken.apellido });
+      } catch (e) {
+        console.error('Error decoding token:', e);
+      }
     } else {
       setRoles([]);
+      setUser({ nombre: '', apellido: '' });
     }
   }, [token]);
 
   const login = (token) => {
     localStorage.setItem('token', token);
     setToken(token);
-    const decodedToken = decodeToken(token);
-    setRoles(decodedToken?.roles || []);
+    try {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      console.log('Decoded Token on login:', decodedToken);
+      setRoles(decodedToken.roles || []);
+      setUser({ nombre: decodedToken.nombre, apellido: decodedToken.apellido });
+    } catch (e) {
+      console.error('Error decoding token:', e);
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
     setRoles([]);
+    setUser({ nombre: '', apellido: '' });
   };
 
   return (
-    <AuthContext.Provider value={{ token, roles, login, logout }}>
+    <AuthContext.Provider value={{ token, roles, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -48,8 +52,3 @@ export const AuthProvider = ({ children }) => {
 
 export default AuthContext;
 export const useAuth = () => useContext(AuthContext);
-
-
-
-
-
