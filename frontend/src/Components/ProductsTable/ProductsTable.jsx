@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import resolveArray from "../../Utils/FeaturesManager";
 
 const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
   const [editingProductId, setEditingProductId] = useState(null);
@@ -47,15 +48,6 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
     const [hours, minutes] = timeString.split(':');
     return `${hours}:${minutes}`;
   };
-
-  const resolveArray = (array) => {
-    return array[0] == undefined || 
-      (array.length > 1 
-        ? array.map((caracteristica) => (
-        <img className="max-w-6" src={caracteristica.logoUrl}></img>
-      )) 
-        : <img className="max-w-6" src={array[0].logoUrl}></img>);
-  }
 
   return (
     <table className="min-w-full bg-white">

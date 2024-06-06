@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import resolveArray from "../../Utils/FeaturesManager"
 
 const ProductCard = ({ product }) => {
     return (
@@ -21,12 +22,4 @@ const ProductCard = ({ product }) => {
     );
 }
 
-const resolveArray = (array) => {
-    return array[0] == undefined || 
-      (array.length > 1 
-        ? array.map((caracteristica) => (
-        <img className="max-w-6" src={caracteristica.logoUrl}></img>
-      )) 
-        : <img className="max-w-6" src={array[0].logoUrl}></img>);
-  }
 export default ProductCard;
