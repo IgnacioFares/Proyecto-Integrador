@@ -135,4 +135,8 @@ const ImageGallery = ({ images }) => {
 
 
 
+<<<<<<< HEAD
 export default CardContainer;
+=======
+export default CardContainer;
+>>>>>>> FernandoMercyFull

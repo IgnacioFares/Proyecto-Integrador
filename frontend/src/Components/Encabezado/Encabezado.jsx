@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { routes } from "../../routes/routes";
+import SearchBar from "../Buscador/SearchBar";
+
 export const Encabezado = () => {
   return (
     <section className="flex box items-center justify-center w-full h-screen bg-cover bg-[url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1893&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]">
@@ -17,8 +19,11 @@ export const Encabezado = () => {
           </p>
         </div>
 
-        <Link to={routes.Reservas} className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-3 px-6 text-lg rounded-md shadow-lg hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-80">Reservar Cancha</Link>
+        <Link to={routes.productList} className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-3 px-6 text-lg rounded-md shadow-lg hover:shadow-xl transform transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-80">Reservar Cancha</Link>
+
+        <SearchBar />
       </div>
+      
     </section>
   );
 };

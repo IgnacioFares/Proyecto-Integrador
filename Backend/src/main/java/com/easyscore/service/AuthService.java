@@ -1,7 +1,5 @@
 package com.easyscore.service;
 
-
-
 import com.easyscore.jwt.model.JwtRequest;
 import com.easyscore.jwt.model.JwtResponse;
 import com.easyscore.jwt.service.JwtUserDetailsService;
@@ -14,6 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -34,10 +35,17 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public JwtResponse authenticate(JwtRequest jwtRequest) throws Exception {
-        authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
+        authenticate(jwtRequest.getEmail(), jwtRequest.getPassword());
 
-        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
-        final String token = jwtUtil.generateToken(userDetails);
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
+
+        User user = userRepository.findByEmail(jwtRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+
+        final String token = jwtUtil.generateToken(userDetails, roles, user.getNombre(), user.getApellido());
 
         return new JwtResponse(token);
     }
@@ -47,12 +55,11 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String email, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (Exception e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
 }
-

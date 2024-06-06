@@ -1,4 +1,3 @@
-
 import { faFacebookF, faInstagram, faTwitter, faLinkedinIn, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -45,5 +44,6 @@ const Footer = () => {
     </div>
   );
 }
+
 
 export default Footer;

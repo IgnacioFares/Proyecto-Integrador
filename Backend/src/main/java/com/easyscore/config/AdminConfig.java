@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.annotation.PostConstruct;
-import java.util.Collections;
 
 @Configuration
 public class AdminConfig {
@@ -24,9 +23,10 @@ public class AdminConfig {
 
     @PostConstruct
     public void init() {
-        if (!userRepository.existsByUsername("admin")) {
+        if (!userRepository.existsByEmail("admin@example.com")) {
             User admin = new User();
-            admin.setUsername("admin");
+            admin.setNombre("admin");
+            admin.setApellido("admin");
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setEmail("admin@example.com");
             admin.setNumeroTelefono("1234567890");
@@ -38,7 +38,7 @@ public class AdminConfig {
                 rolRepository.save(adminRole);
             }
 
-            admin.setRoles(Collections.singletonList(adminRole));
+            admin.setRol(adminRole);
             userRepository.save(admin);
         }
     }

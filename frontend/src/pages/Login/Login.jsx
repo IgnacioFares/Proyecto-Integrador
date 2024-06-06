@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook, faApple } from "@fortawesome/free-brands-svg-icons";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../../axiosConfig"; // Ajusta la ruta si es necesario
 import { routes } from "../../routes/routes";
+import useAuth from "../../context/useAuth"; // Importación correcta
 
 const Login = () => {
   const [datosFormulario, setDatosFormulario] = useState({
@@ -11,6 +13,8 @@ const Login = () => {
   });
 
   const [errores, setErrores] = useState({});
+  const { login } = useAuth(); // Obtener la función de login del contexto
+  const navigate = useNavigate();
 
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -35,10 +39,21 @@ const Login = () => {
     });
   };
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault();
     if (validarFormulario()) {
-      console.log("Formulario enviado", datosFormulario);
+      try {
+        const response = await axios.post('/login', {
+          email: datosFormulario.correo,
+          password: datosFormulario.contraseña
+        });
+        const token = response.data.token;
+        login(token); // Almacenar el token en el contexto y en localStorage
+        navigate('/'); // Redirigir al home o a donde desees después del login
+      } catch (error) {
+        console.error('Error durante el inicio de sesión:', error);
+        setErrores({ formulario: 'Credenciales incorrectas. Por favor, intente nuevamente.' });
+      }
     }
   };
 
@@ -78,6 +93,10 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errores.contraseña}</p>
           )}
         </div>
+
+        {errores.formulario && (
+          <p className="text-red-500 text-sm mb-4">{errores.formulario}</p>
+        )}
 
         <button
           type="submit"

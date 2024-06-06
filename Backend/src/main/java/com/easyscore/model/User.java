@@ -1,52 +1,69 @@
 package com.easyscore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String username;
+    @Column
+    private String nombre;
 
     @Column
-    private String password;
-
-    @Column
-    private String email;
+    private String apellido;
 
     @Column
     private String numeroTelefono;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private List<Rol> roles;
+    @Column(unique = true)
+    private String email;
 
-    public String getUsername() {
-        return username;
+    @Column
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Rol rol;
+
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public List<Rol> getRoles() {
-        return roles;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setRoles(List<Rol> roles) {
-        this.roles = roles;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     public String getPassword() {
@@ -72,6 +89,4 @@ public class User {
     public void setNumeroTelefono(String numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
     }
-
 }
-

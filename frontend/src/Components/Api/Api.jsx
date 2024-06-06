@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import  { useEffect, useState } from 'react';
+import axios from '../../axiosConfig'; // Ajusta la ruta si es necesario
 
-const Api = ( endpoint ) => {
+const Api = (endpoint) => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const localHost = "http://localhost:8080/";
 
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const response = await axios.get(localHost + endpoint);
+        const response = await axios.get(endpoint);
         setProductos(response.data);
       } catch (error) {
         setError(error.message);
@@ -20,8 +19,9 @@ const Api = ( endpoint ) => {
     };
 
     fetchProductos();
-    }, []);
+  }, [endpoint]);
 
-    return productos;
+  return { productos, loading, error };
 }
+
 export default Api;

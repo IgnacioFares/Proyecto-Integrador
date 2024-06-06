@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* styles.css o tu archivo CSS */
+.user-initials-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; /* Ajusta el tamaño según sea necesario */
+  height: 32px; /* Ajusta el tamaño según sea necesario */
+  border-radius: 50%;
+  background-color: #ffffff; /* Fondo blanco */
+  color: #38a169; /* Letras verdes */
+  font-weight: bold; /* Asegura que el texto sea visible */
+  font-size: 14px; /* Ajusta el tamaño de la fuente según sea necesario */
+  border: 2px solid #38a169; /* Borde verde para mayor visibilidad */
+}
+
+  
