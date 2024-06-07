@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Autosuggest from 'react-autosuggest';
@@ -8,7 +9,6 @@ import { FaSearch, FaCalendarAlt, FaArrowRight } from 'react-icons/fa';
 const searchSuggestions = [
   'Buenos Aires', 'Cordoba', 'Mar del Plata', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Salta', 'Santa Fe', 'San Juan', 'Resistencia', 'Corrientes', 'Bahia Blanca', 'Posadas', 'Neuquen', 'Formosa', 'Santiago del Estero', 'Parana', 'Rio Cuarto', 'Comodoro Rivadavia'
 ];
-
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,6 +21,8 @@ const SearchBar = () => {
   // Crear referencias para los DatePicker
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -66,9 +68,23 @@ const SearchBar = () => {
     </div>
   );
 
-  const handleSearch = () => {
-    //Aqui tenemos que diseñar la logica de como se va a realizar la busqueda. 
-    console.log('Buscando:', searchTerm, selectedCategory, startDate, endDate);
+  const handleSearch = async () => {
+    try {
+      // Realizar la búsqueda en el backend utilizando los criterios de búsqueda
+      const response = await axios.get('/buscar', {
+        params: {
+          searchTerm: searchTerm,
+          category: selectedCategory,
+          startDate: startDate ? startDate.toISOString() : null,
+          endDate: endDate ? endDate.toISOString() : null
+        }
+      });
+  
+      // Redirigir a la página de resultados de búsqueda con los datos
+      navigate('/resultados', { state: { results: response.data } });
+    } catch (error) {
+      console.error('Error al realizar la búsqueda:', error);
+    }
   };
 
   return (
@@ -77,25 +93,25 @@ const SearchBar = () => {
         <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 relative">
           <FaSearch className="text-white"/>
           <Autosuggest
-  suggestions={suggestions}
-  onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-  onSuggestionsClearRequested={onSuggestionsClearRequested}
-  getSuggestionValue={getSuggestionValue}
-  renderSuggestion={renderSuggestion}
-  inputProps={{
-    placeholder: 'Ciudad...',
-    value: searchTerm,
-    onChange: handleSearchChange,
-    className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
-  }}
-  theme={{
-    container: 'relative',
-    suggestionsContainer: 'absolute z-10 w-full mt-1',
-    suggestionsList: 'bg-white border border-gray-300 rounded-md shadow-lg',
-    suggestion: 'py-1 px-3',
-    suggestionHighlighted: 'bg-gray-200',
-  }}
-/>
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={{
+              placeholder: 'Ciudad...',
+              value: searchTerm,
+              onChange: handleSearchChange,
+              className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
+            }}
+            theme={{
+              container: 'relative',
+              suggestionsContainer: 'absolute z-10 w-full mt-1',
+              suggestionsList: 'bg-white border border-gray-300 rounded-md shadow-lg',
+              suggestion: 'py-1 px-3',
+              suggestionHighlighted: 'bg-gray-200',
+            }}
+          />
         </div>
         <select
           value={selectedCategory}
@@ -154,6 +170,8 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+
+
 
 
 

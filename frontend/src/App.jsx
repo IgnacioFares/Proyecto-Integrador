@@ -15,6 +15,8 @@ import CategoryManagement from "./Components/CategoryManagement/CategoryManageme
 import FeaturesManagement from "./Components/FeaturesManagement/FeaturesManagement";
 
 import { AuthProvider } from './context/AuthContext'; // Importación correcta
+import SearchResults from "./pages/Resultados/SearchResults";
+
 
 function App() {
 
@@ -26,6 +28,7 @@ function App() {
             <Route path={routes.home} element={<Home />} />
             <Route path={routes.Reservas} element={<Reservas />} />
             <Route path={routes.productList} element={<ProductList />} />
+            <Route path={routes.resultados} element={<SearchResults />}/>
             <Route path="/detalle/:id" element={<Detail />} />
           </Route>
           <Route path={routes.Login} element={<Login />} />
