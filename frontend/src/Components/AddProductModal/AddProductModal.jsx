@@ -20,6 +20,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -40,6 +41,16 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       }
     };
 
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get('/ubicaciones').then(response => {return response.data});
+        setLocations(response);
+      } catch (error) {
+        console.error('Error al cargar las ubicaciones :(', error);
+      }
+    };
+
+    fetchLocations();
     fetchCategories();
     fetchFeatures();
   }, []);
@@ -185,8 +196,8 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             className="w-full border p-2 rounded"
             required>
               <option value="">Seleccione una ubicacion</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.nombre}>{category.nombre}</option>
+              {locations.map((ubicacion) => (
+                <option key={ubicacion.id} value={ubicacion.ciudad}>{ubicacion.direccion + ' ' + ubicacion.ciudad  + ' ' + ubicacion.provincia}</option>
               ))}
             </select>
           </div>
