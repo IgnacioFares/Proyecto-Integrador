@@ -16,7 +16,9 @@ const ProductCard = ({ product }) => {
                 <span className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">${product.precio}</span>
             </div>
             <div className="px-4 py-5">
-                <Link to={`/detalle/${product.id}`} className="link-card">Ver detalle</Link>
+                <Link to={`/detalle/${product.id}`} className="inline-block bg-green-500 text-white text-center px-4 py-2 rounded-full hover:bg-green-700 transition duration-200">
+                    Ver más
+                </Link>
             </div>
         </div>
     );
