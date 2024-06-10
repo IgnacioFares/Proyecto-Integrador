@@ -85,12 +85,6 @@ public class AdminController {
 
     // Endpoints para categorías
 
-    @Operation(summary = "Lista todas las categorias", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @GetMapping("/categorias")
-    public List<Categoria> getAllCategorias() {
-        return categoriaService.getAllCategorias();
-    }
-
     @Operation(summary = "Traer una categoria por su id", security = @SecurityRequirement(name = "Bearer Authentication"))
     @GetMapping("/categorias/{id}")
     public ResponseEntity<Categoria> getCategoriaById(@PathVariable Long id) {
