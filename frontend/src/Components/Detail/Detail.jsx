@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Caracteristicas from '../Caracteristicas/Caracteristicas';
-
 
 const getProductById = (id) => {
     const products = [
@@ -80,7 +80,7 @@ const getProductById = (id) => {
     return products.find(product => product.id === parseInt(id));
 }
 
-const Detail = () => {
+const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const { id } = useParams();
     const [productSelected, setProductSelected] = useState(null);
 
@@ -92,12 +92,16 @@ const Detail = () => {
         getData();
     }, [id]);
 
-    if (!productSelected) return <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-            <h2 className="text-center text-xl font-semibold">Cargando...</h2>
+    if (!productSelected) return (
+        <div className="flex items-center justify-center h-screen">
+            <div className="text-center">
+                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                <h2 className="text-center text-xl font-semibold">Cargando...</h2>
+            </div>
         </div>
-    </div>;
+    );
+
+    const isFavorite = favorites.some(fav => fav.id === productSelected.id);
 
     return (
         <div className="container mx-auto my-20 p-5 bg-white rounded-lg shadow-lg">
@@ -116,6 +120,23 @@ const Detail = () => {
                     <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition-all duration-300">
                        Reservar Cancha
                     </button>
+                    <div className="mt-4">
+                        {isFavorite ? (
+                            <button 
+                                onClick={() => removeFromFavorites(productSelected)} 
+                                className="text-red-500 px-4 py-2 rounded shadow hover:bg-red-600 transition-all duration-300"
+                            >
+                                <FontAwesomeIcon icon={faHeart} /> Eliminar de Favoritos
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={() => addToFavorites(productSelected)} 
+                                className="text-gray-500 px-4 py-2 rounded shadow hover:bg-gray-600 transition-all duration-300"
+                            >
+                                <FontAwesomeIcon icon={faHeart} /> Agregar a Favoritos
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
             <Caracteristicas/>

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import axios from '../../axiosConfig'
+import axios from '../../axiosConfig';
 import ProductCard from '../../Components/PorductCard/ProductCard';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
+    const [favorites, setFavorites] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,7 +13,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('/productos').then(respuesta => { return respuesta});
+                const response = await axios.get('/productos').then(respuesta => { return respuesta });
                 setProducts(response.data);
             } catch (err) {
                 setError('Error fetching products');
@@ -23,6 +24,10 @@ const ProductList = () => {
 
         fetchProducts();
     }, []);
+
+    const addToFavorites = (product) => {
+        setFavorites([...favorites, product]);
+    };
 
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -44,7 +49,7 @@ const ProductList = () => {
         <div className="mt-20 ml-20">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {currentProducts.map(product => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={product} addToFavorites={addToFavorites} />
                 ))}
             </div>
             <div className="flex justify-center mt-4">
@@ -60,6 +65,6 @@ const ProductList = () => {
             </div>
         </div>
     );
-}
+};
 
 export default ProductList;

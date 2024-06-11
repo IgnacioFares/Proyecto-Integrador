@@ -35,6 +35,12 @@ const Header = () => {
           >
             Sobre Nosotros
           </Link>
+          <Link
+            to="/favoritos"
+            className="hover:text-green-700 transition duration-300 ease-in-out"
+          >
+            Favoritos
+          </Link>
         </div>
       </nav>
 
