@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.annotation.PostConstruct;
-import java.util.Collections;
 
 @Configuration
 public class AdminConfig {
@@ -39,7 +38,7 @@ public class AdminConfig {
                 rolRepository.save(adminRole);
             }
 
-            admin.setRoles(Collections.singletonList(adminRole));
+            admin.setRol(adminRole);
             userRepository.save(admin);
         }
     }

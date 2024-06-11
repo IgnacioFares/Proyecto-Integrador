@@ -37,12 +37,10 @@ public class JwtUserDetailsService implements org.springframework.security.core.
             throw new UsernameNotFoundException("Usuario no encontrado con el email: " + email);
         }
         User user = userOpt.get();
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Rol rol : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + rol.getNombre()));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRol().getNombre());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.singletonList(authority));
     }
+
 
     public User save(UserDto userDto) {
         User newUser = new User();
@@ -52,37 +50,17 @@ public class JwtUserDetailsService implements org.springframework.security.core.
         newUser.setEmail(userDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-
-
         Rol userRole = rolRepository.findByNombre("USER");
         if (userRole == null) {
             userRole = new Rol();
             userRole.setNombre("USER");
-            userRole = rolRepository.save(userRole);
+            rolRepository.save(userRole);
         }
-        newUser.setRoles(Collections.singletonList(userRole));
+        newUser.setRol(userRole);
 
         return userRepository.save(newUser);
     }
 
-    public User saveAdmin(UserDto userDto) {
-        User newUser = new User();
-        newUser.setNombre(userDto.getNombre());
-        newUser.setApellido(userDto.getApellido());
-        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setEmail(userDto.getEmail());
-        newUser.setNumeroTelefono(userDto.getNumeroTelefono());
-
-        Rol adminRole = rolRepository.findByNombre("ADMIN");
-        if (adminRole == null) {
-            adminRole = new Rol();
-            adminRole.setNombre("ADMIN");
-            adminRole = rolRepository.save(adminRole);
-        }
-        newUser.setRoles(Collections.singletonList(adminRole));
-
-        return userRepository.save(newUser);
-    }
 
     public List<User> findAll() {
         return userRepository.findAll();

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import Sidebar from '../../Components/Sidebar/Sideabr';
 import { Outlet } from 'react-router-dom';
-
+import Sidebar from '../../Components/Sidebar/Sidebar';
 
 const Administracion = () => {
   const [isMobile, setIsMobile] = useState(false);

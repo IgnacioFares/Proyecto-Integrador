@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import  { useEffect, useState } from 'react';
+import axios from '../../axiosConfig'; // Ajusta la ruta si es necesario
 
-export const Api = ( tipo, endpoint, data ) => {
-  // el tipo define la funcion que va a realizar el axios, enviar con mayusculas
-  // el endpoint es el nombre al que hay que apuntar para conseguir los datos ej: productos
-  // enviar data en forma de objeto
-  // const [productos, setProductos] = useState([]);
-  const localHost = "http://localhost:8080/";
+const Api = (endpoint) => {
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchProductos = async () => {
-        const response = tipo == 'GET' ?  axios.get(localHost + endpoint) :  axios.post(localHost + endpoint, data);
-    //     setProductos(response.data);
-    // };
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const response = await axios.get(endpoint);
+        setProductos(response.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // fetchProductos();
-    // }, []);
+    fetchProductos();
+  }, [endpoint]);
 
-    return response.data;
+  return { productos, loading, error };
 }
+
 export default Api;

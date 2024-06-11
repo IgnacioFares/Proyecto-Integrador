@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
 import ProductsTable from '../ProductsTable/ProductsTable';
 import AddProductModal from '../AddProductModal/AddProductModal';
+
 
 const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,9 +12,8 @@ const ProductManagement = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/productos');
-        const data = await response.json();
-        setProducts(data);
+        const response = await axios.get('/productos').then(respuesta => { return respuesta});
+        setProducts(response.data);
       } catch (error) {
         setError('Error al cargar los productos.');
       }
@@ -23,60 +24,29 @@ const ProductManagement = () => {
 
   const handleAddProduct = async (product) => {
     try {
-      const response = await fetch('/productos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(product),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Error al agregar el producto.');
-      }
-
-      const newProduct = await response.json();
-      setProducts([...products, newProduct]);
+      const response = await axios.put('/productos', product).then(respuesta => { return respuesta});
+      setProducts([...products, response.data]);
       setError('');
     } catch (error) {
-      setError(error.message);
+      setError('Error al agregar el producto.');
     }
   };
 
   const handleDeleteProduct = async (id) => {
     try {
-      const response = await fetch(`/productos/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar el producto.');
-      }
-
+      await axios.post(`/productos/${id}`);
       setProducts(products.filter(product => product.id !== id));
     } catch (error) {
-      setError(error.message);
+      setError('Error al eliminar el producto.');
     }
   };
 
   const handleUpdateProduct = async (id, updates) => {
     try {
-      const response = await fetch(`/productos/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updates),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al actualizar el producto.');
-      }
-
-      const updatedProduct = await response.json();
-      setProducts(products.map(product => (product.id === id ? updatedProduct : product)));
+      const response = await axios.put(`/productos/${id}`, updates);
+      setProducts(products.map(product => (product.id === id ? response.data : product)));
     } catch (error) {
-      setError(error.message);
+      setError('Error al actualizar el producto.');
     }
   };
 

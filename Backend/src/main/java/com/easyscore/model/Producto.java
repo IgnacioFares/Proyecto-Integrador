@@ -1,5 +1,6 @@
 package com.easyscore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.time.LocalTime;
@@ -37,6 +38,7 @@ public class Producto {
     private List<Caracteristica> caracteristicas;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Imagen> imagenes;
 
     @ManyToOne

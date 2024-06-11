@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -85,11 +86,11 @@ public class AdminController {
 
     // Endpoints para gestión de usuarios
 
-    @Operation(summary = "Se encarga de añadir un nuevo rol a un usuario traido por id", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @PostMapping("/users/{id}/roles")
-    public ResponseEntity<?> addRoleToUser(@PathVariable Long id, @RequestBody String roleName) {
-        userService.addRoleToUser(id, roleName);
-        return ResponseEntity.ok().build();
+    @Operation(summary = "Asigna el rol de administrador a un usuario", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @PutMapping("/users/{userId}/roles")
+    public ResponseEntity<?> addRoleToUser(@PathVariable Long userId, @RequestBody String roleName) {
+        userService.addRoleToUser(userId, roleName);
+        return ResponseEntity.ok("Rol asignado exitosamente");
     }
 
     // Endpoints para categorías
@@ -112,13 +113,13 @@ public class AdminController {
     }
 
     @Operation(summary = "Se encarga de crear una nueva categoria", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @PostMapping("/categorias")
+    @PostMapping("/categorias/create")
     public Categoria createCategoria(@RequestBody Categoria categoria) {
         return categoriaService.saveCategoria(categoria);
     }
 
     @Operation(summary = "Se encarga de editar una categoria existente", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @PutMapping("/categorias/{id}")
+    @PutMapping("/categorias/update/{id}")
     public ResponseEntity<Categoria> updateCategoria(@PathVariable Long id, @RequestBody Categoria categoriaDetails) {
         Optional<Categoria> categoria = categoriaService.getCategoriaById(id);
         if (categoria.isPresent()) {
@@ -155,7 +156,7 @@ public class AdminController {
     }
 
     @Operation(summary = "Se encarga de eliminar una categoria existente", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @DeleteMapping("/categorias/{id}")
+    @DeleteMapping("/categorias/delete/{id}")
     public ResponseEntity<Void> deleteCategoria(@PathVariable Long id) {
         if (categoriaService.getCategoriaById(id).isPresent()) {
             categoriaService.deleteCategoria(id);
@@ -182,13 +183,13 @@ public class AdminController {
     }
 
     @Operation(summary = "Se encarga de crear una nueva caracteristica", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @PostMapping("/caracteristicas")
+    @PostMapping("/caracteristicas/create")
     public Caracteristica createCaracteristica(@RequestBody Caracteristica caracteristica) {
         return caracteristicaService.save(caracteristica);
     }
 
     @Operation(summary = "Se encarga de editar una caracteristica existente", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @PutMapping("/caracteristicas/{id}")
+    @PutMapping("/caracteristicas/update/{id}")
     public ResponseEntity<Caracteristica> updateCaracteristica(@PathVariable Long id, @RequestBody Caracteristica caracteristicaDetails) {
         return caracteristicaService.findById(id)
                 .map(caracteristica -> {
@@ -213,7 +214,7 @@ public class AdminController {
     }
 
     @Operation(summary = "Se encarga de eliminar una caracteristica existente", security = @SecurityRequirement(name = "Bearer Authentication"))
-    @DeleteMapping("/caracteristicas/{id}")
+    @DeleteMapping("/caracteristicas/delete/{id}")
     public ResponseEntity<Void> deleteCaracteristica(@PathVariable Long id) {
         return caracteristicaService.findById(id)
                 .map(caracteristica -> {
