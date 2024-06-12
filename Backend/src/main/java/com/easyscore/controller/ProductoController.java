@@ -33,12 +33,13 @@ public class ProductoController {
 
     @Operation(summary = "Buscar productos a traves de la barra de busqueda")
     @GetMapping("/search")
-    public ResponseEntity<List<Producto>> searchProducts(
+    public List<Producto> searchProducts(
             @RequestParam(required = false) String searchTerm,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
-        List<Producto> productos = productoService.searchProducts(searchTerm, category, startDate, endDate);
-        return ResponseEntity.ok(productos);
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String location) {
+
+        return productoService.searchProducts(searchTerm, category, startDate, endDate, location);
     }
 }

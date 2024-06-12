@@ -15,11 +15,16 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query(value = "SELECT * FROM Producto ORDER BY RAND()", nativeQuery = true)
     List<Producto> findAllRandom();
 
-    @Query("SELECT p FROM Producto p WHERE LOWER(p.nombre) LIKE :searchTerm AND (:category IS NULL OR p.categoria.nombre = :category) AND (:startDate IS NULL OR p.horarioApertura >= :startDate) AND (:endDate IS NULL OR p.horarioCierre <= :endDate)")
-    List<Producto> findByNombreLikeAndCategoria(
+    @Query("SELECT p FROM Producto p WHERE " +
+            "(:searchTerm IS NULL OR LOWER(p.nombre) LIKE :searchTerm) AND " +
+            "(:category IS NULL OR p.categoria.nombre = :category) AND " +
+            "(:startDate IS NULL OR p.horarioApertura >= :startDate) AND " +
+            "(:endDate IS NULL OR p.horarioCierre <= :endDate) AND " +
+            "(:location IS NULL OR p.ubicacion.ciudad = :location)")
+    List<Producto> searchProducts(
             @Param("searchTerm") String searchTerm,
             @Param("category") String category,
             @Param("startDate") String startDate,
-            @Param("endDate") String endDate
-    );
+            @Param("endDate") String endDate,
+            @Param("location") String location);
 }

@@ -25,7 +25,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/administracion/categorias').then(response => {return response.data});
+        const response = await axios.get('/categorias').then(response => {return response.data});
         setCategories(response);
       } catch (error) {
         console.error('Error al cargar las categorías', error);
@@ -191,7 +191,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             <label className="block mb-1">Ubicación</label>
             <select
             name="ubicacion"
-            value={product.categoria}
+            value={product.ubicacion}
             onChange={handleChange}
             className="w-full border p-2 rounded"
             required>

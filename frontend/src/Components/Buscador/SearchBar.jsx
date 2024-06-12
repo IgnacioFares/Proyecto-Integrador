@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Autosuggest from 'react-autosuggest';
 import axios from '../../axiosConfig';
-import { FaSearch, FaCalendarAlt, FaArrowRight } from 'react-icons/fa';
+import { FaSearch, FaCalendarAlt, FaArrowRight, FaClock } from 'react-icons/fa';
 
 const searchSuggestions = [
   'Buenos Aires', 'Cordoba', 'Mar del Plata', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Salta', 'Santa Fe', 'San Juan', 'Resistencia', 'Corrientes', 'Bahia Blanca', 'Posadas', 'Neuquen', 'Formosa', 'Santiago del Estero', 'Parana', 'Rio Cuarto', 'Comodoro Rivadavia'
@@ -12,16 +12,16 @@ const searchSuggestions = [
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [date, setDate] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [locations, setLocations] = useState([]);
+  const [time, setTime] = useState(null);
 
   // Crear referencias para los DatePicker
-  const startDatePickerRef = useRef(null);
-  const endDatePickerRef = useRef(null);
+  const timePickerRef = useRef(null);
+  const datePickerRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const SearchBar = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/administracion/categorias');
+        const response = await axios.get('/categorias');
         setCategories(response.data);
       } catch (error) {
         console.error('Error al cargar las categorías.');
@@ -89,12 +89,13 @@ const SearchBar = () => {
   const handleSearch = async () => {
     try {
       // Realizar la búsqueda en el backend utilizando los criterios de búsqueda
-      const response = await axios.get('/buscar', {
+
+      const response = await axios.get('/search', {
         params: {
           searchTerm: searchTerm,
           category: selectedCategory,
-          startDate: startDate ? startDate.toISOString() : null,
-          endDate: endDate ? endDate.toISOString() : null
+          date: date ? date.toISOString() : null,
+          time: time ? time.toISOString() : null
         }
       });
   
@@ -144,33 +145,32 @@ const SearchBar = () => {
           ))}
         </select>
         <div className="flex items-center space-x-2">
-          <div onClick={() => startDatePickerRef.current.setOpen(true)} className="cursor-pointer">
+          <div onClick={() => datePickerRef.current.setOpen(true)} className="cursor-pointer">
             <FaCalendarAlt className="text-green-500" />
           </div>
           <DatePicker
-            ref={startDatePickerRef}
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            placeholderText="Fecha inicio"
+            ref={datePickerRef}
+            selected={date}
+            onChange={date => setDate(date)}
+            placeholderText="Fecha"
             className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
           />
         </div>
         <div className="flex items-center space-x-2">
-          <div onClick={() => endDatePickerRef.current.setOpen(true)} className="cursor-pointer">
-            <FaCalendarAlt className="text-green-500" />
+          <div onClick={() => timePickerRef.current.setOpen(true)} className="cursor-pointer">
+            <FaClock className="text-green-500" />
           </div>
           <DatePicker
-            ref={endDatePickerRef}
-            selected={endDate}
-            onChange={date => setEndDate(date)}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            placeholderText="Fecha fin"
-            className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
+              selected={time}
+              onChange={time => setTime(time)}
+              placeholderText="Horario"
+              showTimeSelect
+              showTimeSelectOnly
+              timeIntervals={30}
+              timeCaption="Horario"
+              dateFormat="h:mm aa"
+              ref={timePickerRef}
+              className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
           />
         </div>
         <button
