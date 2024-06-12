@@ -26,6 +26,7 @@ public class CategoriaService {
     public Categoria saveCategoria(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
+    
 
     @Transactional
     public void deleteCategoria(Long id) {
