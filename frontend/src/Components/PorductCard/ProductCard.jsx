@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import resolveArray from "../../Utils/FeaturesManager"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons'; // Importación correcta
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, addToFavorites, removeFromFavorites, isFavorite }) => {
     return (
         <div className="transform scale-90 max-w-xs rounded overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
             <img className="w-full" src="https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg" alt={product.nombre} />

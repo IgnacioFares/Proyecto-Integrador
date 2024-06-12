@@ -1,6 +1,5 @@
 package com.easyscore.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import jakarta.persistence.*;
@@ -19,7 +18,6 @@ public class Caracteristica {
     private String logoUrl;
 
     @ManyToMany(mappedBy = "caracteristicas")
-    @JsonIgnore
     private List<Producto> productos;
 
     public Long getId() {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
 import { routes } from "./routes/routes";
@@ -7,9 +8,11 @@ import Reservas from "./pages/Reservas/Reservas";
 import Administracion from "./pages/Administracion/Administracion";
 import Login from "./pages/Login/Login";
 import ProductList from "./pages/ProductList/ProductList";
+import Favorites from "./pages/Favorites/Favorites"; // Importa tu componente de favoritos
+import Detail from "./Components/Detail/Detail";
+
 import ProductManagement from "./Components/ProductManagement/ProductManagement";
 import PermissionsManagement from "./Components/PermissionsManagement/PermissionsManagement";
-import Detail from "./Components/Detail/Detail";
 import CategoryManagement from "./Components/CategoryManagement/CategoryManagement";
 import FeaturesManagement from "./Components/FeaturesManagement/FeaturesManagement";
 import MisReservas from "./Components/ReservarCancha/MisReservas";
@@ -18,6 +21,19 @@ import SearchResults from "./pages/Resultados/SearchResults";
 
 
 function App() {
+  const [favorites, setFavorites] = useState([]);
+
+  const addToFavorites = (product) => {
+    console.log("Adding to favorites", product);
+    if (!favorites.some(fav => fav.id === product.id)) {
+      setFavorites([...favorites, product]);
+    }
+  };
+
+  const removeFromFavorites = (product) => {
+    console.log("Removing from favorites", product);
+    setFavorites(favorites.filter(fav => fav.id !== product.id));
+  };
 
   return (
     <AuthProvider>
@@ -30,6 +46,7 @@ function App() {
             <Route path={routes.resultados} element={<SearchResults />}/>
             <Route path="/detalle/:id" element={<Detail />} />
             <Route path="/MisReservas" element={<MisReservas/>}/>
+            <Route path="/favoritos" element={<Favorites favorites={favorites} removeFromFavorites={removeFromFavorites} />} />
           </Route>
           <Route path={routes.Login} element={<Login />} />
           <Route path="*" element={<h1>404 not found</h1>} />
