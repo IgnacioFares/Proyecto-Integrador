@@ -17,7 +17,8 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
-  
+  const [locations, setLocations] = useState([]);
+
   // Crear referencias para los DatePicker
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
@@ -25,9 +26,21 @@ const SearchBar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get('/ubicaciones').then(response => {return response.data});
+        setLocations(response);
+      } catch (error) {
+        console.error('Error al cargar las ubicaciones :(', error);
+      }
+    };
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/categorias').then(response => {return response});
+        const response = await axios.get('/administracion/categorias');
         setCategories(response.data);
       } catch (error) {
         console.error('Error al cargar las categorías.');
@@ -53,9 +66,14 @@ const SearchBar = () => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
-    return inputLength === 0 ? [] : searchSuggestions.filter(suggestion =>
-      suggestion.toLowerCase().slice(0, inputLength) === inputValue
-    );
+    if (inputLength === 0) {
+      return [];
+    }
+
+    return locations
+      .filter(location => location.ciudad.toLowerCase().includes(inputValue))
+      .map(location => location.ciudad);
+
   };
 
   const getSuggestionValue = (suggestion) => suggestion;
@@ -120,8 +138,8 @@ const SearchBar = () => {
         >
           <option value="">Categoría</option>
           {categories.map(category => (
-            <option key={category.id} value={category.name}>
-              {category.name}
+            <option key={category.id} value={category.nombre}>
+              {category.nombre}
             </option>
           ))}
         </select>

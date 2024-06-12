@@ -12,7 +12,11 @@ const ProductCard = ({ product }) => {
                 </p>
             </div>
             <div className="px-4 pt-2 pb-2 flex items-center">
-                <div className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm mr-2 mb-2 inline-flex">{resolveArray(product.caracteristicas)}</div>
+                {product.caracteristicas.length > 0 && (
+                    <div className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm mr-2 mb-2 inline-flex">
+                        {resolveArray(product.caracteristicas)}
+                    </div>
+                )}
                 <span className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">${product.precio}</span>
             </div>
             <div className="px-4 py-5">

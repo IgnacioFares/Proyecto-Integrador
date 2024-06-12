@@ -21,9 +21,11 @@ const Header = () => {
           <Link to={routes.about} className="hover:text-green-700 transition duration-300 ease-in-out">
             Sobre Nosotros
           </Link>
-          <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
-            Mis Reservas
-          </Link>
+          {(roles.includes('ROLE_ADMIN') || roles.includes('ROLE_USER')) && (
+            <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
+              Mis Reservas
+            </Link>
+          )}
         </div>
       </nav>
 
