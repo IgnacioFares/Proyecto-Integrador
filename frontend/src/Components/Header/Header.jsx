@@ -14,18 +14,15 @@ const Header = () => {
       </div>
 
       <nav>
-        <div className="flex items-center gap-6 ">
-          <Link
-            to={routes.productList}
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
+        <div className="flex items-center gap-6">
+          <Link to={routes.productList} className="hover:text-green-700 transition duration-300 ease-in-out">
             Reservar
           </Link>
-          <Link
-            to={routes.about}
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
+          <Link to={routes.about} className="hover:text-green-700 transition duration-300 ease-in-out">
             Sobre Nosotros
+          </Link>
+          <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
+            Mis Reservas
           </Link>
         </div>
       </nav>
