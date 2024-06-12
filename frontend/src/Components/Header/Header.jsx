@@ -1,28 +1,26 @@
-import { routes } from "../../routes/routes";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { routes } from '../../routes/routes';
 
 const Header = () => {
   return (
     <header className="fixed top-0 left-0 w-full shadow-md h-16 bg-white text-green-500 flex items-center justify-between z-10">
       <div className="flex items-center">
         <Link to={routes.home}>
-          <img src={"../../public/images/logosolo1.png"} alt="Logo" className="h-8 w-150 m-4" />
+          <img src="/images/logosolo1.png" alt="Logo" className="h-8 w-150 m-4" />
         </Link>
       </div>
 
       <nav>
-        <div className="flex items-center gap-6 ">
-          <Link
-            to={routes.productList}
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
+        <div className="flex items-center gap-6">
+          <Link to={routes.productList} className="hover:text-green-700 transition duration-300 ease-in-out">
             Reservar
           </Link>
-          <Link
-            to={routes.about}
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
+          <Link to={routes.about} className="hover:text-green-700 transition duration-300 ease-in-out">
             Sobre Nosotros
+          </Link>
+          <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
+            Mis Reservas
           </Link>
         </div>
       </nav>
