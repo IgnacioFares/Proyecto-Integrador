@@ -11,6 +11,8 @@ import com.easyscore.repository.UbicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -171,13 +173,13 @@ public class ProductoService {
 
     //Barra de busqueda
 
-    public List<Producto> searchProducts(String searchTerm, String category, String startDate, String endDate, String location) {
+    public List<Producto> searchProducts(String searchTerm, String category, String ciudad, LocalDate startDate, LocalTime startTime, LocalTime endTime) {
         if (searchTerm == null) {
             searchTerm = "";
         }
         searchTerm = "%" + searchTerm.toLowerCase() + "%";
 
-        return productoRepository.searchProducts(searchTerm, category, startDate, endDate, location);
+        return productoRepository.searchProducts(searchTerm, category, ciudad, startDate, startTime, endTime);
     }
 
 }

@@ -15,7 +15,10 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       ciudad: '',
       direccion: ''
     },
-    categoria: ''
+    categoria: {
+      id: '',
+      nombre: ''
+    }
   });
 
   const [categories, setCategories] = useState([]);
@@ -74,7 +77,10 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   };
 
   const handleFeatureChange = (e) => {
-    const selectedFeatures = Array.from(e.target.selectedOptions, option => option.value);
+    const selectedFeatures = Array.from(e.target.selectedOptions, option => {
+      const feature = features.find(f => f.nombre === option.value);
+      return { id: feature.id, nombre: feature.nombre };
+    });
     setProduct({
       ...product,
       caracteristicas: selectedFeatures
@@ -85,7 +91,30 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     const files = Array.from(e.target.files);
     setProduct({
       ...product,
-      imagenes: files.map(file => file.name)
+      imagenes: files.map(file => ({ url: file.name }))
+    });
+  };
+
+  const handleLocationChange = (e) => {
+    const location = locations.find(loc => loc.ciudad === e.target.value);
+    setProduct({
+      ...product,
+      ubicacion: {
+        provincia: location.provincia,
+        ciudad: location.ciudad,
+        direccion: location.direccion
+      }
+    });
+  };
+
+  const handleCategoryChange = (e) => {
+    const category = categories.find(cat => cat.nombre === e.target.value);
+    setProduct({
+      ...product,
+      categoria: {
+        id: category.id,
+        nombre: category.nombre
+      }
     });
   };
 
@@ -97,12 +126,6 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
         ...product,
         precio: parseFloat(product.precio),
       });
-
-      const categoriaSeleccionada = categories.find(category => category.nombre === product.categoria);
-
-      if (categoriaSeleccionada) {
-        await axios.put(`/administracion/productos/${addedProduct.id}/categoria/${categoriaSeleccionada.id}`, product);
-      }
 
       setProduct({
         nombre: '',
@@ -117,7 +140,10 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
           ciudad: '',
           direccion: ''
         },
-        categoria: ''
+        categoria: {
+          id: '',
+          nombre: ''
+        }
       });
 
       onClose();
@@ -190,12 +216,12 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
           <div className="mb-4">
             <label className="block mb-1">Ubicación</label>
             <select
-            name="ubicacion"
-            value={product.ubicacion}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required>
-              <option value="">Seleccione una ubicacion</option>
+              name="ubicacion"
+              value={product.ubicacion.ciudad}
+              onChange={handleLocationChange}
+              className="w-full border p-2 rounded"
+              required>
+              <option value="">Seleccione una ubicación</option>
               {locations.map((ubicacion) => (
                 <option key={ubicacion.id} value={ubicacion.ciudad}>{ubicacion.direccion + ' ' + ubicacion.ciudad  + ' ' + ubicacion.provincia}</option>
               ))}
@@ -205,8 +231,8 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             <label className="block mb-1">Categoría</label>
             <select
               name="categoria"
-              value={product.categoria}
-              onChange={handleChange}
+              value={product.categoria.nombre}
+              onChange={handleCategoryChange}
               className="w-full border p-2 rounded"
               required
             >
@@ -221,7 +247,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             <select
               multiple
               name="caracteristicas"
-              value={product.caracteristicas}
+              value={product.caracteristicas.map(feature => feature.nombre)}
               onChange={handleFeatureChange}
               className="w-full border p-2 rounded"
               required
