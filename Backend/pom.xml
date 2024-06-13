@@ -13,9 +13,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Backend</name>
 	<description>Demo project for Spring Boot</description>
-	<properties>
-		<java.version>22</java.version>
-	</properties>
+    <properties>
+        <java.version>22</java.version>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+    </properties>
 	<dependencies>
 		<!-- Spring Boot Starter Data JPA -->
 		<dependency>

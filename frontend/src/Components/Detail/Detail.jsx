@@ -1,14 +1,16 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Caracteristicas from '../Caracteristicas/Caracteristicas';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from '../../axiosConfig';
+import Caracteristicas from '../Caracteristicas/Caracteristicas';
 
 Modal.setAppElement('#root'); // Necesario para accesibilidad
 
-const Detail = () => {
+const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const { id } = useParams();
     const [productSelected, setProductSelected] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -18,11 +20,16 @@ const Detail = () => {
     const [reservations, setReservations] = useState(JSON.parse(localStorage.getItem('reservations')) || []);
 
     useEffect(() => {
-        const fetchProducts = async (id) => {
-            const response = await axios.get(`/administracion/productos/${id}`).then(respuesta => { return respuesta});
-            setProductSelected(response.data);
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`/productos/${id}`);
+                setProductSelected(response.data);
+            } catch (err) {
+                console.error('Error fetching product:', err);
+            }
         };
-        fetchProducts(id);
+
+        fetchProduct();
     }, [id]);
 
     const openModal = () => {
@@ -34,6 +41,8 @@ const Detail = () => {
     };
 
     const handleReserve = () => {
+        if (!selectedDate || !startTime || !endTime) return;
+
         const newReservation = {
             productId: productSelected.id,
             date: selectedDate.toISOString().split('T')[0],
@@ -70,19 +79,25 @@ const Detail = () => {
         return isReserved(new Date(date), start, end);
     };
 
-    if (!productSelected) return <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-            <h2 className="text-center text-xl font-semibold">Cargando...</h2>
-        </div>
-    </div>;
+    const isFavorite = productSelected && favorites.some(fav => fav.id === productSelected.id);
+
+    if (!productSelected) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                    <h2 className="text-center text-xl font-semibold">Cargando...</h2>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto my-20 p-5 bg-white rounded-lg shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="flex justify-center">
                     <img
-                        src="https://recreasport.com/wp-content/uploads/2017/04/SAM_0191-2.jpg"
+                        src={productSelected.image}
                         alt={productSelected.nombre}
                         className="w-64 h-64 object-cover rounded-lg"
                     />
@@ -94,6 +109,23 @@ const Detail = () => {
                     <button onClick={openModal} className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition-all duration-300">
                        Reservar Cancha
                     </button>
+                    <div className="mt-4">
+                        {isFavorite ? (
+                            <button 
+                                onClick={() => removeFromFavorites(productSelected)} 
+                                className="text-red-500 px-4 py-2 rounded shadow hover:bg-red-600 transition-all duration-300"
+                            >
+                                <FontAwesomeIcon icon={faHeart} /> Eliminar de Favoritos
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={() => addToFavorites(productSelected)} 
+                                className="text-gray-500 px-4 py-2 rounded shadow hover:bg-gray-600 transition-all duration-300"
+                            >
+                                <FontAwesomeIcon icon={faHeart} /> Agregar a Favoritos
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
             <Caracteristicas/>
@@ -162,6 +194,6 @@ const Detail = () => {
             </Modal>
         </div>
     );
-}
+};
 
 export default Detail;
