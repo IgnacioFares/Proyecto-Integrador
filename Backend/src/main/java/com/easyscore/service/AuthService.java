@@ -39,12 +39,13 @@ public class AuthService {
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
 
-        // Obtener roles del usuario
+        User user = userRepository.findByEmail(jwtRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(authority -> authority.getAuthority())
                 .collect(Collectors.toList());
 
-        final String token = jwtUtil.generateToken(userDetails, roles);
+        final String token = jwtUtil.generateToken(userDetails, roles, user.getNombre(), user.getApellido());
 
         return new JwtResponse(token);
     }

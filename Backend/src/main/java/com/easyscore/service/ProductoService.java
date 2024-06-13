@@ -172,7 +172,6 @@ public class ProductoService {
     }
 
     //Barra de busqueda
-
     public List<Producto> searchProducts(String searchTerm, String category, String ciudad, LocalDate startDate, LocalTime startTime, LocalTime endTime) {
         if (searchTerm == null) {
             searchTerm = "";
@@ -181,5 +180,6 @@ public class ProductoService {
 
         return productoRepository.searchProducts(searchTerm, category, ciudad, startDate, startTime, endTime);
     }
+
 
 }

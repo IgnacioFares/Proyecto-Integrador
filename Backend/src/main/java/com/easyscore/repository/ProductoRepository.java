@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @EntityGraph(attributePaths = {"caracteristicas"})
     @Query(value = "SELECT * FROM Producto ORDER BY RAND()", nativeQuery = true)
     List<Producto> findAllRandom();
+
 
     @Query("SELECT p FROM Producto p WHERE " +
             "(:searchTerm IS NULL OR LOWER(p.nombre) LIKE :searchTerm) AND " +
@@ -33,4 +35,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                                   @Param("startDate") LocalDate startDate,
                                   @Param("startTime") LocalTime startTime,
                                   @Param("endTime") LocalTime endTime);
+
 }

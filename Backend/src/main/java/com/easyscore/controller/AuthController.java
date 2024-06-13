@@ -5,7 +5,9 @@ import com.easyscore.jwt.service.JwtUserDetailsService;
 import com.easyscore.jwt.util.JwtUtil;
 import com.easyscore.jwt.model.JwtRequest;
 import com.easyscore.jwt.model.JwtResponse;
+import com.easyscore.model.User;
 import com.easyscore.service.EmailService;
+import com.easyscore.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,9 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UserService userService;
+
 
     @Operation(summary = "Se encarga del LOGIN de usuarios/admin")
     @PostMapping("/login")
@@ -47,16 +52,19 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
 
+        User user = userService.findByEmail(authenticationRequest.getEmail())
+                .orElseThrow(() -> new Exception("User not found"));
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(authority -> authority.getAuthority())
                 .collect(Collectors.toList());
 
-        final String token = jwtUtil.generateToken(userDetails, roles);
+        final String token = jwtUtil.generateToken(userDetails, roles, user.getNombre(), user.getApellido());
 
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @Operation(summary = "Se encarga del REGISTRO de nuevos usuarios terminando con envío de email a la cuenta del mismo.")
+    @Operation(summary = "Se encarga del REGISTRO de nuevos usuarios terminando con envÃo de email a la cuenta del mismo.")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
         user.setRol("USER");
