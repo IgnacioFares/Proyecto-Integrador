@@ -128,7 +128,7 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
                     </div>
                 </div>
             </div>
-            <Caracteristicas/>
+            <Caracteristicas caracteristicas={productSelected.caracteristicas} />
 
             <Modal
                 isOpen={modalIsOpen}
