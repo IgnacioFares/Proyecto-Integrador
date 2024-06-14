@@ -1,6 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
+import { Link, useNavigate } from 'react-router-dom';
 
 export const CardContainer = () => {
+  const [products, setProducts] = useState([]);
+  const [randomProducts, setRandomProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('/productos');
+        setProducts(response.data);
+
+        // Seleccionar 3 productos aleatorios
+        const shuffled = response.data.sort(() => 0.5 - Math.random());
+        setRandomProducts(shuffled.slice(0, 3));
+      } catch (err) {
+        console.error('Error fetching products', err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <div className="">
@@ -11,58 +33,31 @@ export const CardContainer = () => {
       </div>
 
       <div className="flex justify-center mt-28 mx-4">
-        <Card
-          imageUrl="/images/HUHUIHAS.png"
-          name="Gran 7"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros."
-          images={[
-            "/images/HUHUIHAS.png",
-            "/images/cancha1.jpg",
-            "/images/cancha2.jpg",
-            "/images/cancha3.jpg",
-            "/images/cancha4.jpg",
-            "/images/cancha5.png"
-          ]}
-        />
-        <Card
-          imageUrl="/images/huqwjiod.png"
-          name="Don Balon"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros."
-          images={[
-            "/images/huqwjiod.png",
-            "/images/cancha1.jpg",
-            "/images/cancha2.jpg",
-            "/images/cancha3.jpg",
-            "/images/cancha4.jpg",
-            "/images/cancha5.png"
-          ]}
-        />
-        <Card
-          imageUrl="/images/Placeholder Image.png"
-          name="Futbol Noble"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros."
-          images={[
-            "/images/Placeholder Image.png",
-            "/images/cancha1.jpg",
-            "/images/cancha2.jpg",
-            "/images/cancha3.jpg",
-            "/images/cancha4.jpg",
-            "/images/cancha5.png"
-          ]}
-        />
+        {randomProducts.map((product) => (
+          <Card
+            key={product.id}
+            product={product}
+            imageUrl={product.imagenes[0]?.url}
+            name={product.nombre}
+            description={product.descripcion}
+            images={product.imagenes.map((img) => img.url)}
+          />
+        ))}
       </div>
     </>
   );
 };
 
-const Card = ({ imageUrl, name, description, images }) => {
+const Card = ({ product, imageUrl, name, description, images }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const handleReserve = () => navigate(`/detalle/${product.id}`);
 
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg mx-4">
@@ -71,7 +66,7 @@ const Card = ({ imageUrl, name, description, images }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <img className="w-full" src={imageUrl} alt={name} />
+        <img className="w-full h-64 object-cover" src={imageUrl || 'placeholder.jpg'} alt={name} />
         {isHovered && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <button
@@ -88,7 +83,10 @@ const Card = ({ imageUrl, name, description, images }) => {
         <p className="text-gray-700 text-base">{description}</p>
       </div>
       <div className="px-6 pt-4 pb-2">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button
+          onClick={handleReserve}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
           Reservar
         </button>
       </div>
@@ -117,22 +115,22 @@ const Modal = ({ onClose, children }) => {
 const ImageGallery = ({ images }) => {
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="grid grid-cols-3 gap-4">
-        {images.slice(0, 3).map((image, index) => (
-          <img key={index} src={image} alt={`Gallery image ${index + 1}`} className="w-64 h-64 object-cover rounded" />
-        ))}
-        {images.slice(3).map((image, index) => (
-          <img key={index} src={image} alt={`Gallery image ${index + 4}`} className="w-64 h-64 object-cover rounded" />
-        ))}
-      </div>
+      <div className="grid grid-cols-3 gap-4 h-96 bg-white p-4 rounded"> {/* Ajusta la altura y añade un fondo blanco y padding */}
+        <div className="col-span-1 flex items-center">
+          <img src={images[0]} alt="Main image" className="w-full h-64 object-cover rounded bg-transparent" />
+        </div>
+        <div className="col-span-2 grid grid-cols-2 gap-4">
+          {images.slice(1).map((image, index) => (
+        <div key={index} className="flex justify-center items-center overflow-hidden"> {/* Centrado añadido */}
+          <img src={image} alt={`Gallery image ${index + 2}`} className="w-64 h-full object-cover rounded bg-transparent" />
+        </div>
+      ))}
     </div>
+  </div>
+</div>
+
+
   );
 };
-
-
-
-
-
-
 
 export default CardContainer;
