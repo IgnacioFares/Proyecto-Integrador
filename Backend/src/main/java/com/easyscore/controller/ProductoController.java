@@ -28,7 +28,7 @@ public class ProductoController {
     }
 
     @Operation(summary = "Trae un producto especificado por su id")
-    @GetMapping("/{id}")
+    @GetMapping("/productos/{id}")
     public ResponseEntity<Producto> getProductoById(@PathVariable Long id) {
         return productoService.findById(id)
                 .map(ResponseEntity::ok)

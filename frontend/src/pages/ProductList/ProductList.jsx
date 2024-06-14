@@ -13,6 +13,7 @@ const ProductList = ({ addToFavorites, removeFromFavorites, favorites }) => {
         const fetchProducts = async () => {
             try {
                 const response = await axios.get('/productos');
+                console.log("Fetched products: ", response.data); // Verificar los datos
                 setProducts(response.data);
             } catch (err) {
                 setError('Error fetching products');

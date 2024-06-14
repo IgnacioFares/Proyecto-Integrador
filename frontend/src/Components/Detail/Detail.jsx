@@ -97,7 +97,7 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="flex justify-center">
                     <img
-                        src={productSelected.image}
+                        src={productSelected.imagenes[0].url}
                         alt={productSelected.nombre}
                         className="w-64 h-64 object-cover rounded-lg"
                     />

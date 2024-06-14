@@ -1,5 +1,6 @@
 package com.easyscore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import jakarta.persistence.*;
@@ -15,6 +16,6 @@ public class Imagen {
 
     @ManyToOne
     @JoinColumn(name = "producto_id")
-    @JsonIgnore
+    @JsonBackReference
     private Producto producto;
 }

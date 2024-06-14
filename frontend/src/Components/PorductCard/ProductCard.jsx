@@ -4,9 +4,14 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ProductCard = ({ product, addToFavorites, removeFromFavorites, isFavorite }) => {
+    // Usa la primera imagen de la lista, o una imagen de respaldo si no está disponible
+    const productImage = product.imagenes && product.imagenes.length > 0
+        ? product.imagenes[0].url
+        : "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg";
+
     return (
         <div className="transform scale-90 max-w-xs rounded overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-            <img className="w-full" src={product.image || "https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg"} alt={product.nombre} />
+            <img className="w-full h-64 object-cover" src={productImage} alt={product.nombre} />
             <div className="px-4 py-2">
                 <div className="font-bold text-lg mb-2">{product.nombre}</div>
                 <p className="text-gray-700 text-base">
