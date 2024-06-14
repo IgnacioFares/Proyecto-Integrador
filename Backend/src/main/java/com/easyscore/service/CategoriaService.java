@@ -26,14 +26,13 @@ public class CategoriaService {
     public Categoria saveCategoria(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
-    
+
 
     @Transactional
     public void deleteCategoria(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada en la base de datos"));
 
-        // Pone en null el valor de categoria en el producto asociado
         categoria.getProductos().forEach(producto -> producto.setCategoria(null));
 
         categoriaRepository.delete(categoria);

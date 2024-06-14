@@ -64,7 +64,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @Operation(summary = "Se encarga del REGISTRO de nuevos usuarios terminando con envÃo de email a la cuenta del mismo.")
+    @Operation(summary = "Se encarga del REGISTRO de nuevos usuarios terminando con envío de email a la cuenta del mismo.")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
         user.setRol("USER");

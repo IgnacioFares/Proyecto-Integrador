@@ -16,13 +16,19 @@ const decodeToken = (token) => {
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [roles, setRoles] = useState([]);
+  const [user, setUser] = useState({ nombre: '', apellido: '' });
 
   useEffect(() => {
     if (token) {
       const decodedToken = decodeToken(token);
       setRoles(decodedToken?.roles || []);
+      setUser({
+        nombre: decodedToken?.nombre || '',
+        apellido: decodedToken?.apellido || ''
+      });
     } else {
       setRoles([]);
+      setUser({ nombre: '', apellido: '' });
     }
   }, [token]);
 
@@ -31,16 +37,21 @@ export const AuthProvider = ({ children }) => {
     setToken(token);
     const decodedToken = decodeToken(token);
     setRoles(decodedToken?.roles || []);
+    setUser({
+      nombre: decodedToken?.nombre || '',
+      apellido: decodedToken?.apellido || ''
+    });
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
     setRoles([]);
+    setUser({ nombre: '', apellido: '' });
   };
 
   return (
-    <AuthContext.Provider value={{ token, roles, login, logout }}>
+    <AuthContext.Provider value={{ token, roles, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -48,8 +59,3 @@ export const AuthProvider = ({ children }) => {
 
 export default AuthContext;
 export const useAuth = () => useContext(AuthContext);
-
-
-
-
-

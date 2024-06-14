@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import axios from '../../axiosConfig'
+import axios from '../../axiosConfig';
 import ProductCard from '../../Components/PorductCard/ProductCard';
 
-const ProductList = () => {
+const ProductList = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('/productos').then(respuesta => { return respuesta});
+                const response = await axios.get('/productos');
                 setProducts(response.data);
             } catch (err) {
                 setError('Error fetching products');
@@ -44,7 +44,13 @@ const ProductList = () => {
         <div className="mt-20 ml-20">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {currentProducts.map(product => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard
+                        key={product.id}
+                        product={product}
+                        addToFavorites={addToFavorites}
+                        removeFromFavorites={removeFromFavorites}
+                        isFavorite={favorites.some(fav => fav.id === product.id)}
+                    />
                 ))}
             </div>
             <div className="flex justify-center mt-4">
