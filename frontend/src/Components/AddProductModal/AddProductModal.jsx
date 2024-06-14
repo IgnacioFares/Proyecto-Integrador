@@ -24,11 +24,12 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [imageUrls, setImageUrls] = useState(['']); // Añadido para gestionar las URLs de las imágenes
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/categorias').then(response => {return response.data});
+        const response = await axios.get('/categorias').then(response => response.data);
         setCategories(response);
       } catch (error) {
         console.error('Error al cargar las categorías', error);
@@ -37,7 +38,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
     const fetchFeatures = async () => {
       try {
-        const response = await axios.get('/administracion/caracteristicas').then(response => {return response.data});
+        const response = await axios.get('/administracion/caracteristicas').then(response => response.data);
         setFeatures(response);
       } catch (error) {
         console.error('Error al cargar las características', error);
@@ -46,7 +47,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
     const fetchLocations = async () => {
       try {
-        const response = await axios.get('/ubicaciones').then(response => {return response.data});
+        const response = await axios.get('/ubicaciones').then(response => response.data);
         setLocations(response);
       } catch (error) {
         console.error('Error al cargar las ubicaciones :(', error);
@@ -87,12 +88,14 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setProduct({
-      ...product,
-      imagenes: files.map(file => ({ url: file.name }))
-    });
+  const handleImageUrlChange = (index, value) => {
+    const updatedUrls = [...imageUrls];
+    updatedUrls[index] = value;
+    setImageUrls(updatedUrls);
+  };
+
+  const handleAddImageUrl = () => {
+    setImageUrls([...imageUrls, '']);
   };
 
   const handleLocationChange = (e) => {
@@ -125,6 +128,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       const addedProduct = await onAddProduct({
         ...product,
         precio: parseFloat(product.precio),
+        imagenes: imageUrls.map(url => ({ url })) // Añadido para enviar las URLs de las imágenes
       });
 
       setProduct({
@@ -146,6 +150,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
         }
       });
 
+      setImageUrls(['']); // Restablecer las URLs de las imágenes
       onClose();
     } catch (error) {
       console.error('Error al agregar el producto', error);
@@ -258,15 +263,19 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block mb-1">Imágenes</label>
-            <input
-              type="file"
-              name="imagenes"
-              onChange={handleImageChange}
-              className="w-full border p-2 rounded"
-              multiple
-              required
-            />
+            <label className="block mb-1">URLs de Imágenes</label>
+            {imageUrls.map((url, index) => (
+              <input
+                key={index}
+                type="text"
+                value={url}
+                onChange={(e) => handleImageUrlChange(index, e.target.value)}
+                className="w-full border p-2 rounded mb-2"
+                placeholder="Ingrese la URL de la imagen"
+                required
+              />
+            ))}
+            <button type="button" onClick={handleAddImageUrl} className="text-blue-500">Agregar otra URL</button>
           </div>
           <div className="flex justify-end">
             <button type="button" onClick={onClose} className="mr-4 px-4 py-2 bg-gray-500 text-white rounded">
