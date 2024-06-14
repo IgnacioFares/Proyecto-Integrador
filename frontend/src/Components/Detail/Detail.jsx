@@ -18,6 +18,8 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [reservations, setReservations] = useState(JSON.parse(localStorage.getItem('reservations')) || []);
+    const [isHovered, setIsHovered] = useState(false);
+    const [showImageModal, setShowImageModal] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -92,15 +94,34 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
         );
     }
 
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+    const handleShowImageModal = () => setShowImageModal(true);
+    const handleCloseImageModal = () => setShowImageModal(false);
+
     return (
         <div className="container mx-auto my-20 p-5 bg-white rounded-lg shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="flex justify-center">
+                <div 
+                    className="flex justify-center relative"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
                     <img
                         src={productSelected.imagenes[0].url}
                         alt={productSelected.nombre}
                         className="w-64 h-64 object-cover rounded-lg"
                     />
+                    {isHovered && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                onClick={handleShowImageModal}
+                            >
+                                Ver más
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <div>
                     <h1 className="text-3xl font-bold mb-4">{productSelected.nombre}</h1>
@@ -190,6 +211,29 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
                     >
                         Cancelar
                     </button>
+                </div>
+            </Modal>
+
+            <Modal
+                isOpen={showImageModal}
+                onRequestClose={handleCloseImageModal}
+                contentLabel="Galería de Imágenes"
+                className="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto my-20"
+                overlayClassName="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center"
+            >
+                <div className="flex justify-center items-center h-full">
+                    <div className="grid grid-cols-3 gap-4 h-96 bg-white p-4 rounded">
+                        <div className="col-span-1 flex items-center">
+                            <img src={productSelected.imagenes[0].url} alt="Principal" className="w-full h-64 object-cover rounded bg-transparent" />
+                        </div>
+                        <div className="col-span-2 grid grid-cols-2 gap-4">
+                            {productSelected.imagenes.slice(1).map((image, index) => (
+                                <div key={index} className="flex justify-center items-center overflow-hidden">
+                                    <img src={image.url} alt={`Gallery image ${index + 2}`} className="w-64 h-full object-cover rounded bg-transparent" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </Modal>
         </div>
