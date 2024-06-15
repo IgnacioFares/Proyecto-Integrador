@@ -7,6 +7,7 @@ const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(''); // Estado para el mensaje de éxito
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,8 +27,10 @@ const ProductManagement = () => {
       const response = await axios.post('/administracion/productos', product);
       setProducts([...products, response.data]);
       setError('');
+      setSuccess('Producto agregado con éxito.'); // Mensaje de éxito
     } catch (error) {
       setError('Error al agregar el producto.');
+      setSuccess(''); // Limpiar el mensaje de éxito en caso de error
     }
   };
 
@@ -35,8 +38,11 @@ const ProductManagement = () => {
     try {
       await axios.delete(`/administracion/productos/${id}`);
       setProducts(products.filter(product => product.id !== id));
+      setError('');
+      setSuccess('Producto eliminado con éxito.'); // Mensaje de éxito
     } catch (error) {
       setError('Error al eliminar el producto.');
+      setSuccess(''); // Limpiar el mensaje de éxito en caso de error
     }
   };
 
@@ -44,9 +50,11 @@ const ProductManagement = () => {
     try {
       const response = await axios.put(`/administracion/productos/${id}`, updates);
       setProducts(products.map(product => (product.id === id ? response.data : product)));
-      setError(''); // Clear error on successful update
+      setError('');
+      setSuccess('Producto actualizado con éxito.'); // Mensaje de éxito
     } catch (error) {
       setError('Error al actualizar el producto.');
+      setSuccess(''); // Limpiar el mensaje de éxito en caso de error
     }
   };
 
@@ -62,6 +70,7 @@ const ProductManagement = () => {
         </button>
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
+      {success && <div className="text-green-500 mb-4">{success}</div>}
       <ProductsTable
         products={products}
         onDeleteProduct={handleDeleteProduct}
