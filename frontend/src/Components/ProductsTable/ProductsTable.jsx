@@ -40,7 +40,11 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
   const handleDeleteClick = (id) => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
     if (confirmDelete) {
-      onDeleteProduct(id);
+      onDeleteProduct(id)
+        .catch(error => {
+          console.error('Error al eliminar el producto:', error);
+          alert('Hubo un error al intentar eliminar el producto.');
+        });
     }
   };
 
@@ -176,7 +180,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                   `${product.ubicacion.provincia}, ${product.ubicacion.ciudad}, ${product.ubicacion.direccion}`
                 )}
               </td>
-              <td className="py-2 text-center text-center">
+              <td className="py-2 text-center">
                 {editingProductId === product.id ? (
                   <button
                     className="text-green-500 hover:underline"

@@ -3,7 +3,6 @@ import axios from '../../axiosConfig'; // Asegúrate de que la ruta sea correcta
 import ProductsTable from '../ProductsTable/ProductsTable';
 import AddProductModal from '../AddProductModal/AddProductModal';
 
-
 const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
@@ -12,7 +11,7 @@ const ProductManagement = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/productos').then(respuesta => { return respuesta});
+        const response = await axios.get('/productos');
         setProducts(response.data);
       } catch (error) {
         setError('Error al cargar los productos.');
@@ -24,7 +23,7 @@ const ProductManagement = () => {
 
   const handleAddProduct = async (product) => {
     try {
-      const response = await axios.post('administracion/productos', product).then(respuesta => { return respuesta});
+      const response = await axios.post('/administracion/productos', product);
       setProducts([...products, response.data]);
       setError('');
     } catch (error) {
@@ -34,12 +33,13 @@ const ProductManagement = () => {
 
   const handleDeleteProduct = async (id) => {
     try {
-      await axios.post(`/productos/${id}`);
-      setProducts(products.filter(product => product.id !== id));
+        await axios.delete(`/administracion/productos/${id}`);
+        setProducts(products.filter(product => product.id !== id));
     } catch (error) {
-      setError('Error al eliminar el producto.');
+        setError('Error al eliminar el producto.');
     }
-  };
+};
+
 
   const handleUpdateProduct = async (id, updates) => {
     try {
@@ -52,7 +52,7 @@ const ProductManagement = () => {
 
   return (
     <div className="p-4">
-      <div className="flex justify-between mb-4 shadow-sm py-2" >
+      <div className="flex justify-between mb-4 shadow-sm py-2">
         <h1 className="text-2xl font-bold mb-4">Administración de Productos</h1>
         <button
           onClick={() => setIsModalOpen(true)}
