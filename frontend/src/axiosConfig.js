@@ -5,7 +5,7 @@ const getToken = () => {
 };
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080', // Asegúrate de que esta sea la URL base correcta para tu backend
+  baseURL: 'http://localhost:8080',
 });
 
 instance.interceptors.request.use(

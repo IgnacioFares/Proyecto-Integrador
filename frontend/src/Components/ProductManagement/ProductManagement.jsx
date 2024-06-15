@@ -33,18 +33,18 @@ const ProductManagement = () => {
 
   const handleDeleteProduct = async (id) => {
     try {
-        await axios.delete(`/administracion/productos/${id}`);
-        setProducts(products.filter(product => product.id !== id));
+      await axios.delete(`/administracion/productos/${id}`);
+      setProducts(products.filter(product => product.id !== id));
     } catch (error) {
-        setError('Error al eliminar el producto.');
+      setError('Error al eliminar el producto.');
     }
-};
-
+  };
 
   const handleUpdateProduct = async (id, updates) => {
     try {
-      const response = await axios.put(`/productos/${id}`, updates);
+      const response = await axios.put(`/administracion/productos/${id}`, updates);
       setProducts(products.map(product => (product.id === id ? response.data : product)));
+      setError(''); // Clear error on successful update
     } catch (error) {
       setError('Error al actualizar el producto.');
     }

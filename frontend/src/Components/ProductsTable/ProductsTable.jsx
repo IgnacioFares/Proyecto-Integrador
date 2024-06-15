@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from '../../axiosConfig';
 import resolveArray from "../../Utils/FeaturesManager";
 
 const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
   const [editingProductId, setEditingProductId] = useState(null);
   const [editableProduct, setEditableProduct] = useState({});
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/categorias');
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error al cargar las categorías', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleEditClick = (product) => {
     setEditingProductId(product.id);
@@ -29,6 +44,12 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
           [name]: value
         }
       });
+    } else if (name === 'categoria') {
+      const selectedCategory = categories.find(cat => cat.nombre === value);
+      setEditableProduct({
+        ...editableProduct,
+        categoria: selectedCategory
+      });
     } else {
       setEditableProduct({
         ...editableProduct,
@@ -40,11 +61,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
   const handleDeleteClick = (id) => {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
     if (confirmDelete) {
-      onDeleteProduct(id)
-        .catch(error => {
-          console.error('Error al eliminar el producto:', error);
-          alert('Hubo un error al intentar eliminar el producto.');
-        });
+      onDeleteProduct(id);
     }
   };
 
@@ -85,7 +102,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                     name="nombre"
                     value={editableProduct.nombre}
                     onChange={handleChange}
-                    className="border p-1 rounded"
+                    className="border p-1 rounded w-24"
                   />
                 ) : (
                   product.nombre
@@ -97,7 +114,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                     name="descripcion"
                     value={editableProduct.descripcion}
                     onChange={handleChange}
-                    className="border p-1 rounded"
+                    className="border p-1 rounded w-32"
                   />
                 ) : (
                   product.descripcion
@@ -110,7 +127,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                     name="precio"
                     value={editableProduct.precio}
                     onChange={handleChange}
-                    className="border p-1 rounded"
+                    className="border p-1 rounded w-20"
                   />
                 ) : (
                   `$${product.precio}`
@@ -123,7 +140,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                     name="horarioApertura"
                     value={formatTime(editableProduct.horarioApertura)}
                     onChange={handleChange}
-                    className="border p-1 rounded"
+                    className="border p-1 rounded w-24"
                   />
                 ) : (
                   formatTime(product.horarioApertura)
@@ -136,7 +153,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                     name="horarioCierre"
                     value={formatTime(editableProduct.horarioCierre)}
                     onChange={handleChange}
-                    className="border p-1 rounded"
+                    className="border p-1 rounded w-24"
                   />
                 ) : (
                   formatTime(product.horarioCierre)
@@ -146,7 +163,21 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                 {resolveArray(product.caracteristicas)}
               </td>
               <td className="py-2 text-center">
-                {product.categoria == null || product.categoria.nombre}
+                {editingProductId === product.id ? (
+                  <select
+                    name="categoria"
+                    value={editableProduct.categoria?.nombre || ''}
+                    onChange={handleChange}
+                    className="border p-1 rounded w-28"
+                  >
+                    <option value="">Seleccione una categoría</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.nombre}>{category.nombre}</option>
+                    ))}
+                  </select>
+                ) : (
+                  product.categoria?.nombre
+                )}
               </td>
               <td className="py-2 text-center">
                 {editingProductId === product.id ? (
@@ -156,7 +187,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                       name="provincia"
                       value={editableProduct.ubicacion.provincia}
                       onChange={handleChange}
-                      className="border p-1 rounded mb-1"
+                      className="border p-1 rounded mb-1 w-24"
                       placeholder="Provincia"
                     />
                     <input
@@ -164,7 +195,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                       name="ciudad"
                       value={editableProduct.ubicacion.ciudad}
                       onChange={handleChange}
-                      className="border p-1 rounded mb-1"
+                      className="border p-1 rounded mb-1 w-24"
                       placeholder="Ciudad"
                     />
                     <input
@@ -172,7 +203,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                       name="direccion"
                       value={editableProduct.ubicacion.direccion}
                       onChange={handleChange}
-                      className="border p-1 rounded"
+                      className="border p-1 rounded w-24"
                       placeholder="Dirección"
                     />
                   </div>
@@ -180,7 +211,7 @@ const ProductsTable = ({ products, onDeleteProduct, onUpdateProduct }) => {
                   `${product.ubicacion.provincia}, ${product.ubicacion.ciudad}, ${product.ubicacion.direccion}`
                 )}
               </td>
-              <td className="py-2 text-center">
+              <td className="py-2 text-center text-center">
                 {editingProductId === product.id ? (
                   <button
                     className="text-green-500 hover:underline"

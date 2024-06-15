@@ -9,7 +9,7 @@ const CategoryManagement = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('/administracion/categorias');
+      const response = await axios.get('/categorias');
       setCategories(response.data);
     } catch (error) {
       setError('Error al cargar las categorías.');
