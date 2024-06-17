@@ -6,9 +6,6 @@ import Contactanos from "../../Components/Contactanos/Contactanos";
 import { CardContainer } from "../../Components/Cardconteiner/CardCounteiner";
 
 export const Home = () => {
-
-  
-
   return (
     <>
       <Encabezado />

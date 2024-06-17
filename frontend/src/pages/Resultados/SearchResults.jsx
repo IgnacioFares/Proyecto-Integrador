@@ -16,29 +16,34 @@ const SearchResults = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (!results.length) {
-    return <div>No hay resultados para mostrar.</div>;
-  }
-
   return (
     <div className="mt-20 ml-20">
-      <h2 className="text-2xl font-bold mb-4">Productos Encontrados: {results.length}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {currentProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-      <div className="flex justify-center mt-4">
-        {[...Array(totalPages).keys()].map(number => (
-          <button
-            key={number + 1}
-            onClick={() => paginate(number + 1)}
-            className={`mx-1 mb-5 px-3 py-1 rounded ${currentPage === number + 1 ? 'bg-green-500 text-white' : 'bg-gray-300'}`}
-          >
-            {number + 1}
-          </button>
-        ))}
-      </div>
+      {results.length === 0 ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center text-xl text-gray-500 border border-gray-300 rounded p-4">
+            No se ha encontrado tu búsqueda.
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {currentProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+          <div className="flex justify-center mt-4">
+            {[...Array(totalPages).keys()].map(number => (
+              <button
+                key={number + 1}
+                onClick={() => paginate(number + 1)}
+                className={`mx-1 mb-5 px-3 py-1 rounded ${currentPage === number + 1 ? 'bg-green-500 text-white' : 'bg-gray-300'}`}
+              >
+                {number + 1}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

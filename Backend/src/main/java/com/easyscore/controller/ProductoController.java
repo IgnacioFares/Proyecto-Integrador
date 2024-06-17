@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -29,5 +31,17 @@ public class ProductoController {
         return productoService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Buscar productos a traves de la barra de busqueda")
+    @GetMapping("/search")
+    public ResponseEntity<List<Producto>> searchProducts(@RequestParam(required = false) String searchTerm,
+                                                         @RequestParam(required = false) String category,
+                                                         @RequestParam(required = false) String ciudad,
+                                                         @RequestParam(required = false) LocalDate startDate,
+                                                         @RequestParam(required = false) LocalTime startTime,
+                                                         @RequestParam(required = false) LocalTime endTime) {
+        List<Producto> productos = productoService.searchProducts(searchTerm, category, ciudad, startDate, startTime, endTime);
+        return ResponseEntity.ok(productos);
     }
 }

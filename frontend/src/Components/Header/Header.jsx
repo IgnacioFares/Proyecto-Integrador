@@ -3,7 +3,15 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
-  const { token, roles, logout } = useAuth();
+  const { token, roles, logout, user } = useAuth();
+
+  const getInitials = (nombre, apellido) => {
+    const nombreInitial = nombre ? nombre.charAt(0).toUpperCase() : '';
+    const apellidoInitial = apellido ? apellido.charAt(0).toUpperCase() : '';
+    return `${nombreInitial}${apellidoInitial}`;
+  };
+
+  console.log('User:', user);
 
   return (
     <header className="fixed top-0 left-0 w-full shadow-md h-16 bg-white text-green-500 flex items-center justify-between z-10">
@@ -14,19 +22,24 @@ const Header = () => {
       </div>
 
       <nav>
-        <div className="flex items-center gap-6 ">
-          <Link
-            to={routes.productList}
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
+        <div className="flex items-center gap-6">
+          <Link to={routes.productList} className="hover:text-green-700 transition duration-300 ease-in-out">
             Reservar
           </Link>
-          <Link
-            to={routes.about}
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
+          <Link to={routes.about} className="hover:text-green-700 transition duration-300 ease-in-out">
             Sobre Nosotros
           </Link>
+          <Link
+            to="/favoritos"
+            className="hover:text-green-700 transition duration-300 ease-in-out"
+          >
+            Favoritos
+          </Link>
+          {(roles.includes('ROLE_ADMIN') || roles.includes('ROLE_USER')) && (
+            <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
+              Mis Reservas
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -47,9 +60,14 @@ const Header = () => {
                 Panel de Administración
               </Link>
             )}
-            <button onClick={logout} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white">
-              Cerrar Sesion
-            </button>
+            <div className="flex items-center gap-3">
+              <div className="user-initials-circle">
+                {getInitials(user?.nombre, user?.apellido)}
+              </div>
+              <button onClick={logout} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white">
+                Cerrar Sesion
+              </button>
+            </div>
           </>
         )}
       </div>
@@ -58,8 +76,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
-
-
-

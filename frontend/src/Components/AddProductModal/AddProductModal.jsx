@@ -15,16 +15,21 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       ciudad: '',
       direccion: ''
     },
-    categoria: ''
+    categoria: {
+      id: '',
+      nombre: ''
+    }
   });
 
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [imageUrls, setImageUrls] = useState(['']); // Añadido para gestionar las URLs de las imágenes
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/administracion/categorias').then(response => {return response.data});
+        const response = await axios.get('/categorias').then(response => response.data);
         setCategories(response);
       } catch (error) {
         console.error('Error al cargar las categorías', error);
@@ -33,13 +38,23 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
     const fetchFeatures = async () => {
       try {
-        const response = await axios.get('/administracion/caracteristicas').then(response => {return response.data});
+        const response = await axios.get('/administracion/caracteristicas').then(response => response.data);
         setFeatures(response);
       } catch (error) {
         console.error('Error al cargar las características', error);
       }
     };
 
+    const fetchLocations = async () => {
+      try {
+        const response = await axios.get('/ubicaciones').then(response => response.data);
+        setLocations(response);
+      } catch (error) {
+        console.error('Error al cargar las ubicaciones :(', error);
+      }
+    };
+
+    fetchLocations();
     fetchCategories();
     fetchFeatures();
   }, []);
@@ -63,18 +78,46 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   };
 
   const handleFeatureChange = (e) => {
-    const selectedFeatures = Array.from(e.target.selectedOptions, option => option.value);
+    const selectedFeatures = Array.from(e.target.selectedOptions, option => {
+      const feature = features.find(f => f.nombre === option.value);
+      return { id: feature.id, nombre: feature.nombre };
+    });
     setProduct({
       ...product,
       caracteristicas: selectedFeatures
     });
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+  const handleImageUrlChange = (index, value) => {
+    const updatedUrls = [...imageUrls];
+    updatedUrls[index] = value;
+    setImageUrls(updatedUrls);
+  };
+
+  const handleAddImageUrl = () => {
+    setImageUrls([...imageUrls, '']);
+  };
+
+  const handleLocationChange = (e) => {
+    const location = locations.find(loc => loc.ciudad === e.target.value);
     setProduct({
       ...product,
-      imagenes: files.map(file => file.name)
+      ubicacion: {
+        provincia: location.provincia,
+        ciudad: location.ciudad,
+        direccion: location.direccion
+      }
+    });
+  };
+
+  const handleCategoryChange = (e) => {
+    const category = categories.find(cat => cat.nombre === e.target.value);
+    setProduct({
+      ...product,
+      categoria: {
+        id: category.id,
+        nombre: category.nombre
+      }
     });
   };
 
@@ -85,13 +128,8 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       const addedProduct = await onAddProduct({
         ...product,
         precio: parseFloat(product.precio),
+        imagenes: imageUrls.map(url => ({ url })) // Añadido para enviar las URLs de las imágenes
       });
-
-      const categoriaSeleccionada = categories.find(category => category.nombre === product.categoria);
-
-      if (categoriaSeleccionada) {
-        await axios.post(`/administracion/productos/${addedProduct.id}/categoria/${categoriaSeleccionada.id}`, product);
-      }
 
       setProduct({
         nombre: '',
@@ -106,9 +144,13 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
           ciudad: '',
           direccion: ''
         },
-        categoria: ''
+        categoria: {
+          id: '',
+          nombre: ''
+        }
       });
 
+      setImageUrls(['']); // Restablecer las URLs de las imágenes
       onClose();
     } catch (error) {
       console.error('Error al agregar el producto', error);
@@ -178,40 +220,24 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
           </div>
           <div className="mb-4">
             <label className="block mb-1">Ubicación</label>
-            <input
-              type="text"
-              name="provincia"
-              value={product.ubicacion.provincia}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder="Provincia"
-              required
-            />
-            <input
-              type="text"
-              name="ciudad"
+            <select
+              name="ubicacion"
               value={product.ubicacion.ciudad}
-              onChange={handleChange}
+              onChange={handleLocationChange}
               className="w-full border p-2 rounded"
-              placeholder="Ciudad"
-              required
-            />
-            <input
-              type="text"
-              name="direccion"
-              value={product.ubicacion.direccion}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder="Dirección"
-              required
-            />
+              required>
+              <option value="">Seleccione una ubicación</option>
+              {locations.map((ubicacion) => (
+                <option key={ubicacion.id} value={ubicacion.ciudad}>{ubicacion.direccion + ' ' + ubicacion.ciudad  + ' ' + ubicacion.provincia}</option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label className="block mb-1">Categoría</label>
             <select
               name="categoria"
-              value={product.categoria}
-              onChange={handleChange}
+              value={product.categoria.nombre}
+              onChange={handleCategoryChange}
               className="w-full border p-2 rounded"
               required
             >
@@ -226,7 +252,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             <select
               multiple
               name="caracteristicas"
-              value={product.caracteristicas}
+              value={product.caracteristicas.map(feature => feature.nombre)}
               onChange={handleFeatureChange}
               className="w-full border p-2 rounded"
               required
@@ -237,15 +263,19 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block mb-1">Imágenes</label>
-            <input
-              type="file"
-              name="imagenes"
-              onChange={handleImageChange}
-              className="w-full border p-2 rounded"
-              multiple
-              required
-            />
+            <label className="block mb-1">URLs de Imágenes</label>
+            {imageUrls.map((url, index) => (
+              <input
+                key={index}
+                type="text"
+                value={url}
+                onChange={(e) => handleImageUrlChange(index, e.target.value)}
+                className="w-full border p-2 rounded mb-2"
+                placeholder="Ingrese la URL de la imagen"
+                required
+              />
+            ))}
+            <button type="button" onClick={handleAddImageUrl} className="text-blue-500">Agregar otra URL</button>
           </div>
           <div className="flex justify-end">
             <button type="button" onClick={onClose} className="mr-4 px-4 py-2 bg-gray-500 text-white rounded">
