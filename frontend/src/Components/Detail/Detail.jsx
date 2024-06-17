@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
@@ -7,13 +7,17 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from '../../axiosConfig';
 import Caracteristicas from '../Caracteristicas/Caracteristicas';
+import { useAuth } from '../../context/AuthContext';
+import { routes } from '../../routes/routes'; // Importa las rutas
 
 Modal.setAppElement('#root'); // Necesario para accesibilidad
 
 const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const { id } = useParams();
+    const { token } = useAuth();
     const [productSelected, setProductSelected] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [authModalIsOpen, setAuthModalIsOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
@@ -35,11 +39,19 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     }, [id]);
 
     const openModal = () => {
-        setModalIsOpen(true);
+        if (token) {
+            setModalIsOpen(true);
+        } else {
+            setAuthModalIsOpen(true);
+        }
     };
 
     const closeModal = () => {
         setModalIsOpen(false);
+    };
+
+    const closeAuthModal = () => {
+        setAuthModalIsOpen(false);
     };
 
     const handleReserve = () => {
@@ -207,6 +219,32 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
                     </button>
                     <button
                         onClick={closeModal}
+                        className="bg-gray-500 text-white px-4 py-2 rounded"
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </Modal>
+
+            <Modal
+                isOpen={authModalIsOpen}
+                onRequestClose={closeAuthModal}
+                contentLabel="Iniciar Sesión"
+                className="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto my-20"
+                overlayClassName="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center"
+            >
+                <h2 className="text-2xl font-bold mb-4">Debes iniciar sesión para reservar</h2>
+                <div className="flex justify-around mt-4">
+                    <Link to={routes.Login} className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition-all duration-300">
+                        Iniciar Sesión
+                    </Link>
+                    <Link to={routes.Register} className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 transition-all duration-300">
+                        Crear Cuenta
+                    </Link>
+                </div>
+                <div className="flex justify-end mt-4">
+                    <button
+                        onClick={closeAuthModal}
                         className="bg-gray-500 text-white px-4 py-2 rounded"
                     >
                         Cancelar
