@@ -17,7 +17,7 @@ const MisReservas = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`/administracion/productos`);
+                const response = await axios.get(`/productos`);
                 setProducts(response.data);
                 setLoading(false);
             } catch (err) {
@@ -57,7 +57,7 @@ const MisReservas = () => {
                                     {product ? (
                                         <>
                                             <img
-                                                src={product.imagenes[0]?.url || "https://recreasport.com/wp-content/uploads/2017/04/SAM_0191-2.jpg"}
+                                                src={product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : "https://recreasport.com/wp-content/uploads/2017/04/SAM_0191-2.jpg"}
                                                 alt={product.nombre}
                                                 className="w-20 h-20 object-cover rounded-full mr-4"
                                             />
