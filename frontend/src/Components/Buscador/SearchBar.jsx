@@ -153,6 +153,7 @@ const SearchBar = () => {
             selected={date}
             onChange={date => setDate(date)}
             placeholderText="Fecha"
+            minDate={new Date()}  // Establece la fecha mínima a hoy
             className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
           />
         </div>
@@ -188,10 +189,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
-
-
-
-
-
-

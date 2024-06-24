@@ -16,7 +16,7 @@ import FeaturesManagement from "./Components/FeaturesManagement/FeaturesManageme
 import MisReservas from "./Components/ReservarCancha/MisReservas";
 import { AuthProvider } from './context/AuthContext';
 import SearchResults from "./pages/Resultados/SearchResults";
-import Favorites from "./pages/Favorites/Favorites";  // Asegúrate de que este componente existe y está exportado correctamente
+import Favorites from "./pages/Favorites/Favorites";
 
 function App() {
   const [favorites, setFavorites] = useState([]);

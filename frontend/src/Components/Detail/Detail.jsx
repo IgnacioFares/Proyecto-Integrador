@@ -8,9 +8,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from '../../axiosConfig';
 import Caracteristicas from '../Caracteristicas/Caracteristicas';
 import { useAuth } from '../../context/AuthContext';
-import { routes } from '../../routes/routes'; // Importa las rutas
+import { routes } from '../../routes/routes';
 
-Modal.setAppElement('#root'); // Necesario para accesibilidad
+Modal.setAppElement('#root');
 
 const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const { id } = useParams();
@@ -54,21 +54,31 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
         setAuthModalIsOpen(false);
     };
 
-    const handleReserve = () => {
+    const handleReserve = async () => {
         if (!selectedDate || !startTime || !endTime) return;
-
+    
         const newReservation = {
-            productId: productSelected.id,
-            date: selectedDate.toISOString().split('T')[0],
-            startTime: startTime.getTime(),
-            endTime: endTime.getTime()
+            producto: { id: productSelected.id },
+            fechaReserva: selectedDate.toISOString().split('T')[0],
+            horaInicio: startTime.toISOString().split('T')[1].split('Z')[0],
+            horaFin: endTime.toISOString().split('T')[1].split('Z')[0],
         };
-
-        const updatedReservations = [...reservations, newReservation];
-        setReservations(updatedReservations);
-        localStorage.setItem('reservations', JSON.stringify(updatedReservations));
-        closeModal();
+    
+        try {
+            const response = await axios.post('/bookings', newReservation, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log('Reserva realizada:', response.data);
+            closeModal();
+        } catch (err) {
+            console.error('Error al realizar la reserva:', err);
+        }
     };
+    
+    
+    
 
     const isReserved = (date, start, end) => {
         return reservations.some(reservation => {

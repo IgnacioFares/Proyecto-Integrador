@@ -23,7 +23,9 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
 
   const [categories, setCategories] = useState([]);
   const [features, setFeatures] = useState([]);
-  const [locations, setLocations] = useState([]);
+  const [provinces, setProvinces] = useState([
+    'Buenos Aires', 'Catamarca', 'Chaco', 'Chubut', 'Córdoba', 'Corrientes', 'Entre Ríos', 'Formosa', 'Jujuy', 'La Pampa', 'La Rioja', 'Mendoza', 'Misiones', 'Neuquén', 'Río Negro', 'Salta', 'San Juan', 'San Luis', 'Santa Cruz', 'Santa Fe', 'Santiago del Estero', 'Tierra del Fuego', 'Tucumán'
+  ]);
   const [imageUrls, setImageUrls] = useState(['']); // Añadido para gestionar las URLs de las imágenes
 
   useEffect(() => {
@@ -45,16 +47,6 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
       }
     };
 
-    const fetchLocations = async () => {
-      try {
-        const response = await axios.get('/ubicaciones').then(response => response.data);
-        setLocations(response);
-      } catch (error) {
-        console.error('Error al cargar las ubicaciones :(', error);
-      }
-    };
-
-    fetchLocations();
     fetchCategories();
     fetchFeatures();
   }, []);
@@ -95,19 +87,11 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
   };
 
   const handleAddImageUrl = () => {
-    setImageUrls([...imageUrls, '']);
-  };
-
-  const handleLocationChange = (e) => {
-    const location = locations.find(loc => loc.ciudad === e.target.value);
-    setProduct({
-      ...product,
-      ubicacion: {
-        provincia: location.provincia,
-        ciudad: location.ciudad,
-        direccion: location.direccion
-      }
-    });
+    if (imageUrls.length < 5) {
+      setImageUrls([...imageUrls, '']);
+    } else {
+      alert('Solo puedes agregar hasta 5 URLs de imágenes.');
+    }
   };
 
   const handleCategoryChange = (e) => {
@@ -219,18 +203,40 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1">Ubicación</label>
+            <label className="block mb-1">Provincia</label>
             <select
-              name="ubicacion"
-              value={product.ubicacion.ciudad}
-              onChange={handleLocationChange}
+              name="provincia"
+              value={product.ubicacion.provincia}
+              onChange={handleChange}
               className="w-full border p-2 rounded"
               required>
-              <option value="">Seleccione una ubicación</option>
-              {locations.map((ubicacion) => (
-                <option key={ubicacion.id} value={ubicacion.ciudad}>{ubicacion.direccion + ' ' + ubicacion.ciudad  + ' ' + ubicacion.provincia}</option>
+              <option value="">Seleccione una provincia</option>
+              {provinces.map((provincia, index) => (
+                <option key={index} value={provincia}>{provincia}</option>
               ))}
             </select>
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Ciudad</label>
+            <input
+              type="text"
+              name="ciudad"
+              value={product.ubicacion.ciudad}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Dirección</label>
+            <input
+              type="text"
+              name="direccion"
+              value={product.ubicacion.direccion}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              required
+            />
           </div>
           <div className="mb-4">
             <label className="block mb-1">Categoría</label>
@@ -275,7 +281,11 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                 required
               />
             ))}
-            <button type="button" onClick={handleAddImageUrl} className="text-blue-500">Agregar otra URL</button>
+            {imageUrls.length < 5 && (
+              <button type="button" onClick={handleAddImageUrl} className="text-blue-500">
+                Agregar otra URL
+              </button>
+            )}
           </div>
           <div className="flex justify-end">
             <button type="button" onClick={onClose} className="mr-4 px-4 py-2 bg-gray-500 text-white rounded">

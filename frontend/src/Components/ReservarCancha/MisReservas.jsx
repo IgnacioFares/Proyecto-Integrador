@@ -1,37 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig';
+import { useAuth } from '../../context/AuthContext';
 
 const MisReservas = () => {
+    const { token } = useAuth();
     const [reservations, setReservations] = useState([]);
-    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const storedReservations = JSON.parse(localStorage.getItem('reservations'));
-        if (storedReservations) {
-            setReservations(storedReservations);
-        }
-    }, []);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchReservations = async () => {
             try {
-                const response = await axios.get(`/productos`);
-                setProducts(response.data);
+                const response = await axios.get('/bookings/mine', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setReservations(response.data);
                 setLoading(false);
             } catch (err) {
-                setError('Error al cargar los productos.');
+                setError('Error al cargar las reservas.');
                 setLoading(false);
             }
         };
-        fetchProducts();
-    }, []);
+        fetchReservations();
+    }, [token]);
 
-    const cancelReservation = (index) => {
-        const updatedReservations = reservations.filter((_, i) => i !== index);
-        setReservations(updatedReservations);
-        localStorage.setItem('reservations', JSON.stringify(updatedReservations));
+    const cancelReservation = async (reservationId) => {
+        try {
+            await axios.delete(`/bookings/${reservationId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setReservations(reservations.filter(reservation => reservation.id !== reservationId));
+        } catch (err) {
+            setError('Error al cancelar la reserva.');
+        }
+    };
+
+    const formatTime = (time) => {
+        const date = new Date(`1970-01-01T${time}`);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
     if (loading) {
@@ -49,41 +59,28 @@ const MisReservas = () => {
                 <p className="text-gray-700">No tienes reservas.</p>
             ) : (
                 <ul>
-                    {reservations.map((reservation, index) => {
-                        const product = products.find(product => product.id === reservation.productId);
-                        return (
-                            <li key={index} className="border-b py-4 flex justify-between items-center">
-                                <div className="flex items-center">
-                                    {product ? (
-                                        <>
-                                            <img
-                                                src={product.imagenes && product.imagenes.length > 0 ? product.imagenes[0].url : "https://recreasport.com/wp-content/uploads/2017/04/SAM_0191-2.jpg"}
-                                                alt={product.nombre}
-                                                className="w-20 h-20 object-cover rounded-full mr-4"
-                                            />
-                                            <div>
-                                                <h2 className="text-xl font-semibold">{product.nombre}</h2>
-                                                <p className="text-gray-700">{reservation.date}</p>
-                                                <p className="text-gray-700">De {new Date(reservation.startTime).toLocaleTimeString()} a {new Date(reservation.endTime).toLocaleTimeString()}</p>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <div>
-                                            <p className="text-gray-700">Producto no encontrado</p>
-                                            <p className="text-gray-700">{reservation.date}</p>
-                                            <p className="text-gray-700">De {new Date(reservation.startTime).toLocaleTimeString()} a {new Date(reservation.endTime).toLocaleTimeString()}</p>
-                                        </div>
-                                    )}
+                    {reservations.map((reservation) => (
+                        <li key={reservation.id} className="border-b py-4 flex justify-between items-center">
+                            <div className="flex items-center">
+                                <img
+                                    src={reservation.producto.imagenes[0]?.url || "https://recreasport.com/wp-content/uploads/2017/04/SAM_0191-2.jpg"}
+                                    alt={reservation.producto.nombre}
+                                    className="w-20 h-20 object-cover rounded-full mr-4"
+                                />
+                                <div>
+                                    <h2 className="text-xl font-semibold">{reservation.producto.nombre}</h2>
+                                    <p className="text-gray-700">{reservation.fechaReserva}</p>
+                                    <p className="text-gray-700">De {formatTime(reservation.horaInicio)} a {formatTime(reservation.horaFin)}</p>
                                 </div>
-                                <button
-                                    onClick={() => cancelReservation(index)}
-                                    className="bg-red-500 text-white px-4 py-2 rounded"
-                                >
-                                    Cancelar
-                                </button>
-                            </li>
-                        );
-                    })}
+                            </div>
+                            <button
+                                onClick={() => cancelReservation(reservation.id)}
+                                className="bg-red-500 text-white px-4 py-2 rounded"
+                            >
+                                Cancelar
+                            </button>
+                        </li>
+                    ))}
                 </ul>
             )}
         </div>
