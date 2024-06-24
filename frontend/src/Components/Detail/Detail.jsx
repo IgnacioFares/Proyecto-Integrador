@@ -22,6 +22,8 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [reservations, setReservations] = useState(JSON.parse(localStorage.getItem('reservations')) || []);
+    const [availableTimes, setAvailableTimes] = useState([]);
+    const [reservationSuccess, setReservationSuccess] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [showImageModal, setShowImageModal] = useState(false);
 
@@ -37,6 +39,21 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
 
         fetchProduct();
     }, [id]);
+
+    useEffect(() => {
+        const fetchAvailableTimes = async () => {
+            if (selectedDate) {
+                try {
+                    const response = await axios.get(`/bookings/available-times/${id}/${selectedDate.toISOString().split('T')[0]}`);
+                    setAvailableTimes(response.data.map(time => new Date(`${selectedDate.toISOString().split('T')[0]}T${time}`)));
+                } catch (err) {
+                    console.error('Error fetching available times:', err);
+                }
+            }
+        };
+
+        fetchAvailableTimes();
+    }, [selectedDate, id]);
 
     const openModal = () => {
         if (token) {
@@ -56,51 +73,27 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
 
     const handleReserve = async () => {
         if (!selectedDate || !startTime || !endTime) return;
-    
+
         const newReservation = {
             producto: { id: productSelected.id },
             fechaReserva: selectedDate.toISOString().split('T')[0],
-            horaInicio: startTime.toISOString().split('T')[1].split('Z')[0],
-            horaFin: endTime.toISOString().split('T')[1].split('Z')[0],
+            horaInicio: startTime.toTimeString().split(' ')[0],
+            horaFin: endTime.toTimeString().split(' ')[0],
         };
-    
+
         try {
             const response = await axios.post('/bookings', newReservation, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log('Reserva realizada:', response.data);
+            setReservations([...reservations, response.data]);
+            localStorage.setItem('reservations', JSON.stringify([...reservations, response.data]));
+            setReservationSuccess(true);
             closeModal();
         } catch (err) {
             console.error('Error al realizar la reserva:', err);
         }
-    };
-    
-    
-    
-
-    const isReserved = (date, start, end) => {
-        return reservations.some(reservation => {
-            return (
-                reservation.productId === productSelected.id &&
-                reservation.date === date.toISOString().split('T')[0] &&
-                (
-                    (start >= reservation.startTime && start < reservation.endTime) ||
-                    (end > reservation.startTime && end <= reservation.endTime) ||
-                    (start <= reservation.startTime && end >= reservation.endTime)
-                )
-            );
-        });
-    };
-
-    const filterTime = (time) => {
-        if (!selectedDate || !startTime) return false;
-
-        const date = selectedDate.toISOString().split('T')[0];
-        const start = startTime.getTime();
-        const end = time.getTime();
-        return isReserved(new Date(date), start, end);
     };
 
     const isFavorite = productSelected && favorites.some(fav => fav.id === productSelected.id);
@@ -123,6 +116,7 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
 
     return (
         <div className="container mx-auto my-20 p-5 bg-white rounded-lg shadow-lg">
+            {reservationSuccess && <div className="text-green-500 alert alert-success">Reserva confirmada</div>}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div 
                     className="flex justify-center relative"
@@ -198,11 +192,11 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
                         onChange={time => setStartTime(time)}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={30}
+                        timeIntervals={60}
                         timeCaption="Hora de Inicio"
                         dateFormat="h:mm aa"
                         className="w-full px-3 py-2 border rounded"
-                        excludeTimes={reservations.filter(r => r.date === selectedDate?.toISOString().split('T')[0]).map(r => new Date(r.startTime))}
+                        includeTimes={availableTimes}
                     />
                 </div>
                 <div className="mb-4">
@@ -212,18 +206,18 @@ const Detail = ({ addToFavorites, removeFromFavorites, favorites }) => {
                         onChange={time => setEndTime(time)}
                         showTimeSelect
                         showTimeSelectOnly
-                        timeIntervals={30}
+                        timeIntervals={60}
                         timeCaption="Hora de Fin"
                         dateFormat="h:mm aa"
                         className="w-full px-3 py-2 border rounded"
-                        excludeTimes={reservations.filter(r => r.date === selectedDate?.toISOString().split('T')[0]).map(r => new Date(r.endTime))}
+                        includeTimes={availableTimes.map(time => new Date(time.getTime() + 60 * 60 * 1000))}
                     />
                 </div>
                 <div className="flex justify-end">
                     <button
                         onClick={handleReserve}
                         className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                        disabled={!selectedDate || !startTime || !endTime || filterTime(endTime)}
+                        disabled={!selectedDate || !startTime || !endTime}
                     >
                         Confirmar Reserva
                     </button>

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 @Service
 public class BookingService {
@@ -51,5 +53,28 @@ public class BookingService {
     public List<Booking> findBookingsByUserEmail(String email) {
         return bookingRepository.findByUsuarioEmail(email);
     }
+
+    public List<LocalTime> getAvailableTimes(Long productId, LocalDate date) {
+        List<Booking> bookings = bookingRepository.findByProductoIdAndFechaReserva(productId, date);
+        List<LocalTime> availableTimes = new ArrayList<>();
+        LocalTime openingTime = LocalTime.of(10, 0); // Hora de apertura
+        LocalTime closingTime = LocalTime.of(23, 0); // Hora de cierre
+
+        for (LocalTime time = openingTime; time.isBefore(closingTime); time = time.plusHours(1)) {
+            boolean isAvailable = true;
+            for (Booking booking : bookings) {
+                if (!booking.getHoraInicio().isAfter(time) && !booking.getHoraFin().isBefore(time.plusHours(1))) {
+                    isAvailable = false;
+                    break;
+                }
+            }
+            if (isAvailable) {
+                availableTimes.add(time);
+            }
+        }
+
+        return availableTimes;
+    }
+
 
 }

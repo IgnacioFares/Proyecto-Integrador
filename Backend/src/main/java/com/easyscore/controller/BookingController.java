@@ -66,5 +66,12 @@ public class BookingController {
         String email = authentication.getName(); // Obtener el email del usuario autenticado
         return bookingService.findBookingsByUserEmail(email);
     }
+    @Operation(summary = "Obtiene los horarios disponibles para un producto en una fecha específica")
+    @GetMapping("/available-times/{productId}/{date}")
+    public List<LocalTime> getAvailableTimes(@PathVariable Long productId, @PathVariable String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return bookingService.getAvailableTimes(productId, localDate);
+    }
+
 
 }
