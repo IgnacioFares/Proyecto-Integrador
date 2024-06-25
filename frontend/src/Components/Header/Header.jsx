@@ -1,9 +1,13 @@
-import { routes } from "../../routes/routes";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { slide as Menu } from "react-burger-menu";
+import { routes } from "../../routes/routes";
+import "./Header.css"; // Asegúrate de tener los estilos necesarios para el menú de hamburguesa
 
 const Header = () => {
   const { token, roles, logout, user } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   const getInitials = (nombre, apellido) => {
     const nombreInitial = nombre ? nombre.charAt(0).toUpperCase() : '';
@@ -11,7 +15,13 @@ const Header = () => {
     return `${nombreInitial}${apellidoInitial}`;
   };
 
-  console.log('User:', user);
+  const handleStateChange = (state) => {
+    setIsOpen(state.isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full shadow-md h-16 bg-white text-green-500 flex items-center justify-between z-10">
@@ -21,29 +31,67 @@ const Header = () => {
         </Link>
       </div>
 
-      <nav>
-        <div className="flex items-center gap-6">
-          <Link to={routes.productList} className="hover:text-green-700 transition duration-300 ease-in-out">
-            Reservar
+      <div className="hidden md:flex items-center gap-6">
+        <Link to={routes.productList} className="hover:text-green-700 transition duration-300 ease-in-out">
+          Reservar
+        </Link>
+        <Link to={routes.about} className="hover:text-green-700 transition duration-300 ease-in-out">
+          Sobre Nosotros
+        </Link>
+        <Link to="/favoritos" className="hover:text-green-700 transition duration-300 ease-in-out">
+          Favoritos
+        </Link>
+        {(roles.includes('ROLE_ADMIN') || roles.includes('ROLE_USER')) && (
+          <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
+            Mis Reservas
           </Link>
-          <Link to={routes.about} className="hover:text-green-700 transition duration-300 ease-in-out">
-            Sobre Nosotros
-          </Link>
-          <Link
-            to="/favoritos"
-            className="hover:text-green-700 transition duration-300 ease-in-out"
-          >
-            Favoritos
-          </Link>
-          {(roles.includes('ROLE_ADMIN') || roles.includes('ROLE_USER')) && (
-            <Link to="/MisReservas" className="hover:text-green-700 transition duration-300 ease-in-out">
-              Mis Reservas
-            </Link>
-          )}
-        </div>
-      </nav>
+        )}
+      </div>
 
-      <div className="flex items-center gap-5 mr-10">
+      <Menu 
+        right 
+        isOpen={isOpen} 
+        onStateChange={(state) => handleStateChange(state)} 
+        className="md:hidden"
+      >
+        <Link to={routes.productList} onClick={closeMenu} className="menu-item">
+          Reservar
+        </Link>
+        <Link to={routes.about} onClick={closeMenu} className="menu-item">
+          Sobre Nosotros
+        </Link>
+        <Link to="/favoritos" onClick={closeMenu} className="menu-item">
+          Favoritos
+        </Link>
+        {(roles.includes('ROLE_ADMIN') || roles.includes('ROLE_USER')) && (
+          <Link to="/MisReservas" onClick={closeMenu} className="menu-item">
+            Mis Reservas
+          </Link>
+        )}
+        {!token ? (
+          <>
+            <Link to={routes.Login} onClick={closeMenu} className="menu-item">
+              Iniciar Sesión
+            </Link>
+            <Link to={routes.Register} onClick={closeMenu} className="menu-item">
+              Crear Cuenta
+            </Link>
+          </>
+        ) : (
+          <>
+            {roles.includes('ROLE_ADMIN') && (
+              <Link to={routes.productos} onClick={closeMenu} className="menu-item">
+                Panel de Administración
+              </Link>
+            )}
+            <button onClick={() => { logout(); closeMenu(); }} className="menu-item">
+              Cerrar Sesión
+            </button>
+          </>
+        )}
+      </Menu>
+
+      <div className="hidden md:flex items-center gap-5 mr-10">
         {!token ? (
           <>
             <Link to={routes.Login} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white">
