@@ -19,7 +19,6 @@ const SearchBar = () => {
   const [locations, setLocations] = useState([]);
   const [time, setTime] = useState(null);
 
-  // Crear referencias para los DatePicker
   const timePickerRef = useRef(null);
   const datePickerRef = useRef(null);
 
@@ -28,7 +27,7 @@ const SearchBar = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get('/ubicaciones').then(response => {return response.data});
+        const response = await axios.get('/ubicaciones').then(response => response.data);
         setLocations(response);
       } catch (error) {
         console.error('Error al cargar las ubicaciones :(', error);
@@ -73,7 +72,6 @@ const SearchBar = () => {
     return locations
       .filter(location => location.ciudad.toLowerCase().includes(inputValue))
       .map(location => location.ciudad);
-
   };
 
   const getSuggestionValue = (suggestion) => suggestion;
@@ -88,8 +86,6 @@ const SearchBar = () => {
 
   const handleSearch = async () => {
     try {
-      // Realizar la búsqueda en el backend utilizando los criterios de búsqueda
-
       const response = await axios.get('/search', {
         params: {
           searchTerm: searchTerm,
@@ -98,8 +94,7 @@ const SearchBar = () => {
           time: time ? time.toISOString() : null
         }
       });
-  
-      // Redirigir a la página de resultados de búsqueda con los datos
+
       navigate('/resultados', { state: { results: response.data } });
     } catch (error) {
       console.error('Error al realizar la búsqueda:', error);
@@ -107,10 +102,10 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="mt-6 flex justify-center items-center">
-      <div className="p-6 bg-white rounded-full shadow-2xl flex items-center space-x-4 relative">
-        <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 relative">
-          <FaSearch className="text-white"/>
+    <div className="mt-6 flex justify-center items-center w-full">
+      <div className="p-6 bg-white rounded-full shadow-2xl flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 w-[160%] max-w-7xl px-4 lg:px-8 mx-auto">
+        <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 w-full md:w-auto">
+          <FaSearch className="text-white" />
           <Autosuggest
             suggestions={suggestions}
             onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -121,10 +116,10 @@ const SearchBar = () => {
               placeholder: 'Ciudad...',
               value: searchTerm,
               onChange: handleSearchChange,
-              className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
+              className: 'p-2 bg-white text-gray-700 border-2 rounded-full w-full md:w-auto'
             }}
             theme={{
-              container: 'relative',
+              container: 'relative w-full',
               suggestionsContainer: 'absolute z-10 w-full mt-1',
               suggestionsList: 'bg-white border border-gray-300 rounded-md shadow-lg',
               suggestion: 'py-1 px-3',
@@ -132,19 +127,21 @@ const SearchBar = () => {
             }}
           />
         </div>
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="p-2 bg-white text-gray-500 border-2 border-green-500 rounded-full"
-        >
-          <option value="">Categoría</option>
-          {categories.map(category => (
-            <option key={category.id} value={category.nombre}>
-              {category.nombre}
-            </option>
-          ))}
-        </select>
-        <div className="flex items-center space-x-2">
+        <div className="w-full md:w-auto">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="p-2 bg-white text-gray-500 border-2 border-green-500 rounded-full w-full md:w-auto"
+          >
+            <option value="">Categoría</option>
+            {categories.map(category => (
+              <option key={category.id} value={category.nombre}>
+                {category.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex items-center space-x-2 w-full md:w-auto">
           <div onClick={() => datePickerRef.current.setOpen(true)} className="cursor-pointer">
             <FaCalendarAlt className="text-green-500" />
           </div>
@@ -153,36 +150,38 @@ const SearchBar = () => {
             selected={date}
             onChange={date => setDate(date)}
             placeholderText="Fecha"
-            minDate={new Date()}  // Establece la fecha mínima a hoy
-            className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
+            minDate={new Date()}
+            className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full w-full md:w-auto"
           />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 w-full md:w-auto">
           <div onClick={() => timePickerRef.current.setOpen(true)} className="cursor-pointer">
             <FaClock className="text-green-500" />
           </div>
           <DatePicker
-              selected={time}
-              onChange={time => setTime(time)}
-              placeholderText="Horario"
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={30}
-              timeCaption="Horario"
-              dateFormat="h:mm aa"
-              ref={timePickerRef}
-              className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
+            selected={time}
+            onChange={time => setTime(time)}
+            placeholderText="Horario"
+            showTimeSelect
+            showTimeSelectOnly
+            timeIntervals={30}
+            timeCaption="Horario"
+            dateFormat="h:mm aa"
+            ref={timePickerRef}
+            className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full w-full md:w-auto"
           />
         </div>
-        <button
-          onClick={handleSearch}
-          className="bg-green-500 text-white py-2 px-4 rounded-full flex items-center hover:bg-green-700 transition duration-200"
-        >
-          Buscar
-          <div className="bg-white text-green-500 rounded-full p-2 ml-3 flex items-center justify-center">
-            <FaArrowRight />
-          </div>
-        </button>
+        <div className="w-full md:w-auto flex justify-center md:justify-end">
+          <button
+            onClick={handleSearch}
+            className="bg-green-500 text-white py-2 px-4 rounded-full flex items-center hover:bg-green-700 transition duration-200 w-full md:w-auto"
+          >
+            Buscar
+            <div className="bg-white text-green-500 rounded-full p-2 ml-3 flex items-center justify-center">
+              <FaArrowRight />
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   );

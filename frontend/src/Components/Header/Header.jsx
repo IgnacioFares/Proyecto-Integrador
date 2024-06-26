@@ -31,7 +31,7 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="hidden md:flex items-center gap-6">
+      <div className="header-links hidden md:flex items-center gap-6">
         <Link to={routes.productList} className="hover:text-green-700 transition duration-300 ease-in-out">
           Reservar
         </Link>
@@ -51,8 +51,7 @@ const Header = () => {
       <Menu 
         right 
         isOpen={isOpen} 
-        onStateChange={(state) => handleStateChange(state)} 
-        className="md:hidden"
+        onStateChange={(state) => handleStateChange(state)}
       >
         <Link to={routes.productList} onClick={closeMenu} className="menu-item">
           Reservar
@@ -91,7 +90,7 @@ const Header = () => {
         )}
       </Menu>
 
-      <div className="hidden md:flex items-center gap-5 mr-10">
+      <div className="menu-items hidden md:flex items-center gap-5 mr-10">
         {!token ? (
           <>
             <Link to={routes.Login} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white">

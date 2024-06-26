@@ -32,7 +32,7 @@ export const CardContainer = () => {
         <p className="flex justify-center">Explora nuestras diferentes locaciones</p>
       </div>
 
-      <div className="flex justify-center mt-28 mx-4">
+      <div className="flex flex-wrap justify-center mt-28 mx-4">
         {randomProducts.map((product) => (
           <Card
             key={product.id}
@@ -60,7 +60,7 @@ const Card = ({ product, imageUrl, name, description, images }) => {
   const handleReserve = () => navigate(`/detalle/${product.id}`);
 
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg mx-4">
+    <div className="max-w-sm w-full sm:w-auto rounded overflow-hidden shadow-lg mx-4 mb-4 sm:mb-4 md:mb-0 mt-4">
       <div
         className="relative"
         onMouseEnter={handleMouseEnter}
@@ -115,21 +115,19 @@ const Modal = ({ onClose, children }) => {
 const ImageGallery = ({ images }) => {
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="grid grid-cols-3 gap-4 h-96 bg-white p-4 rounded"> {/* Ajusta la altura y añade un fondo blanco y padding */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 h-96 bg-white p-4 rounded"> {/* Ajusta la altura y añade un fondo blanco y padding */}
         <div className="col-span-1 flex items-center">
           <img src={images[0]} alt="Main image" className="w-full h-64 object-cover rounded bg-transparent" />
         </div>
-        <div className="col-span-2 grid grid-cols-2 gap-4">
+        <div className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {images.slice(1).map((image, index) => (
-        <div key={index} className="flex justify-center items-center overflow-hidden"> {/* Centrado añadido */}
-          <img src={image} alt={`Gallery image ${index + 2}`} className="w-64 h-full object-cover rounded bg-transparent" />
+            <div key={index} className="flex justify-center items-center overflow-hidden"> {/* Centrado añadido */}
+              <img src={image} alt={`Gallery image ${index + 2}`} className="w-64 h-full object-cover rounded bg-transparent" />
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
-  </div>
-</div>
-
-
   );
 };
 
