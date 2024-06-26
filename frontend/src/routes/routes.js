@@ -1,7 +1,7 @@
 export const routes = {
   home: "/",
   reserva: "/reservas",
-  about: "/about",
+  about: "/about",  // Asegúrate de que esta ruta coincide con la de tu enlace
   Register: "/register",
   Login: "/login",
   administracion: "/administracion",
