@@ -1,25 +1,30 @@
+import React from "react";
+
 const Contactanos = () => {
   return (
-    <section className="w-full  mt-64">
-      <div className="flex justify-center">
-        <p>Reserva tu cancha de fútbol ahora mismo</p>
+    <section className="w-full mt-16 px-4 md:px-0">
+      <div className="flex justify-center mb-4">
+        <p className="text-center">Reserva tu cancha de fútbol ahora mismo</p>
       </div>
 
-      <div className="flex justify-center">
-        <h3 className="bg-gradient-to-r from-blue-500 to-green-400 text-transparent bg-clip-text font-michroma text-4xl md:text-5xl text-left mb-1 py-8">
+      <div className="flex justify-center mb-4">
+        <h3 className="text-center text-3xl md:text-4xl font-bold text-green-500 mb-2">
           Contáctanos hoy
         </h3>
       </div>
 
-      <div className="flex justify-center">Estamos aqui para ayudarte</div>
+      <div className="flex justify-center mb-4 text-center">
+        Estamos aquí para ayudarte
+      </div>
 
-      <article className="flex justify-center justify-around mt-20">
-        <div className="flex justify-center flex-col items-center">
+      <article className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="flex justify-center flex-col items-center bg-gray-100 p-4 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
             height="48"
             viewBox="0 0 24 24"
+            className="text-green-500 mb-2"
           >
             <path
               fill="#65a30d"
@@ -27,19 +32,17 @@ const Contactanos = () => {
             />
           </svg>
 
-          <h3 className="text-2xl text-[#1EB962] ">Correo</h3>
-          <h3 className="text-2xl text-[#1EB962] ">electrónico</h3>
-
-
-          <p>santicai@gmail.com</p>
+          <h3 className="text-lg md:text-xl text-green-500 mb-1">Correo electrónico</h3>
+          <p className="text-sm md:text-base">santicai@gmail.com</p>
         </div>
 
-        <div className="flex justify-center flex-col items-center">
+        <div className="flex justify-center flex-col items-center bg-gray-100 p-4 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
             height="48"
             viewBox="0 0 20 20"
+            className="text-blue-500 mb-2"
           >
             <path
               fill="#5E6FAB"
@@ -47,17 +50,17 @@ const Contactanos = () => {
             />
           </svg>
 
-          <h3 className="text-2xl text-[#5E6FAB] ">Teléfono</h3>
-
-          <p>+35164859837</p>
+          <h3 className="text-lg md:text-xl text-blue-500 mb-1">Teléfono</h3>
+          <p className="text-sm md:text-base">+35164859837</p>
         </div>
 
-        <div className="flex justify-center flex-col items-center">
+        <div className="flex justify-center flex-col items-center bg-gray-100 p-4 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="48"
             height="48"
             viewBox="0 0 320 488"
+            className="text-green-500 mb-2"
           >
             <path
               fill="#65a30d"
@@ -65,9 +68,9 @@ const Contactanos = () => {
               className
             />
           </svg>
-          <h3 className="text-[#1EB962]">Oficina</h3>
 
-          <p>Cba, Cordoba Arg.</p>
+          <h3 className="text-lg md:text-xl text-green-500 mb-1">Oficina</h3>
+          <p className="text-sm md:text-base">Cba, Cordoba Arg.</p>
         </div>
       </article>
     </section>

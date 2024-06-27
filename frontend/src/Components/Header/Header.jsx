@@ -97,6 +97,11 @@ const Header = () => {
           <Link to="/favoritos" className="text-green-500 hover:text-green-700 text-lg" onClick={() => setMenuOpen(false)}>
             Favoritos
           </Link>
+          {(roles.includes('ROLE_ADMIN') || roles.includes('ROLE_USER')) && (
+            <Link to="/MisReservas" className="text-green-500 hover:text-green-700 text-lg" onClick={() => setMenuOpen(false)}>
+              Mis Reservas
+            </Link>
+          )}
           {!token ? (
             <>
               <Link to={routes.Login} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white" onClick={() => setMenuOpen(false)}>
@@ -117,7 +122,7 @@ const Header = () => {
                 <div className="user-initials-circle bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center">
                   {getInitials(user?.nombre, user?.apellido)}
                 </div>
-                <button onClick={() => { logout(); setMenuOpen(false); }} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white">
+                <button onClick={() => { logout(); setMenuOpen(false); }} className="bg-white text-green-500 py-2 px-4 rounded-2xl border border-green-500 hover:bg-green-500 hover:text-white" onClick={() => setMenuOpen(false)}>
                   Cerrar Sesion
                 </button>
               </div>
