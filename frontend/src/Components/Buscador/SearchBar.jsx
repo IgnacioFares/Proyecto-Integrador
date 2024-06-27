@@ -19,7 +19,6 @@ const SearchBar = () => {
   const [locations, setLocations] = useState([]);
   const [time, setTime] = useState(null);
 
-  // Crear referencias para los DatePicker
   const timePickerRef = useRef(null);
   const datePickerRef = useRef(null);
 
@@ -28,7 +27,7 @@ const SearchBar = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get('/ubicaciones').then(response => {return response.data});
+        const response = await axios.get('/ubicaciones').then(response => response.data);
         setLocations(response);
       } catch (error) {
         console.error('Error al cargar las ubicaciones :(', error);
@@ -73,7 +72,6 @@ const SearchBar = () => {
     return locations
       .filter(location => location.ciudad.toLowerCase().includes(inputValue))
       .map(location => location.ciudad);
-
   };
 
   const getSuggestionValue = (suggestion) => suggestion;
@@ -88,8 +86,6 @@ const SearchBar = () => {
 
   const handleSearch = async () => {
     try {
-      // Realizar la búsqueda en el backend utilizando los criterios de búsqueda
-
       const response = await axios.get('/search', {
         params: {
           searchTerm: searchTerm,
@@ -98,8 +94,7 @@ const SearchBar = () => {
           time: time ? time.toISOString() : null
         }
       });
-  
-      // Redirigir a la página de resultados de búsqueda con los datos
+
       navigate('/resultados', { state: { results: response.data } });
     } catch (error) {
       console.error('Error al realizar la búsqueda:', error);
@@ -108,8 +103,9 @@ const SearchBar = () => {
 
   return (
     <div className="mt-6 flex justify-center items-center">
-      <div className="p-6 bg-white rounded-full shadow-2xl flex items-center space-x-4 relative">
-        <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-full border-1 py-0.5 pl-3 pr-0.5 relative">
+      <div className="p-4 sm:p-6 bg-white sm:rounded-full rounded-md shadow-2xl flex flex-col sm:flex-row items-center space-x-0 sm:space-x-4 space-y-4 sm:space-y-0 relative w-full sm:w-auto">
+        <div className="block sm:hidden text-center text-lg font-semibold text-green-500 mb-2 w-full">Buscador de Canchas</div>
+        <div className="flex items-center space-x-2 bg-green-500 text-gray-700 rounded-md sm:rounded-full border-1 py-0.5 pl-3 pr-0.5 relative w-full sm:w-auto text-sm">
           <FaSearch className="text-white"/>
           <Autosuggest
             suggestions={suggestions}
@@ -121,10 +117,10 @@ const SearchBar = () => {
               placeholder: 'Ciudad...',
               value: searchTerm,
               onChange: handleSearchChange,
-              className: 'p-2 bg-white text-gray-700 border-5 rounded-full'
+              className: 'p-1 sm:p-2 bg-white text-gray-700 border-5 rounded-full w-full sm:w-auto text-sm'
             }}
             theme={{
-              container: 'relative',
+              container: 'relative w-full sm:w-auto',
               suggestionsContainer: 'absolute z-10 w-full mt-1',
               suggestionsList: 'bg-white border border-gray-300 rounded-md shadow-lg',
               suggestion: 'py-1 px-3',
@@ -135,7 +131,7 @@ const SearchBar = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="p-2 bg-white text-gray-500 border-2 border-green-500 rounded-full"
+          className="p-1 sm:p-2 bg-white text-gray-500 border-2 border-green-500 rounded-md sm:rounded-full w-full sm:w-auto text-sm"
         >
           <option value="">Categoría</option>
           {categories.map(category => (
@@ -144,7 +140,7 @@ const SearchBar = () => {
             </option>
           ))}
         </select>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 w-full sm:w-auto">
           <div onClick={() => datePickerRef.current.setOpen(true)} className="cursor-pointer">
             <FaCalendarAlt className="text-green-500" />
           </div>
@@ -154,10 +150,10 @@ const SearchBar = () => {
             onChange={date => setDate(date)}
             placeholderText="Fecha"
             minDate={new Date()}  // Establece la fecha mínima a hoy
-            className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
+            className="p-1 sm:p-2 bg-white text-gray-700 border-2 border-green-500 rounded-md sm:rounded-full w-full sm:w-auto text-sm"
           />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 w-full sm:w-auto">
           <div onClick={() => timePickerRef.current.setOpen(true)} className="cursor-pointer">
             <FaClock className="text-green-500" />
           </div>
@@ -171,12 +167,12 @@ const SearchBar = () => {
               timeCaption="Horario"
               dateFormat="h:mm aa"
               ref={timePickerRef}
-              className="p-2 bg-white text-gray-700 border-2 border-green-500 rounded-full"
+              className="p-1 sm:p-2 bg-white text-gray-700 border-2 border-green-500 rounded-md sm:rounded-full w-full sm:w-auto text-sm"
           />
         </div>
         <button
           onClick={handleSearch}
-          className="bg-green-500 text-white py-2 px-4 rounded-full flex items-center hover:bg-green-700 transition duration-200"
+          className="bg-green-500 text-white py-2 px-4 rounded-md sm:rounded-full flex items-center hover:bg-green-700 transition duration-200 w-full sm:w-auto text-sm"
         >
           Buscar
           <div className="bg-white text-green-500 rounded-full p-2 ml-3 flex items-center justify-center">

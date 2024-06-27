@@ -32,7 +32,7 @@ export const CardContainer = () => {
         <p className="flex justify-center">Explora nuestras diferentes locaciones</p>
       </div>
 
-      <div className="flex justify-center mt-28 mx-4">
+      <div className="flex flex-col sm:flex-row justify-center mt-28 mx-4">
         {randomProducts.map((product) => (
           <Card
             key={product.id}
@@ -60,7 +60,7 @@ const Card = ({ product, imageUrl, name, description, images }) => {
   const handleReserve = () => navigate(`/detalle/${product.id}`);
 
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg mx-4">
+    <div className="max-w-full sm:max-w-sm rounded overflow-hidden shadow-lg mx-4 my-4 sm:my-0">
       <div
         className="relative"
         onMouseEnter={handleMouseEnter}
@@ -102,7 +102,7 @@ const Card = ({ product, imageUrl, name, description, images }) => {
 const Modal = ({ onClose, children }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75">
-      <div className="bg-white p-8 rounded shadow-lg relative">
+      <div className="bg-white p-8 rounded shadow-lg relative max-w-3xl w-full mx-4">
         <button className="absolute top-0 right-0 m-4 text-black" onClick={onClose}>
           &times;
         </button>
@@ -114,22 +114,18 @@ const Modal = ({ onClose, children }) => {
 
 const ImageGallery = ({ images }) => {
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="grid grid-cols-3 gap-4 h-96 bg-white p-4 rounded"> {/* Ajusta la altura y añade un fondo blanco y padding */}
-        <div className="col-span-1 flex items-center">
-          <img src={images[0]} alt="Main image" className="w-full h-64 object-cover rounded bg-transparent" />
-        </div>
-        <div className="col-span-2 grid grid-cols-2 gap-4">
-          {images.slice(1).map((image, index) => (
-        <div key={index} className="flex justify-center items-center overflow-hidden"> {/* Centrado añadido */}
-          <img src={image} alt={`Gallery image ${index + 2}`} className="w-64 h-full object-cover rounded bg-transparent" />
-        </div>
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="col-span-1">
+        <img src={images[0]} alt="Main image" className="w-full h-96 object-cover rounded" />
+      </div>
+      <div className="col-span-1 grid grid-cols-2 gap-4">
+        {images.slice(1).map((image, index) => (
+          <div key={index} className="flex justify-center items-center">
+            <img src={image} alt={`Gallery image ${index + 2}`} className="w-full h-48 object-cover rounded" />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-</div>
-
-
   );
 };
 
