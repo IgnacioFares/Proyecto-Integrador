@@ -10,9 +10,7 @@ const Preguntas = () => {
                 <p className="text-gray-700 mb-2">
                     Encuentra respuestas a las preguntas más frecuentes sobre reservas de canchas, tipos disponibles y proceso de pago.
                 </p>
-                <button className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-2 px-4 rounded-md shadow-lg hover:shadow-xl">
-                    Contacto
-                </button>
+                
             </div>
 
             <div className="md:w-2/5 md:pl-4 mr-8">

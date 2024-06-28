@@ -17,6 +17,7 @@ import MisReservas from "./Components/ReservarCancha/MisReservas";
 import { AuthProvider } from './context/AuthContext';
 import SearchResults from "./pages/Resultados/SearchResults";
 import Favorites from "./pages/Favorites/Favorites";
+import About from "./pages/About/About";
 
 function App() {
   const [favorites, setFavorites] = useState([]);
@@ -60,6 +61,7 @@ function App() {
                 removeFromFavorites={removeFromFavorites}
               />
             } />
+            <Route path={routes.about} element= {<About/>}/>
           </Route>
           <Route path={routes.Login} element={<Login />} />
           <Route path="*" element={<h1>404 not found</h1>} />
